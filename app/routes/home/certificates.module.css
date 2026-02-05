@@ -1,0 +1,132 @@
+.certificates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space2xl) 0;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: var(--maxWidthL);
+    width: 100%;
+}
+
+.title {
+    margin-bottom: var(--spaceXL);
+    text-align: center;
+}
+
+.certificateList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spaceL);
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .certificateList {
+        grid-template-columns: 1fr;
+    }
+}
+
+.certificateItem {
+    background: var(--surfaceLight);
+    padding: var(--spaceL);
+    border-radius: var(--spaceS);
+    border: 1px solid var(--surfaceBorder);
+    opacity: 0;
+    transition: transform var(--durationS) ease, box-shadow var(--durationS) ease, border-color var(--durationS) ease;
+}
+
+@keyframes enterLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes enterRight {
+    0% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.certificateItem[data-visible='true']:nth-child(odd) {
+    opacity: 1;
+    transform: translateX(0);
+    animation: enterLeft var(--durationL) var(--bezierFastoutSlowin) backwards;
+}
+
+.certificateItem[data-visible='true']:nth-child(even) {
+    opacity: 1;
+    transform: translateX(0);
+    animation: enterRight var(--durationL) var(--bezierFastoutSlowin) backwards;
+}
+
+.certificateItem:hover {
+    transform: translateY(calc(var(--spaceXS) * -1));
+    border-color: var(--primary);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.certImage {
+    margin-bottom: var(--spaceM);
+    width: 100%;
+    border-radius: var(--spaceXS);
+    overflow: hidden;
+    border: 1px solid var(--surfaceBorder);
+}
+
+.certName {
+    margin-bottom: var(--spaceXS);
+    color: var(--textTitle);
+    font-weight: var(--fontWeightBold);
+}
+
+.certDetails {
+    color: var(--textBody);
+}
+
+.downloadLinks {
+    margin-top: var(--spaceS);
+    display: flex;
+    align-items: center;
+    gap: var(--spaceXS);
+    font-size: var(--fontSizeS);
+}
+
+.downloadLink {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: var(--fontWeightMedium);
+    transition: color var(--durationS) ease;
+}
+
+.downloadLink:hover {
+    color: var(--primaryLight);
+}
+
+.separator {
+    color: var(--textLight);
+}
+
+@media (prefers-color-scheme: dark) {
+    .certificateItem {
+        background: var(--surfaceDark);
+        border-color: var(--surfaceBorder);
+    }
+}

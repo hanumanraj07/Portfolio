@@ -1,0 +1,55 @@
+.skills {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space2xl) 0 calc(var(--space4xl) + var(--space2xl));
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: var(--maxWidthL);
+    width: 100%;
+}
+
+.title {
+    margin-bottom: var(--spaceXL);
+    text-align: center;
+}
+
+.skillList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spaceM);
+}
+
+.skillItem {
+    margin-bottom: 8vh;
+    display: flex;
+    align-items: center;
+    gap: var(--spaceS);
+    background: var(--surfaceLight);
+    padding: var(--spaceS) var(--spaceM);
+    border-radius: var(--spaceS);
+    opacity: 0;
+    transform: translateY(var(--spaceM));
+    transition: opacity var(--durationL) ease var(--delay),
+        transform var(--durationL) var(--bezierFastoutSlowin) var(--delay);
+}
+
+.skillIcon {
+    color: var(--textTitle);
+}
+
+.skillItem[data-visible='true'] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-color-scheme: dark) {
+    .skillItem {
+        background: var(--surfaceDark);
+    }
+}

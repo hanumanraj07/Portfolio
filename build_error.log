@@ -1,0 +1,270 @@
+
+> build
+> remix vite:build
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vitejs.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+[7m[33m warn [39m[27m Fetcher persistence behavior is changing in React Router v7
+[33m┃[39m [90mYou can use the `v3_fetcherPersist` future flag to opt-in early.[39m
+[33m┃[39m [90m-> https://remix.run/docs/en/2.13.1/start/future-flags#v3_fetcherPersist[39m
+[33m┗[39m
+[7m[33m warn [39m[27m Route discovery/manifest behavior is changing in React Router v7
+[33m┃[39m [90mYou can use the `v3_lazyRouteDiscovery` future flag to opt-in early.[39m
+[33m┃[39m [90m-> https://remix.run/docs/en/2.13.1/start/future-flags#v3_lazyRouteDiscovery[39m
+[33m┗[39m
+[7m[33m warn [39m[27m Relative routing behavior for splat routes is changing in React Router v7
+[33m┃[39m [90mYou can use the `v3_relativeSplatPath` future flag to opt-in early.[39m
+[33m┃[39m [90m-> https://remix.run/docs/en/2.13.1/start/future-flags#v3_relativeSplatPath[39m
+[33m┗[39m
+[7m[33m warn [39m[27m Data fetching is changing to a single fetch in React Router v7
+[33m┃[39m [90mYou can use the `v3_singleFetch` future flag to opt-in early.[39m
+[33m┃[39m [90m-> https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch[39m
+[33m┗[39m
+[7m[33m warn [39m[27m The format of errors thrown on aborted requests is changing in React Router v7
+[33m┃[39m [90mYou can use the `v3_throwAbortReason` future flag to opt-in early.[39m
+[33m┃[39m [90m-> https://remix.run/docs/en/2.13.1/start/future-flags#v3_throwAbortReason[39m
+[33m┗[39m
+[36mvite v5.1.3 [32mbuilding for production...[36m[39m
+transforming...
+node_modules/three-stdlib/libs/lottie.js (13062:32) Use of eval in "node_modules/three-stdlib/libs/lottie.js" is strongly discouraged as it poses security risks and may cause issues with minification.
+[32m✓[39m 878 modules transformed.
+Generated an empty chunk: "api.set-theme".
+rendering chunks...
+computing gzip size...
+[2mbuild/client/[22m[32massets/error-flatline-BCo2ngDH.svg                     [39m[1m[2m     3.09 kB[22m[1m[22m[2m │ gzip:   1.37 kB[22m
+[2mbuild/client/[22m[32massets/ipa-gothic-DimHCOud.woff2                       [39m[1m[2m     7.21 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/gotham-bold-D1kvQ7KV.woff2                      [39m[1m[2m    11.40 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/gotham-bold-italic-C_msAlmW.woff2               [39m[1m[2m    11.92 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/gotham-book-Bnaws0Ef.woff2                      [39m[1m[2m    12.02 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/gotham-medium-0VT3RO8I.woff2                    [39m[1m[2m    12.05 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/gotham-medium-italic-Dok430ou.woff2             [39m[1m[2m    12.81 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/gotham-book-italic-Bm2IEtSK.woff2               [39m[1m[2m    12.87 kB[22m[1m[22m
+[2mbuild/client/[22m[32m.vite/manifest.json                                    [39m[1m[2m    20.12 kB[22m[1m[22m[2m │ gzip:   3.01 kB[22m
+[2mbuild/client/[22m[32massets/icons-DPmFR-vd.svg                              [39m[1m[2m    24.37 kB[22m[1m[22m[2m │ gzip:   9.54 kB[22m
+[2mbuild/client/[22m[32massets/iphone-11-DGIHa_Ph.glb                          [39m[1m[2m    27.52 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/macbook-pro-DZn-FKKF.glb                        [39m[1m[2m    57.03 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/digital-skills-ux-certificate-DXvqPpsr.jpg      [39m[1m[2m    57.71 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/digital-skills-ai-certificate-BU7tQrX5.jpg      [39m[1m[2m    64.69 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/AI.pdf-_N0pAj2K.pdf                             [39m[1m[2m    78.62 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/gemini2-DNDdJvTS.jpeg                           [39m[1m[2m    84.37 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/epic-3-D-DdqwvE.jpeg                            [39m[1m[2m    92.10 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/aws-solutions-arch-certificate-BTqbcpY2.png     [39m[1m[2m    95.00 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/gta-D38jmHUP.jpg                                [39m[1m[2m   102.42 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/css-basic-certificate-DprmNIub.png              [39m[1m[2m   103.09 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/problem-solving-basic-certificate-CORZGbyR.png  [39m[1m[2m   104.97 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/pulse-quest-certificate-BEF_P1Kv.jpg            [39m[1m[2m   108.29 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/hanuman-profile-D71m0Ch9.jpg                    [39m[1m[2m   108.65 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/intro-to-c-certificate-WgyNPaip.png             [39m[1m[2m   142.78 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/html-certificate-CB1taNkH.png                   [39m[1m[2m   145.20 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/ethical-ai-certificate-CzIJfcOe.png             [39m[1m[2m   145.85 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/intro-to-javascript-certificate-DEFJ8SvZ.png    [39m[1m[2m   147.39 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/synaptix-hack-certificate-B2CUDvbj.png          [39m[1m[2m   171.01 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/appian-ai-challenge-certificate-CUh7vfFD.png    [39m[1m[2m   171.08 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/robotrix-certificate-WjBKalc7.png               [39m[1m[2m   173.46 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/HT Appian.pdf-KUFIqyBj.pdf                      [39m[1m[2m   175.47 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/HT Synaptix.pdf-S8M_Ranv.pdf                    [39m[1m[2m   175.75 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/C language.pdf-DT5BpjIB.pdf                     [39m[1m[2m   205.28 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/HTML.pdf-BQeM8weV.pdf                           [39m[1m[2m   209.47 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/Javascript.pdf-Ch4Z1ACP.pdf                     [39m[1m[2m   209.54 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/Ethical.pdf-zA8XARlU.pdf                        [39m[1m[2m   211.30 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/HT Robotrix-DR6E-snD.pdf                        [39m[1m[2m   238.62 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/github-copilot-certificate-BClb1knV.png         [39m[1m[2m   269.44 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/Binance3-fqbeGBFe.png                           [39m[1m[2m   322.90 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/HT Code clash.pdf-D3lfrhui.pdf                  [39m[1m[2m   373.07 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/HT Pluse Quest.pdf-BG3lumkV.pdf                 [39m[1m[2m   387.27 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/AWS Certificate.pdf-DSHA-ETO.pdf                [39m[1m[2m   396.84 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/code-clash-certificate-CoHivTNY.png             [39m[1m[2m   405.61 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/gemini1-n7_rze7_.png                            [39m[1m[2m   410.22 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/bugatti-Qw49WorG.png                            [39m[1m[2m   438.24 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/Walmart-CqqPBKK9.png                            [39m[1m[2m   551.45 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/Github.pdf-BmZrEmsn.pdf                         [39m[1m[2m   606.17 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/flatline-DaiGY3H4.mp4                           [39m[1m[2m 2,352.91 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/HR CSS.pdf-iPTPYSYR.pdf                         [39m[1m[2m 7,683.64 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/HR PS.pdf-BYQ3VuHM.pdf                          [39m[1m[2m 7,683.64 kB[22m[1m[22m
+[2mbuild/client/[22m[32massets/bugatti-Dgn8ZhqQ.mp4                            [39m[1m[2m19,170.36 kB[22m[1m[22m
+[2mbuild/client/[22m[35massets/index-Ch5kCoyl.css                              [39m[1m[2m     0.21 kB[22m[1m[22m[2m │ gzip:   0.17 kB[22m
+[2mbuild/client/[22m[35massets/displacement-sphere-DC4DhVc-.css                [39m[1m[2m     0.24 kB[22m[1m[22m[2m │ gzip:   0.18 kB[22m
+[2mbuild/client/[22m[35massets/decoder-text-ZXA-E-72.css                       [39m[1m[2m     0.50 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2mbuild/client/[22m[35massets/list-Bzmr24nT.css                               [39m[1m[2m     1.13 kB[22m[1m[22m[2m │ gzip:   0.54 kB[22m
+[2mbuild/client/[22m[35massets/divider-BGrE333F.css                            [39m[1m[2m     1.14 kB[22m[1m[22m[2m │ gzip:   0.43 kB[22m
+[2mbuild/client/[22m[35massets/section-CErneW72.css                            [39m[1m[2m     2.08 kB[22m[1m[22m[2m │ gzip:   0.72 kB[22m
+[2mbuild/client/[22m[35massets/image-cNt8ozvO.css                              [39m[1m[2m     2.22 kB[22m[1m[22m[2m │ gzip:   0.77 kB[22m
+[2mbuild/client/[22m[35massets/error-Cq_yTnRj.css                              [39m[1m[2m     4.17 kB[22m[1m[22m[2m │ gzip:   1.10 kB[22m
+[2mbuild/client/[22m[35massets/heading-CXQ7GA1i.css                            [39m[1m[2m     6.21 kB[22m[1m[22m[2m │ gzip:   1.53 kB[22m
+[2mbuild/client/[22m[35massets/route-Cl8BF6JV.css                              [39m[1m[2m     7.15 kB[22m[1m[22m[2m │ gzip:   1.77 kB[22m
+[2mbuild/client/[22m[35massets/route-Cf475Er4.css                              [39m[1m[2m     8.82 kB[22m[1m[22m[2m │ gzip:   1.97 kB[22m
+[2mbuild/client/[22m[35massets/route-CKif1uL8.css                              [39m[1m[2m     9.48 kB[22m[1m[22m[2m │ gzip:   1.81 kB[22m
+[2mbuild/client/[22m[35massets/route-CIB4zeEr.css                              [39m[1m[2m    11.58 kB[22m[1m[22m[2m │ gzip:   2.95 kB[22m
+[2mbuild/client/[22m[35massets/root-Ci9I8dx3.css                               [39m[1m[2m    11.63 kB[22m[1m[22m[2m │ gzip:   2.70 kB[22m
+[2mbuild/client/[22m[35massets/route-BMMxkLjn.css                              [39m[1m[2m    15.98 kB[22m[1m[22m[2m │ gzip:   3.19 kB[22m
+[2mbuild/client/[22m[36massets/api.set-theme-l0sNRNKZ.js                       [39m[1m[2m     0.00 kB[22m[1m[22m[2m │ gzip:   0.02 kB[22m
+[2mbuild/client/[22m[36massets/flatline-7CfdPCej.js                            [39m[1m[2m     0.06 kB[22m[1m[22m[2m │ gzip:   0.08 kB[22m
+[2mbuild/client/[22m[36massets/date-DvyCAN0s.js                                [39m[1m[2m     0.12 kB[22m[1m[22m[2m │ gzip:   0.13 kB[22m
+[2mbuild/client/[22m[36massets/index-DUWVTWgJ.js                               [39m[1m[2m     0.40 kB[22m[1m[22m[2m │ gzip:   0.26 kB[22m
+[2mbuild/client/[22m[36massets/_-DqefFUkW.js                                   [39m[1m[2m     0.41 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2mbuild/client/[22m[36massets/route-DKUK3-lq.js                               [39m[1m[2m     0.45 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2mbuild/client/[22m[36massets/config-ClpdjedE.js                              [39m[1m[2m     0.51 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+[2mbuild/client/[22m[36massets/useScrollToHash-D1aiZpIY.js                     [39m[1m[2m     0.66 kB[22m[1m[22m[2m │ gzip:   0.40 kB[22m
+[2mbuild/client/[22m[36massets/divider-B5_jk1DN.js                             [39m[1m[2m     0.72 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+[2mbuild/client/[22m[36massets/list-D1EayRpP.js                                [39m[1m[2m     0.74 kB[22m[1m[22m[2m │ gzip:   0.45 kB[22m
+[2mbuild/client/[22m[36massets/useWindowSize-CCgmKmhO.js                       [39m[1m[2m     0.77 kB[22m[1m[22m[2m │ gzip:   0.44 kB[22m
+[2mbuild/client/[22m[36massets/flatline-COmAESI7.js                            [39m[1m[2m     1.05 kB[22m[1m[22m[2m │ gzip:   0.84 kB[22m
+[2mbuild/client/[22m[36massets/section-dph1t2m6.js                             [39m[1m[2m     2.20 kB[22m[1m[22m[2m │ gzip:   1.03 kB[22m
+[2mbuild/client/[22m[36massets/error-CmOz-SVf.js                               [39m[1m[2m     3.11 kB[22m[1m[22m[2m │ gzip:   1.35 kB[22m
+[2mbuild/client/[22m[36massets/entry.client-Cvlvnsot.js                        [39m[1m[2m     3.55 kB[22m[1m[22m[2m │ gzip:   1.42 kB[22m
+[2mbuild/client/[22m[36massets/route-BEf4qrGw.js                               [39m[1m[2m     4.97 kB[22m[1m[22m[2m │ gzip:   2.12 kB[22m
+[2mbuild/client/[22m[36massets/image-COpxYdR5.js                               [39m[1m[2m     6.10 kB[22m[1m[22m[2m │ gzip:   2.46 kB[22m
+[2mbuild/client/[22m[36massets/route-B9Fdc5Vt.js                               [39m[1m[2m     6.19 kB[22m[1m[22m[2m │ gzip:   2.46 kB[22m
+[2mbuild/client/[22m[36massets/jsx-runtime-BfF-YriY.js                         [39m[1m[2m     8.10 kB[22m[1m[22m[2m │ gzip:   3.04 kB[22m
+[2mbuild/client/[22m[36massets/route-DJuQEDOa.js                               [39m[1m[2m     8.27 kB[22m[1m[22m[2m │ gzip:   3.15 kB[22m
+[2mbuild/client/[22m[36massets/articles.hello-world-DW9iq93e.js                [39m[1m[2m     8.28 kB[22m[1m[22m[2m │ gzip:   3.59 kB[22m
+[2mbuild/client/[22m[36massets/root-CKCwkgJr.js                                [39m[1m[2m     9.91 kB[22m[1m[22m[2m │ gzip:   4.19 kB[22m
+[2mbuild/client/[22m[36massets/route-qL0ZtbjX.js                               [39m[1m[2m    10.07 kB[22m[1m[22m[2m │ gzip:   4.07 kB[22m
+[2mbuild/client/[22m[36massets/heading-BysQLnK9.js                             [39m[1m[2m    12.30 kB[22m[1m[22m[2m │ gzip:   5.17 kB[22m
+[2mbuild/client/[22m[36massets/displacement-sphere-DhBXB5uf.js                 [39m[1m[2m    13.04 kB[22m[1m[22m[2m │ gzip:   3.58 kB[22m
+[2mbuild/client/[22m[36massets/decoder-text-C8DyOeAG.js                        [39m[1m[2m    18.03 kB[22m[1m[22m[2m │ gzip:   7.76 kB[22m
+[2mbuild/client/[22m[36massets/route-Dq8xYj-5.js                               [39m[1m[2m    19.87 kB[22m[1m[22m[2m │ gzip:   7.13 kB[22m
+[2mbuild/client/[22m[36massets/index-L5FueZ6c.js                               [39m[1m[2m    39.65 kB[22m[1m[22m[2m │ gzip:  14.69 kB[22m
+[2mbuild/client/[22m[36massets/articles.modern-styling-in-react-DOaV2c1r.js    [39m[1m[2m    63.59 kB[22m[1m[22m[2m │ gzip:   6.68 kB[22m
+[2mbuild/client/[22m[36massets/components-C1HHnXRM.js                          [39m[1m[2m   250.73 kB[22m[1m[22m[2m │ gzip:  81.21 kB[22m
+[2mbuild/client/[22m[36massets/three-BjgkGUtc.js                               [39m[1m[33m   561.79 kB[39m[22m[2m │ gzip: 144.04 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 4.31s[39m
+[36mvite v5.1.3 [32mbuilding SSR bundle for production...[36m[39m
+transforming...
+[32m✓[39m 199 modules transformed.
+[31mx[39m Build failed in 622ms
+Error [RollupError]: [31m"action" is not exported by "app/routes/contact/contact.jsx", imported by "app/routes/contact/route.js".[39m
+file: [36mD:/My-portfolio/Portfolio/app/routes/contact/route.js:1:35[39m
+[33m1: export { Contact as default, meta, action } from './contact';
+                                      ^[39m
+    at getRollupEror (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/parseAst.js:375:41)
+    at error (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/parseAst.js:372:42)
+    at Module.error (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/node-entry.js:13651:16)
+    at Module.getVariableForExportName (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/node-entry.js:13815:29)
+    at Module.includeAllExports (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/node-entry.js:13891:37)
+    at Object.includeAllExports (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/node-entry.js:14013:43)
+    at NamespaceVariable.include (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/node-entry.js:13080:22)
+    at Module.includeVariable (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/node-entry.js:14384:22)
+    at Module.includeVariableInModule (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/node-entry.js:14402:14)
+    at Identifier.include (file:///D:/My-portfolio/Portfolio/node_modules/vite/node_modules/rollup/dist/es/shared/node-entry.js:7387:36) {
+  binding: 'action',
+  code: 'MISSING_EXPORT',
+  exporter: 'D:/My-portfolio/Portfolio/app/routes/contact/contact.jsx',
+  id: 'D:/My-portfolio/Portfolio/app/routes/contact/route.js',
+  url: 'https://rollupjs.org/troubleshooting/#error-name-is-not-exported-by-module',
+  pos: 35,
+  loc: {
+    column: 35,
+    file: 'D:/My-portfolio/Portfolio/app/routes/contact/route.js',
+    line: 1
+  },
+  frame: "1: export { Contact as default, meta, action } from './contact';\r\n" +
+    '                                      ^',
+  watchFiles: [
+    'D:/My-portfolio/Portfolio/app/routes/articles.modern-styling-in-react.mdx',
+    'D:/My-portfolio/Portfolio/node_modules/@remix-run/dev/dist/config/defaults/entry.server.node.tsx',
+    'D:/My-portfolio/Portfolio/app/routes/articles_._index/route.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/articles.hello-world.mdx',
+    'D:/My-portfolio/Portfolio/app/root.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/articles/route.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/home/route.js',
+    'D:/My-portfolio/Portfolio/app/routes/contact/route.js',
+    'D:/My-portfolio/Portfolio/app/routes/$.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/uses/route.js',
+    'D:/My-portfolio/Portfolio/app/routes/api.set-theme.js',
+    'D:\\My-portfolio\\Portfolio\\package.json',
+    'D:/My-portfolio/Portfolio/app/routes/home/home.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/contact/contact.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/uses/uses.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/articles_._index/articles.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/articles_._index/posts.server.js',
+    'D:/My-portfolio/Portfolio/app/root.module.css',
+    'D:/My-portfolio/Portfolio/app/global.module.css',
+    'D:/My-portfolio/Portfolio/app/reset.module.css',
+    'D:/My-portfolio/Portfolio/app/config.json',
+    'D:/My-portfolio/Portfolio/app/utils/meta.js',
+    'D:/My-portfolio/Portfolio/app/routes/uses/uses.module.css',
+    'D:/My-portfolio/Portfolio/app/routes/home/profile.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/home/intro.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/home/project-summary.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/home/skills.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/home/certificates.jsx',
+    'D:/My-portfolio/Portfolio/app/routes/home/home.module.css',
+    'D:/My-portfolio/Portfolio/app/routes/contact/contact.module.css',
+    'D:/My-portfolio/Portfolio/app/utils/timecode.js',
+    'D:/My-portfolio/Portfolio/app/routes/articles_._index/articles.module.css',
+    'D:/My-portfolio/Portfolio/app/components/theme-provider/theme.js',
+    'D:/My-portfolio/Portfolio/app/utils/style.js',
+    'D:/My-portfolio/Portfolio/app/layouts/error/index.js',
+    'D:/My-portfolio/Portfolio/app/components/theme-provider/index.js',
+    'D:/My-portfolio/Portfolio/app/components/progress/index.js',
+    'D:/My-portfolio/Portfolio/app/layouts/navbar/index.js',
+    'D:/My-portfolio/Portfolio/app/components/visually-hidden/index.js',
+    'D:/My-portfolio/Portfolio/app/utils/date.js',
+    'D:/My-portfolio/Portfolio/app/layouts/post/index.js',
+    'D:/My-portfolio/Portfolio/app/routes/home/profile.module.css',
+    'D:/My-portfolio/Portfolio/app/routes/home/skills.module.css',
+    'D:/My-portfolio/Portfolio/app/routes/home/certificates.module.css',
+    'D:/My-portfolio/Portfolio/app/routes/home/project-summary.module.css',
+    'D:/My-portfolio/Portfolio/app/routes/home/intro.module.css',
+    'D:/My-portfolio/Portfolio/app/routes/home/displacement-sphere.jsx',
+    'D:/My-portfolio/Portfolio/app/layouts/error/error.jsx',
+    'D:/My-portfolio/Portfolio/app/components/link/index.js',
+    'D:/My-portfolio/Portfolio/app/layouts/project/index.js',
+    'D:/My-portfolio/Portfolio/app/components/footer/index.js',
+    'D:/My-portfolio/Portfolio/app/components/table/index.js',
+    'D:/My-portfolio/Portfolio/app/hooks/index.js',
+    'D:/My-portfolio/Portfolio/app/components/decoder-text/index.js',
+    'D:/My-portfolio/Portfolio/app/components/theme-provider/theme-provider.jsx',
+    'D:/My-portfolio/Portfolio/app/components/heading/index.js',
+    'D:/My-portfolio/Portfolio/app/components/list/index.js',
+    'D:/My-portfolio/Portfolio/app/routes/home/displacement-sphere-fragment.glsl',
+    'D:/My-portfolio/Portfolio/app/components/divider/index.js',
+    'D:/My-portfolio/Portfolio/app/routes/home/displacement-sphere-vertex.glsl',
+    'D:/My-portfolio/Portfolio/app/components/icon/index.js',
+    'D:/My-portfolio/Portfolio/app/components/button/index.js',
+    'D:/My-portfolio/Portfolio/app/components/text/index.js',
+    'D:/My-portfolio/Portfolio/app/components/input/index.js',
+    'D:/My-portfolio/Portfolio/app/components/progress/progress.jsx',
+    'D:/My-portfolio/Portfolio/app/components/section/index.js',
+    'D:/My-portfolio/Portfolio/app/layouts/navbar/navbar.jsx',
+    'D:/My-portfolio/Portfolio/app/components/transition/index.js',
+    'D:/My-portfolio/Portfolio/app/components/visually-hidden/visually-hidden.jsx',
+    'D:/My-portfolio/Portfolio/app/components/image/index.js',
+    'D:/My-portfolio/Portfolio/app/layouts/post/post.jsx',
+    'D:/My-portfolio/Portfolio/app/layouts/post/post-markdown.jsx',
+    'D:/My-portfolio/Portfolio/app/hooks/useInViewport.js',
+    'D:/My-portfolio/Portfolio/app/components/model/device-models.js',
+    'D:/My-portfolio/Portfolio/app/hooks/useHydrated.js',
+    'D:/My-portfolio/Portfolio/app/routes/home/displacement-sphere.module.css',
+    'D:/My-portfolio/Portfolio/app/layouts/error/error.module.css',
+    'D:/My-portfolio/Portfolio/app/components/loader/index.js',
+    'D:/My-portfolio/Portfolio/app/components/model/index.js',
+    'D:/My-portfolio/Portfolio/app/utils/throttle.js',
+    'D:/My-portfolio/Portfolio/app/utils/three.js',
+    'D:/My-portfolio/Portfolio/app/components/link/link.jsx',
+    'D:/My-portfolio/Portfolio/app/layouts/project/project.jsx',
+    'D:/My-portfolio/Portfolio/app/components/footer/footer.jsx',
+    'D:/My-portfolio/Portfolio/app/components/table/table.jsx',
+    'D:/My-portfolio/Portfolio/app/hooks/useFormInput.js',
+    'D:/My-portfolio/Portfolio/app/hooks/useInterval.js',
+    'D:/My-portfolio/Portfolio/app/hooks/useHasMounted.js',
+    'D:/My-portfolio/Portfolio/app/hooks/useParallax.js',
+    'D:/My-portfolio/Portfolio/app/hooks/useWindowSize.js',
+    'D:/My-portfolio/Portfolio/app/hooks/useScrollToHash.js',
+    'D:/My-portfolio/Portfolio/app/components/decoder-text/decoder-text.jsx',
+    'D:/My-portfolio/Portfolio/app/hooks/usePrevious.js',
+    'D:/My-portfolio/Portfolio/app/components/heading/heading.jsx',
+    'D:/My-portfolio/Portfolio/app/components/list/list.jsx',
+    'D:/My-portfolio/Portfolio/app/components/divider/divider.jsx',
+    'D:/My-portfolio/Portfolio/app/components/icon/icon.jsx',
+    'D:/My-portfolio/Portfolio/app/components/button/button.jsx',
+    'D:/My-portfolio/Portfolio/app/components/text/text.jsx',
+    'D:/My-portfolio/Portfolio/app/components/input/input.jsx',
+    ... 42 more items
+  ]
+}
