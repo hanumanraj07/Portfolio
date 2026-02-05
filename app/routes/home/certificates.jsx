@@ -85,117 +85,141 @@ const CertificateItem = ({ cert, index }) => {
     );
 };
 
-const CertificateList = () => (
-    <div className={styles.certificateList}>
-        {[
-            {
-                name: 'Solutions Architecture Job Simulation',
-                issuer: 'Forage (AWS)',
-                date: '2026',
-                logo: awsArchCert,
-                pdf: awsArchPdf,
-            },
-            {
-                name: 'Introduction to JavaScript',
-                issuer: 'SoloLearn',
-                date: '2025',
-                logo: introToJsCert,
-                pdf: introToJsPdf,
-            },
-            {
-                name: 'Robotrix 2026',
-                issuer: 'NITK Surathkal',
-                date: '2026',
-                logo: robotrixCert,
-                pdf: robotrixPdf,
-            },
-            {
-                name: 'Synaptix Frontier AI Hack',
-                issuer: 'IIT Madras',
-                date: '2026',
-                logo: synaptixCert,
-                pdf: synaptixPdf,
-            },
-            {
-                name: 'CSS (Basic)',
-                issuer: 'HackerRank',
-                date: '2025',
-                logo: cssBasicCert,
-                pdf: cssBasicPdf,
-            },
-            {
-                name: 'Problem Solving (Basic)',
-                issuer: 'HackerRank',
-                date: '2025',
-                logo: problemSolvingCert,
-                pdf: problemSolvingPdf,
-            },
-            {
-                name: 'Appian AI Application Challenge 2026',
-                issuer: 'Unstop (IIT Madras)',
-                date: '2026',
-                logo: appianAiCert,
-                pdf: appianAiPdf,
-            },
-            {
-                name: 'Code Clash',
-                issuer: 'Elan & nVision (IIT Hyderabad)',
-                date: '2026',
-                logo: codeClashCert,
-                pdf: codeClashPdf,
-            },
-            {
-                name: 'Pulse Quest',
-                issuer: 'Elan & nVision (IIT Hyderabad)',
-                date: '2026',
-                logo: pulseQuestCert,
-                pdf: pulseQuestPdf,
-            },
-            {
-                name: 'Introduction to HTML',
-                issuer: 'SoloLearn',
-                date: '2025',
-                logo: htmlCert,
-                pdf: htmlCertPdf,
-            },
-            {
-                name: 'Introduction to C',
-                issuer: 'SoloLearn',
-                date: '2025',
-                logo: introToCCert,
-                pdf: introToCPdf,
-            },
-            {
-                name: 'Ethical AI Foundations',
-                issuer: 'SoloLearn',
-                date: '2025',
-                logo: ethicalAiCert,
-                pdf: ethicalAiPdf,
-            },
-            {
-                name: 'GitHub Copilot Fundamentals',
-                issuer: 'Simplilearn (Microsoft)',
-                date: '2025',
-                logo: githubCopilotCert,
-                pdf: githubCopilotPdf,
-            }, {
-                name: 'Digital Skills: User Experience',
-                issuer: 'FutureLearn (Accenture)',
-                date: '2025',
-                logo: digitalSkillsUxCert,
-            },
-            {
-                name: 'Digital Skills: Artificial Intelligence',
-                issuer: 'FutureLearn (Accenture)',
-                date: '2025',
-                logo: digitalSkillsCert,
-                pdf: digitalSkillsAiPdf,
-            },
-        ].map((cert, index) => (
-            <CertificateItem key={cert.name} cert={cert} index={index} />
-        ))}
-    </div>
-);
+import { Button } from '~/components/button';
+
+const certificates = [
+    {
+        name: 'Solutions Architecture Job Simulation',
+        issuer: 'Forage (AWS)',
+        date: '2026',
+        logo: awsArchCert,
+        pdf: awsArchPdf,
+    },
+    {
+        name: 'Introduction to JavaScript',
+        issuer: 'SoloLearn',
+        date: '2025',
+        logo: introToJsCert,
+        pdf: introToJsPdf,
+    },
+    {
+        name: 'Robotrix 2026',
+        issuer: 'NITK Surathkal',
+        date: '2026',
+        logo: robotrixCert,
+        pdf: robotrixPdf,
+    },
+    {
+        name: 'Synaptix Frontier AI Hack',
+        issuer: 'IIT Madras',
+        date: '2026',
+        logo: synaptixCert,
+        pdf: synaptixPdf,
+    },
+    {
+        name: 'CSS (Basic)',
+        issuer: 'HackerRank',
+        date: '2025',
+        logo: cssBasicCert,
+        pdf: cssBasicPdf,
+    },
+    {
+        name: 'Problem Solving (Basic)',
+        issuer: 'HackerRank',
+        date: '2025',
+        logo: problemSolvingCert,
+        pdf: problemSolvingPdf,
+    },
+    {
+        name: 'Appian AI Application Challenge 2026',
+        issuer: 'Unstop (IIT Madras)',
+        date: '2026',
+        logo: appianAiCert,
+        pdf: appianAiPdf,
+    },
+    {
+        name: 'Code Clash',
+        issuer: 'Elan & nVision (IIT Hyderabad)',
+        date: '2026',
+        logo: codeClashCert,
+        pdf: codeClashPdf,
+    },
+    {
+        name: 'Pulse Quest',
+        issuer: 'Elan & nVision (IIT Hyderabad)',
+        date: '2026',
+        logo: pulseQuestCert,
+        pdf: pulseQuestPdf,
+    },
+    {
+        name: 'Introduction to HTML',
+        issuer: 'SoloLearn',
+        date: '2025',
+        logo: htmlCert,
+        pdf: htmlCertPdf,
+    },
+    {
+        name: 'Introduction to C',
+        issuer: 'SoloLearn',
+        date: '2025',
+        logo: introToCCert,
+        pdf: introToCPdf,
+    },
+    {
+        name: 'Ethical AI Foundations',
+        issuer: 'SoloLearn',
+        date: '2025',
+        logo: ethicalAiCert,
+        pdf: ethicalAiPdf,
+    },
+    {
+        name: 'GitHub Copilot Fundamentals',
+        issuer: 'Simplilearn (Microsoft)',
+        date: '2025',
+        logo: githubCopilotCert,
+        pdf: githubCopilotPdf,
+    },
+    {
+        name: 'Digital Skills: User Experience',
+        issuer: 'FutureLearn (Accenture)',
+        date: '2025',
+        logo: digitalSkillsUxCert,
+    },
+    {
+        name: 'Digital Skills: Artificial Intelligence',
+        issuer: 'FutureLearn (Accenture)',
+        date: '2025',
+        logo: digitalSkillsCert,
+        pdf: digitalSkillsAiPdf,
+    },
+];
+
+const CertificateList = () => {
+    const [visibleCount, setVisibleCount] = useState(4);
+
+    const handleLoadMore = () => {
+        setVisibleCount((prevCount) => prevCount + 4);
+    };
+
+    const visibleCertificates = certificates.slice(0, visibleCount);
+
+    return (
+        <div className={styles.content}>
+            <div className={styles.certificateList}>
+                {visibleCertificates.map((cert, index) => (
+                    <CertificateItem key={cert.name} cert={cert} index={index} />
+                ))}
+            </div>
+            {visibleCount < certificates.length && (
+                <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
+                    <Button secondary iconHoverShift onClick={handleLoadMore}>
+                        Load More
+                    </Button>
+                </div>
+            )}
+        </div>
+    );
+};
 
 export const Certificates = ({ id, visible, sectionRef }) => {
     const [focused, setFocused] = useState(false);
