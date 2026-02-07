@@ -18,6 +18,7 @@ import { Error } from '~/layouts/error';
 import { VisuallyHidden } from '~/components/visually-hidden';
 import { Navbar } from '~/layouts/navbar';
 import { Progress } from '~/components/progress';
+import { useSecurity } from '~/hooks';
 import config from '~/config.json';
 import styles from './root.module.css';
 import './reset.module.css';
@@ -81,6 +82,8 @@ export default function App() {
   let { canonicalUrl, theme } = useLoaderData();
   const fetcher = useFetcher();
   const { state } = useNavigation();
+
+  useSecurity();
 
   if (fetcher.formData?.has('theme')) {
     theme = fetcher.formData.get('theme');
