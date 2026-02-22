@@ -65,7 +65,7 @@ export const Home = () => {
   const certificates = useRef();
 
   useEffect(() => {
-    const sections = [intro, projectOne, projectTwo, projectThree, projectFour, projectFive, details, skills, certificates];
+    const sections = [intro, details, skills, projectOne, projectTwo, projectThree, projectFour, projectFive, certificates];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -106,6 +106,16 @@ export const Home = () => {
         id="intro"
         sectionRef={intro}
         scrollIndicatorHidden={scrollIndicatorHidden}
+      />
+      <Profile
+        sectionRef={details}
+        visible={visibleSections.includes(details.current)}
+        id="details"
+      />
+      <Skills
+        sectionRef={skills}
+        visible={visibleSections.includes(skills.current)}
+        id="skills"
       />
       <ProjectSummary
         id="project-1"
@@ -218,16 +228,6 @@ export const Home = () => {
             },
           ],
         }}
-      />
-      <Profile
-        sectionRef={details}
-        visible={visibleSections.includes(details.current)}
-        id="details"
-      />
-      <Skills
-        sectionRef={skills}
-        visible={visibleSections.includes(skills.current)}
-        id="skills"
       />
       <Certificates
         sectionRef={certificates}
