@@ -108,6 +108,7 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="google-site-verification" content="nUf8iu9-jq1JJbxTalVwArd_jaN_tS-A78rX4xx_hxA" />
         {/* Theme color doesn't support oklch so I'm hard coding these hexes for now */}
         <meta name="theme-color" content={theme === 'dark' ? '#111' : '#F2F2F2'} />
         <meta
@@ -150,6 +151,7 @@ export function ErrorBoundary() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="google-site-verification" content="nUf8iu9-jq1JJbxTalVwArd_jaN_tS-A78rX4xx_hxA" />
         <meta name="theme-color" content="#111" />
         <meta name="color-scheme" content="dark light" />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />

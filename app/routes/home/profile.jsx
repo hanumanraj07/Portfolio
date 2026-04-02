@@ -5,6 +5,7 @@ import { Button } from '~/components/button';
 import { DecoderText } from '~/components/decoder-text';
 import { Divider } from '~/components/divider';
 import { Heading } from '~/components/heading';
+import { Icon } from '~/components/icon';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { Section } from '~/components/section';
@@ -31,6 +32,23 @@ const ProfileText = ({ visible, titleId }) => (
       personal projects. I’m always open to learning, collaboration, and new
       opportunities.
     </Text>
+    <div className={styles.socialLinks} data-visible={visible}>
+      <Link className={styles.socialLink} href="https://www.linkedin.com/in/hanumanraj07" target="_blank" aria-label="LinkedIn">
+        <Icon className={styles.socialIcon} icon="linkedin" />
+      </Link>
+      <Link className={styles.socialLink} href="https://github.com/hanumanraj07" target="_blank" aria-label="GitHub">
+        <Icon className={styles.socialIcon} icon="github" />
+      </Link>
+      <Link className={styles.socialLink} href="https://www.youtube.com/@hanumansingh07" target="_blank" aria-label="YouTube">
+        <Icon className={styles.socialIcon} icon="youtube-brand" />
+      </Link>
+      <Link className={styles.socialLink} href="https://leetcode.com/u/Hanuman_rajpurohit/" target="_blank" aria-label="LeetCode">
+        <Icon className={styles.socialIcon} icon="leetcode" />
+      </Link>
+      <Link className={styles.socialLink} href="https://x.com/hanumanraj_07" target="_blank" aria-label="X">
+        <Icon className={styles.socialIcon} icon="x" />
+      </Link>
+    </div>
   </Fragment>
 );
 
