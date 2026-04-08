@@ -20,6 +20,7 @@ import { Profile } from './profile';
 import { ProjectSummary } from './project-summary';
 import { Skills } from './skills';
 import { Certificates } from './certificates';
+import { Hackathons } from './hackathons';
 import { useEffect, useRef, useState } from 'react';
 import config from '~/config.json';
 import styles from './home.module.css';
@@ -62,10 +63,11 @@ export const Home = () => {
   const projectFive = useRef();
   const details = useRef();
   const skills = useRef();
+  const hackathons = useRef();
   const certificates = useRef();
 
   useEffect(() => {
-    const sections = [intro, details, skills, projectOne, projectTwo, projectThree, projectFour, projectFive, certificates];
+    const sections = [intro, details, skills, projectOne, projectTwo, projectThree, projectFour, projectFive, hackathons, certificates];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -227,7 +229,13 @@ export const Home = () => {
               placeholder: walmartTexture,
             },
           ],
-        }}
+          }}
+      />
+      <Hackathons
+        id="hackathons"
+        sectionRef={hackathons}
+        visible={visibleSections.includes(hackathons.current)}
+        style={{ marginBottom: '100px' }}
       />
       <Certificates
         sectionRef={certificates}

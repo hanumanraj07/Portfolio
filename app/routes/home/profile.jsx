@@ -1,6 +1,10 @@
 import profileImgLarge from '~/assets/hanuman-profile-large.jpg';
 import profileImgPlaceholder from '~/assets/flatline.png';
 import profileImg from '~/assets/hanuman-profile.jpg';
+import profileImgLight from '~/assets/light-profile.png';
+import profileImgLargeLight from '~/assets/light-profile.png';
+import profileImgDark from '~/assets/dark-profile.png';
+import profileImgLargeDark from '~/assets/dark-profile.png';
 import { Button } from '~/components/button';
 import { DecoderText } from '~/components/decoder-text';
 import { Divider } from '~/components/divider';
@@ -12,6 +16,7 @@ import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { Transition } from '~/components/transition';
 import { Fragment, useState } from 'react';
+import { useTheme } from '~/components/theme-provider';
 import { media } from '~/utils/style';
 import styles from './profile.module.css';
 
@@ -54,7 +59,11 @@ const ProfileText = ({ visible, titleId }) => (
 
 export const Profile = ({ id, visible, sectionRef }) => {
   const [focused, setFocused] = useState(false);
+  const { theme } = useTheme();
   const titleId = `${id}-title`;
+
+  const currentProfileImg = theme === 'light' ? profileImgLight : (theme === 'dark' ? profileImgDark : profileImg);
+  const currentProfileImgLarge = theme === 'light' ? profileImgLargeLight : (theme === 'dark' ? profileImgLargeDark : profileImgLarge);
 
   return (
     <Section
@@ -99,11 +108,11 @@ export const Profile = ({ id, visible, sectionRef }) => {
                   reveal
                   delay={100}
                   placeholder={profileImgPlaceholder}
-                  srcSet={`${profileImg} 480w, ${profileImgLarge} 960w`}
+                  srcSet={`${currentProfileImg} 480w, ${currentProfileImgLarge} 960w`}
                   width={960}
                   height={1280}
                   sizes={`(max-width: ${media.mobile}px) 100vw, 480px`}
-                  alt="Me smiling like a goofball at the Qwilr office in Sydney"
+                  alt="Hanuman Singh Rajpurohit"
                 />
                 <div className={styles.svg} data-visible={visible}>
                   DETAILS
