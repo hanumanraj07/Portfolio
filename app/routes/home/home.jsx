@@ -1,5 +1,5 @@
-import bugattiTexture from '~/assets/bugatti.mp4'; // Video texture
-import bugattiTextureLarge from '~/assets/bugatti.mp4';
+import bugattiTexture from '~/assets/bugatti-Trim.mp4'; // Video texture
+import bugattiTextureLarge from '~/assets/bugatti-Trim.mp4';
 import bugattiTexturePlaceholder from '~/assets/bugatti.png';
 import epicTexture1 from '~/assets/gta.jpg';
 import epicTexture2 from '~/assets/epic-3.jpeg';

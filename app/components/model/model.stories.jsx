@@ -1,12 +1,4 @@
-import phoneTexture2Large from '~/assets/gamestack-list-large.jpg';
-import phoneTexture2Placeholder from '~/assets/gamestack-list-placeholder.jpg';
-import phoneTexture2 from '~/assets/gamestack-list.jpg';
-import phoneTextureLarge from '~/assets/gamestack-login-large.jpg';
-import phoneTexturePlaceholder from '~/assets/gamestack-login-placeholder.jpg';
-import phoneTexture from '~/assets/gamestack-login.jpg';
-import laptopTexture from '~/assets/spr-lesson-builder-dark-large.jpg';
-import laptopTextureLarge from '~/assets/spr-lesson-builder-dark-large.jpg';
-import laptopTexturePlaceholder from '~/assets/spr-lesson-builder-dark-placeholder.jpg';
+import flatlineImage from '~/assets/flatline.png';
 import { Model } from '~/components/model';
 import { StoryContainer } from '../../../.storybook/story-container';
 import { deviceModels } from './device-models';
@@ -22,22 +14,14 @@ export const Phone = () => (
     <Model
       style={modelStyle}
       cameraPosition={{ x: 0, y: 0, z: 11.5 }}
-      alt="Phone models"
+      alt="Phone model"
       models={[
         {
           ...deviceModels.phone,
-          position: { x: -0.6, y: 0.8, z: 0.1 },
+          position: { x: 0, y: 0, z: 0.1 },
           texture: {
-            srcSet: `${phoneTexture} 375w, ${phoneTextureLarge} 750w`,
-            placeholder: phoneTexturePlaceholder,
-          },
-        },
-        {
-          ...deviceModels.phone,
-          position: { x: 0.6, y: -0.8, z: 0.4 },
-          texture: {
-            srcSet: `${phoneTexture2} 375w, ${phoneTexture2Large} 750w`,
-            placeholder: phoneTexture2Placeholder,
+            srcSet: `${flatlineImage} 375w, ${flatlineImage} 750w`,
+            placeholder: flatlineImage,
           },
         },
       ]}
@@ -56,8 +40,8 @@ export const Laptop = () => (
           ...deviceModels.laptop,
           position: { x: 0, y: 0, z: 0 },
           texture: {
-            srcSet: `${laptopTexture} 800w, ${laptopTextureLarge} 1920w`,
-            placeholder: laptopTexturePlaceholder,
+            srcSet: `${flatlineImage} 800w, ${flatlineImage} 1920w`,
+            placeholder: flatlineImage,
           },
         },
       ]}
