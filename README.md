@@ -2,7 +2,7 @@
 
 Personal portfolio website for **Hanuman Rajpurohit** — a full-stack developer focused on web applications, UI design, and accessibility.
 
-**Live Site**: [hamishw.com](https://hamishw.com)
+**Live Site**: [hanumanrajpurohit.netlify.app](https://hanumanrajpurohit.netlify.app)
 
 ## Tech Stack
 
