@@ -85,10 +85,11 @@ export const Profile = ({ id, visible, sectionRef }) => {
                 secondary
                 className={styles.button}
                 data-visible={visible}
-                href="/contact"
-                icon="send"
+                href="https://drive.google.com/file/d/1z7131fdVhlq50j5gQr4GHFlYaT46w4aP/view"
+                icon="arrow-right"
+                target="_blank"
               >
-                Send me a message
+                View Resume
               </Button>
             </div>
             <div className={styles.column}>
