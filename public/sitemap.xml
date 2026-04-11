@@ -1,18 +1,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://https://hanumanrajpurohit.netlify.app/</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://hanumanrajpurohit.netlify.app/</loc>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://https://hanumanrajpurohit.netlify.app/contact/</loc>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://https://hanumanrajpurohit.netlify.app/articles/</loc>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://https://hanumanrajpurohit.netlify.app/uses/</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://hanumanrajpurohit.netlify.app/contact/</loc>
+    <changefreq>daily</changefreq>
   </url>
 </urlset>
