@@ -27,6 +27,11 @@ export default defineConfig({
       routes(defineRoutes) {
         return defineRoutes((route) => {
           route("/", "routes/home/route.js", { index: true });
+          route("/details", "routes/details/route.js");
+          route("/skills", "routes/skills/route.js");
+          route("/projects", "routes/projects/route.js");
+          route("/certificates", "routes/certificates/route.js");
+          route("/contact", "routes/contact/route.js");
         });
       },
     }),

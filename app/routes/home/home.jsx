@@ -22,6 +22,7 @@ import { Skills } from './skills';
 import { Certificates } from './certificates';
 import { Hackathons } from './hackathons';
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from '@remix-run/react';
 import config from '~/config.json';
 import styles from './home.module.css';
 
@@ -53,6 +54,7 @@ export const meta = () => {
 };
 
 export const Home = () => {
+  const location = useLocation();
   const [visibleSections, setVisibleSections] = useState([]);
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
   const intro = useRef();
@@ -65,6 +67,27 @@ export const Home = () => {
   const skills = useRef();
   const hackathons = useRef();
   const certificates = useRef();
+
+  useEffect(() => {
+    const sectionPathMap = {
+      '/details': 'details',
+      '/skills': 'skills',
+      '/projects': 'project-1',
+      '/certificates': 'certificates',
+    };
+
+    const targetId = sectionPathMap[location.pathname];
+
+    if (!targetId) return;
+
+    const element = document.getElementById(targetId);
+
+    if (!element) return;
+
+    requestAnimationFrame(() => {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, [location.pathname]);
 
   useEffect(() => {
     const sections = [intro, details, skills, projectOne, projectTwo, projectThree, projectFour, projectFive, hackathons, certificates];
