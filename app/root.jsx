@@ -109,11 +109,34 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="nUf8iu9-jq1JJbxTalVwArd_jaN_tS-A78rX4xx_hxA" />
-        {/* Theme color doesn't support oklch so I'm hard coding these hexes for now */}
         <meta name="theme-color" content={theme === 'dark' ? '#111' : '#F2F2F2'} />
         <meta
           name="color-scheme"
           content={theme === 'light' ? 'light dark' : 'dark light'}
+        />
+        <meta name="author" content="Hanuman Rajpurohit" />
+        <meta name="keywords" content="portfolio, web developer, React, JavaScript, design, Hanuman Rajpurohit" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Hanuman Rajpurohit Portfolio" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@hanumanraj_07" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Hanuman Rajpurohit",
+              "url": "https://hanumanrajpurohit.netlify.app",
+              "sameAs": [
+                "https://github.com/hanumanrajpurohit",
+                "https://twitter.com/hanumanraj_07"
+              ],
+              "jobTitle": "Web Developer",
+              "knowsAbout": ["React", "JavaScript", "Web Development", "Design Systems"]
+            })
+          }}
         />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
         <Meta />

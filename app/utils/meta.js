@@ -8,10 +8,11 @@ export function baseMeta({
   description,
   prefix = name,
   ogImage = defaultOgImage,
+  keywords,
 }) {
   const titleText = [prefix, title].filter(Boolean).join(' | ');
 
-  return [
+  const metaTags = [
     { title: titleText },
     { name: 'description', content: description },
     { name: 'author', content: name },
@@ -31,4 +32,10 @@ export function baseMeta({
     { property: 'twitter:creator', content: twitter },
     { property: 'twitter:image', content: ogImage },
   ];
+
+  if (keywords) {
+    metaTags.push({ name: 'keywords', content: keywords });
+  }
+
+  return metaTags;
 }

@@ -9,10 +9,10 @@ import sliceTexture from '~/assets/flatline.png';
 import sprTextureLarge from '~/assets/flatline.png';
 import sprTexturePlaceholder from '~/assets/flatline.png';
 import sprTexture from '~/assets/flatline.png';
-import binanceTexture from '~/assets/Binance3.png';
+import fuelGaurdTexture from '~/assets/FuelGaurd.png';
 import geminiTexture1 from '~/assets/gemini1.png';
 import geminiTexture2 from '~/assets/gemini2.jpeg';
-import walmartTexture from '~/assets/Walmart.png';
+import studentProfileTexture from '~/assets/StudentProfile.png';
 import { Footer } from '~/components/footer';
 import { baseMeta } from '~/utils/meta';
 import { Intro } from './intro';
@@ -50,10 +50,12 @@ export const meta = () => {
   return baseMeta({
     title: 'Developer + Designer',
     description: `Design portfolio of ${config.name} — a full-stack developer working on web & mobile apps with a focus on experience design and accessibility.`,
+    keywords: 'portfolio, web developer, full-stack developer, React, JavaScript, design, accessibility, Hanuman Rajpurohit',
   });
 };
 
 export const Home = () => {
+  const defaultVideoLink = 'https://www.youtube.com/@hanumansingh07';
   const location = useLocation();
   const [visibleSections, setVisibleSections] = useState([]);
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
@@ -151,6 +153,9 @@ export const Home = () => {
         description="A premium website clone inspired by Bugatti’s official platform, focusing on luxury branding, smooth transitions, and modern web aesthetics."
         buttonText="View project"
         buttonLink="https://hanuman07.netlify.app/bugatti/"
+        liveLink="https://bugatti-clone-dev.vercel.app/"
+        sourceCodeLink="https://github.com/hanumanraj07/Bugatti-Clone"
+        videoLink="https://youtu.be/__XCbRVxfyI?si=Tq2HNrMkrf9NHijL"
         model={{
           type: 'laptop',
           alt: 'Smart Sparrow lesson builder',
@@ -170,8 +175,10 @@ export const Home = () => {
         index={2}
         title="Epic Games Digital Storefront – App Clone"
         description="A modern mobile clone of the Epic Games Store featuring game browsing, genres, and a premium dark UI experience."
-        buttonText="View website"
-        buttonLink="https://hanuman07.netlify.app/epic_games/master"
+        buttonText="View website" 
+        liveLink="https://epic-games-clone-dev.vercel.app/"
+        sourceCodeLink="https://github.com/hanumanraj07/Epic-Games-Clone"
+        videoLink="https://www.youtube.com/watch?v=Bae7hhBmTBI"
         model={{
           type: 'phone',
           alt: 'App login screen',
@@ -193,17 +200,19 @@ export const Home = () => {
         sectionRef={projectThree}
         visible={visibleSections.includes(projectThree.current)}
         index={3}
-        title="Binance – Crypto Exchange Website Clone"
-        description="A responsive clone of the Binance website highlighting modern fintech UI, structured layouts, and clean design."
+        title="FuelGuard - AI-Powered Fuel Fraud Detection"
+        description="FuelGuard is a full-stack web app that uses AI to detect fuel pump fraud from uploaded videos, generate legal PDF reports, and map fraudulent pumps in real time."
         buttonText="View project"
-        buttonLink="https://hanuman07.netlify.app/binance_clone/"
+        liveLink="https://fuel-guard-dev.vercel.app/"
+        sourceCodeLink="https://github.com/hanumanraj07/FuelGuard"
+        videoLink="https://www.youtube.com/@hanumanraj07"
         model={{
           type: 'laptop',
-          alt: 'Binance clone interface',
+          alt: 'FuelGuard Project',
           textures: [
             {
-              srcSet: `${binanceTexture} 800w, ${binanceTexture} 1920w`,
-              placeholder: binanceTexture,
+              srcSet: `${fuelGaurdTexture} 800w, ${fuelGaurdTexture} 1920w`,
+              placeholder: fuelGaurdTexture,
             },
           ],
         }}
@@ -218,6 +227,8 @@ export const Home = () => {
         description="A visually accurate clone of Gemini.com showcasing minimal UI design, clear typography, and structured sections inspired by real-world cryptocurrency platforms."
         buttonText="View project"
         buttonLink="https://hanuman07.netlify.app/gemini/register"
+        sourceCodeLink={config.repo}
+        videoLink={defaultVideoLink}
         model={{
           type: 'phone',
           alt: 'Project 4 mockup',
@@ -239,17 +250,19 @@ export const Home = () => {
         sectionRef={projectFive}
         visible={visibleSections.includes(projectFive.current)}
         index={5}
-        title="Walmart E-Commerce Website Clone"
-        description="A modern e-commerce website clone inspired by Walmart, designed to replicate a scalable online shopping experience with structured layouts and responsive design."
+        title="Students Profile Aggregator"
+        description="Full-stack platform to aggregate students stats from GitHub, LeetCode, YouTube and Sololearn in one dashboard."
         buttonText="View project"
-        buttonLink="https://hanuman07.netlify.app/walmart_clone/"
+        liveLink="https://profilestack.netlify.app/"
+        sourceCodeLink="https://github.com/hanumanraj07/profile_aggregator"
+        videoLink="https://youtu.be/zGbbXOJ6Xpw?si=U0AwU9FtCwziTvvD"
         model={{
           type: 'laptop',
           alt: 'Walmart clone interface',
           textures: [
             {
-              srcSet: `${walmartTexture} 800w, ${walmartTexture} 1920w`,
-              placeholder: walmartTexture,
+              srcSet: `${studentProfileTexture} 800w, ${studentProfileTexture} 1920w`,
+              placeholder: studentProfileTexture,
             },
           ],
           }}
