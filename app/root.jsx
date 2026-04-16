@@ -213,7 +213,9 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body data-theme="dark">
-        <Error error={error} />
+        <main id="main-content">
+          <Error error={error} />
+        </main>
         <ScrollRestoration />
         <Scripts />
       </body>
