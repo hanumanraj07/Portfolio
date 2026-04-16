@@ -10,8 +10,8 @@ import sprTextureLarge from '~/assets/flatline.png';
 import sprTexturePlaceholder from '~/assets/flatline.png';
 import sprTexture from '~/assets/flatline.png';
 import fuelGaurdTexture from '~/assets/FuelGaurd.png';
-import geminiTexture1 from '~/assets/gemini1.png';
-import geminiTexture2 from '~/assets/gemini2.jpeg';
+import mobileKnowleadgeTexture1 from '~/assets/Mobile-knowleadge.png';
+import mobileKnowleadgeTexture2 from '~/assets/Mobile-knowleadge2.png';
 import studentProfileTexture from '~/assets/StudentProfile.png';
 import { Footer } from '~/components/footer';
 import { baseMeta } from '~/utils/meta';
@@ -55,7 +55,6 @@ export const meta = () => {
 };
 
 export const Home = () => {
-  const defaultVideoLink = 'https://www.youtube.com/@hanumansingh07';
   const location = useLocation();
   const [visibleSections, setVisibleSections] = useState([]);
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
@@ -223,24 +222,23 @@ export const Home = () => {
         sectionRef={projectFour}
         visible={visibleSections.includes(projectFour.current)}
         index={4}
-        title="Gemini – Crypto Trading Website UI Clone"
-        description="A visually accurate clone of Gemini.com showcasing minimal UI design, clear typography, and structured sections inspired by real-world cryptocurrency platforms."
+        title="Knowledge Twin - AI Powered Chat Bot"
+        description="Knowledge Twin is a powerful RAG-driven AI built to act like a world-class knowledge expert—able to read documents, understand images and videos, and remember conversations with exceptional accuracy."
         buttonText="View project"
-        buttonLink="https://hanuman07.netlify.app/gemini/register"
-        sourceCodeLink={config.repo}
-        videoLink={defaultVideoLink}
+        liveLink="https://knowledgetwin.netlify.app/"
+        sourceCodeLink="https://github.com/hanumanraj07/knowledge-twin"
+        videoLink="https://www.youtube.com/@hanumanraj07"
         model={{
           type: 'phone',
           alt: 'Project 4 mockup',
           textures: [
             {
-              srcSet: `${geminiTexture1} 375w, ${geminiTexture1} 750w`,
-              placeholder: geminiTexture1,
+              srcSet: `${mobileKnowleadgeTexture2} 375w, ${mobileKnowleadgeTexture2} 750w`,
+              placeholder: mobileKnowleadgeTexture2,
             },
             {
-              srcSet: `${geminiTexture2} 375w, ${geminiTexture2} 750w`,
-              placeholder: geminiTexture2,
-              fit: 'cover',
+              srcSet: `${mobileKnowleadgeTexture1} 375w, ${mobileKnowleadgeTexture1} 750w`,
+              placeholder: mobileKnowleadgeTexture1,
             },
           ],
         }}

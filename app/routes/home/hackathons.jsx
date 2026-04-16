@@ -281,10 +281,11 @@ export const Hackathons = ({ id, visible, sectionRef, style }) => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [expandedCard, setExpandedCard] = useState(null);
   const titleId = `${id}-title`;
+  const visibleHackathons = hackathons.slice(0, 2);
 
   const filteredHackathons = activeFilter === 'All'
-    ? hackathons
-    : hackathons.filter(h => h.tags.includes(activeFilter));
+    ? visibleHackathons
+    : visibleHackathons.filter(h => h.tags.includes(activeFilter));
 
   const handleExpand = (hackathon) => {
     setExpandedCard(expandedCard?.id === hackathon.id ? null : hackathon);

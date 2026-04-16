@@ -1,36 +1,36 @@
 export const hackathons = [
   {
     id: 1,
-    name: 'Synaptix Frontier AI Hack',
-    organizer: 'IIT Madras',
+    name: 'Dev Heat Hackathon',
+    organizer: 'IIIT Surat',
     platform: 'Unstop',
-    date: 'Jan 2026',
+    date: 'Feb 2026',
     type: 'Team',
     teamSize: 4,
-    projectName: 'AI-Powered Legal Document Analyzer',
-    description: 'Built an AI-driven platform that analyzes legal documents, extracts key clauses, and identifies potential risks using NLP and machine learning models.',
+    projectName: 'Knowledge Twin AI-Chat Bot',
+    description: 'Built an AI-driven platform that Analyze Documents, Media, and Conversations in One Console',
     techStack: ['React', 'Python', 'TensorFlow', 'FastAPI', 'MongoDB'],
     tags: ['AI', 'Web'],
     achievement: 'Participation',
-    github: 'https://github.com/hanuman07/synaptix-legal-ai',
-    demo: 'https://synaptix-legal-ai.netlify.app',
+    github: 'https://github.com/hanumanraj07/knowledge-twin',
+    demo: 'https://knowledgetwin.netlify.app/',
     highlights: ['Automated candidate screening', 'Skill extraction accuracy 95%']
   },
   {
     id: 2,
     name: 'Robotrix 2026',
     organizer: 'NITK Surathkal',
-    platform: 'TechNode',
-    date: 'Feb 2026',
+    platform: 'Unstop',
+    date: 'Jan 2026',
     type: 'Team',
     teamSize: 3,
-    projectName: 'Smart Campus Navigation System',
-    description: 'Developed an indoor navigation app for campus using BLE beacons and AR, helping students find classrooms, labs, and events in real-time.',
+    projectName: 'FuelGuard - AI-Powered Fuel Fraud Detection',
+    description: 'FuelGuard is a full-stack web app that uses AI to detect fuel pump fraud from uploaded videos, generate legal PDF reports, and map fraudulent pumps in real time.',
     techStack: ['React Native', 'Node.js', 'Firebase', 'AR.js'],
-    tags: ['Web', 'Mobile'],
+    tags: ['Web', 'Mobile','AI'],
     achievement: 'Top 10 Finalist',
-    github: 'https://github.com/hanuman07/robotrix-campus-nav',
-    demo: null,
+    github: 'https://github.com/hanumanraj07/FuelGuard',
+    demo: 'https://fuel-guard-dev.vercel.app/',
     highlights: ['Top 10 among 200+ teams', 'Innovative AR integration']
   },
   {
@@ -111,4 +111,4 @@ export const hackathonStats = {
   participation: 3
 };
 
-export const filterTags = ['All', 'AI', 'Web', 'Blockchain', 'Mobile', 'Data', 'Healthcare', 'DeFi'];
+export const filterTags = ['All','AI', 'Web', 'Mobile'];
