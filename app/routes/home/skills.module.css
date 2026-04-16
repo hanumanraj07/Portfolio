@@ -18,16 +18,23 @@
     text-align: left;
 }
 
+.categories {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+}
+
 .skillCategory {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    margin-bottom: var(--space4xl);
 }
 
-.skillCategory:last-child {
-    margin-bottom: 0;
+.skillCategory + .skillCategory {
+    margin-top: clamp(48px, 7vw, 96px);
+    padding-top: clamp(8px, 1.4vw, 16px);
 }
 
 .categoryHeading {
@@ -82,5 +89,12 @@
 @media (prefers-color-scheme: dark) {
     .skillItem {
         background: var(--surfaceDark);
+    }
+}
+
+@media (max-width: 768px) {
+    .skillCategory + .skillCategory {
+        margin-top: clamp(36px, 10vw, 56px);
+        padding-top: 8px;
     }
 }

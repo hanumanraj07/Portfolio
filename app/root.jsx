@@ -47,11 +47,12 @@ export const links = () => [
   { rel: 'author', href: '/humans.txt', type: 'text/plain' },
 ];
 
-export const loader = async ({ request, context }) => {
+export const loader = async ({ request }) => {
   const { url } = request;
   const { pathname } = new URL(url);
-  const pathnameSliced = pathname.endsWith('/') ? pathname.slice(0, -1) : url;
-  const canonicalUrl = `${config.url}${pathnameSliced}`;
+  const siteUrl = config.url.replace(/\/+$/, '');
+  const normalizedPath = pathname === '/' ? '' : pathname.replace(/\/+$/, '');
+  const canonicalUrl = `${siteUrl}${normalizedPath}`;
 
   const { getSession, commitSession } = createCookieSessionStorage({
     cookie: {
@@ -82,6 +83,49 @@ export default function App() {
   let { canonicalUrl, theme } = useLoaderData();
   const fetcher = useFetcher();
   const { state } = useNavigation();
+  const personUrl = config.url.replace(/\/+$/, '');
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': `${personUrl}#person`,
+        name: config.name,
+        url: personUrl,
+        sameAs: [
+          `https://github.com/${config.github}`,
+          `https://www.linkedin.com/in/${config.linkedin}`,
+          'https://www.youtube.com/@hanumanraj07',
+          'https://x.com/hanumanraj_07',
+          'https://leetcode.com/u/Hanuman_rajpurohit/',
+        ],
+        jobTitle: 'Full-Stack Developer',
+        knowsAbout: ['React', 'JavaScript', 'Node.js', 'MERN Stack', 'Web Development'],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${personUrl}#website`,
+        url: personUrl,
+        name: `${config.name} Portfolio`,
+        inLanguage: 'en',
+        publisher: {
+          '@id': `${personUrl}#person`,
+        },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': `${canonicalUrl}#webpage`,
+        url: canonicalUrl,
+        name: `${config.name} Portfolio`,
+        isPartOf: {
+          '@id': `${personUrl}#website`,
+        },
+        about: {
+          '@id': `${personUrl}#person`,
+        },
+      },
+    ],
+  };
 
   useSecurity();
 
@@ -116,32 +160,18 @@ export default function App() {
         />
         <meta name="author" content="Hanuman Rajpurohit" />
         <meta name="keywords" content="portfolio, web developer, React, JavaScript, design, Hanuman Rajpurohit" />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Hanuman Rajpurohit Portfolio" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@hanumanraj_07" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Hanuman Rajpurohit",
-              "url": "https://hanumanrajpurohit.netlify.app",
-              "sameAs": [
-                "https://github.com/hanumanrajpurohit",
-                "https://twitter.com/hanumanraj_07"
-              ],
-              "jobTitle": "Web Developer",
-              "knowsAbout": ["React", "JavaScript", "Web Development", "Design Systems"]
-            })
+            __html: JSON.stringify(structuredData),
           }}
         />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
         <Meta />
         <Links />
         <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:url" content={canonicalUrl} />
       </head>
       <body data-theme={theme}>
         <ThemeProvider theme={theme} toggleTheme={toggleTheme}>
@@ -175,6 +205,7 @@ export function ErrorBoundary() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="nUf8iu9-jq1JJbxTalVwArd_jaN_tS-A78rX4xx_hxA" />
+        <meta name="robots" content="noindex, nofollow" />
         <meta name="theme-color" content="#111" />
         <meta name="color-scheme" content="dark light" />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />

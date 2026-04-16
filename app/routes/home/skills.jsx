@@ -2,7 +2,7 @@ import { Heading } from '~/components/heading';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { Transition } from '~/components/transition';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import styles from './skills.module.css';
 
 import { Icon } from '~/components/icon';
@@ -46,7 +46,7 @@ const SkillList = ({ visible }) => {
     let totalIndex = 0;
 
     return (
-        <Fragment>
+        <div className={styles.categories}>
             {categories.map((category) => (
                 <div key={category.title} className={styles.skillCategory}>
                     <Heading level={4} className={styles.categoryHeading} data-visible={visible}>
@@ -72,7 +72,7 @@ const SkillList = ({ visible }) => {
                     </div>
                 </div>
             ))}
-        </Fragment>
+        </div>
     );
 };
 

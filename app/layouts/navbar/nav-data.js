@@ -1,5 +1,3 @@
-import config from '~/config.json';
-
 export const navLinks = [
   {
     label: 'Details',
@@ -14,6 +12,10 @@ export const navLinks = [
     pathname: '/projects',
   },
   {
+    label: 'Hackathons',
+    pathname: '/hackathons',
+  },
+  {
     label: 'Certificates',
     pathname: '/certificates',
   },
@@ -24,15 +26,4 @@ export const navLinks = [
   },
 ];
 
-export const socialLinks = [
-  {
-    label: 'LinkedIn',
-    url: `https://www.linkedin.com/in/${config.linkedin}`,
-    icon: 'linkedin',
-  },
-  {
-    label: 'Github',
-    url: `https://github.com/${config.github}`,
-    icon: 'github',
-  },
-];
+export const socialLinks = [];

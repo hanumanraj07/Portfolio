@@ -11,7 +11,7 @@ export const hackathons = [
     description: 'Built an AI-driven platform that Analyze Documents, Media, and Conversations in One Console',
     techStack: ['React', 'Python', 'TensorFlow', 'FastAPI', 'MongoDB'],
     tags: ['AI', 'Web'],
-    achievement: 'Participation',
+    achievement: 'Top 15 among 200+ teams',
     github: 'https://github.com/hanumanraj07/knowledge-twin',
     demo: 'https://knowledgetwin.netlify.app/',
     highlights: ['Automated candidate screening', 'Skill extraction accuracy 95%']
@@ -28,7 +28,7 @@ export const hackathons = [
     description: 'FuelGuard is a full-stack web app that uses AI to detect fuel pump fraud from uploaded videos, generate legal PDF reports, and map fraudulent pumps in real time.',
     techStack: ['React Native', 'Node.js', 'Firebase', 'AR.js'],
     tags: ['Web', 'Mobile','AI'],
-    achievement: 'Top 10 Finalist',
+    achievement: 'Participation',
     github: 'https://github.com/hanumanraj07/FuelGuard',
     demo: 'https://fuel-guard-dev.vercel.app/',
     highlights: ['Top 10 among 200+ teams', 'Innovative AR integration']

@@ -29,7 +29,13 @@ const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
 
-export const Contact = () => {
+export const Contact = ({
+  id = 'contact',
+  sectionRef,
+  hideFooter = false,
+  className,
+  style,
+}) => {
   const errorRef = useRef();
   const email = useFormInput('');
   const message = useFormInput('');
@@ -92,7 +98,12 @@ export const Contact = () => {
   };
 
   return (
-    <Section className={styles.contact}>
+    <Section
+      className={`${styles.contact}${className ? ` ${className}` : ''}`}
+      id={id}
+      ref={sectionRef}
+      style={style}
+    >
       <Transition unmount in={!success} timeout={1600}>
         {({ status, nodeRef }) => (
           <form
@@ -220,7 +231,7 @@ export const Contact = () => {
           </div>
         )}
       </Transition>
-      <Footer className={styles.footer} />
+      {!hideFooter && <Footer className={styles.footer} />}
     </Section>
   );
 };

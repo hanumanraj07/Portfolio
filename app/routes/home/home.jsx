@@ -21,6 +21,7 @@ import { ProjectSummary } from './project-summary';
 import { Skills } from './skills';
 import { Certificates } from './certificates';
 import { Hackathons } from './hackathons';
+import { Contact } from '~/routes/contact/contact';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from '@remix-run/react';
 import config from '~/config.json';
@@ -68,13 +69,16 @@ export const Home = () => {
   const skills = useRef();
   const hackathons = useRef();
   const certificates = useRef();
+  const contact = useRef();
 
   useEffect(() => {
     const sectionPathMap = {
       '/details': 'details',
       '/skills': 'skills',
       '/projects': 'project-1',
+      '/hackathons': 'hackathons',
       '/certificates': 'certificates',
+      '/contact': 'contact',
     };
 
     const targetId = sectionPathMap[location.pathname];
@@ -91,7 +95,7 @@ export const Home = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    const sections = [intro, details, skills, projectOne, projectTwo, projectThree, projectFour, projectFive, hackathons, certificates];
+    const sections = [intro, details, skills, projectOne, projectTwo, projectThree, projectFour, projectFive, hackathons, certificates, contact];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -275,6 +279,11 @@ export const Home = () => {
         sectionRef={certificates}
         visible={visibleSections.includes(certificates.current)}
         id="certificates"
+      />
+      <Contact
+        id="contact"
+        sectionRef={contact}
+        hideFooter
       />
       <Footer />
     </div>

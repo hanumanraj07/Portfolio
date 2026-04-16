@@ -1,13 +1,17 @@
 import config from '~/config.json';
 
-const { name, url, twitter } = config;
-const defaultOgImage = `${url}/social-image.png`;
+const { name, url } = config;
+const siteUrl = url.replace(/\/+$/, '');
+const defaultOgImage = `${siteUrl}/social-image.png`;
+const defaultTwitterHandle = '@hanumanraj_07';
 
 export function baseMeta({
   title,
   description,
   prefix = name,
   ogImage = defaultOgImage,
+  pageUrl = siteUrl,
+  twitterHandle = defaultTwitterHandle,
   keywords,
 }) {
   const titleText = [prefix, title].filter(Boolean).join(' | ');
@@ -23,14 +27,20 @@ export function baseMeta({
     { property: 'og:title', content: titleText },
     { property: 'og:site_name', content: name },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: url },
+    { property: 'og:url', content: pageUrl },
+    { property: 'og:locale', content: 'en_US' },
     { property: 'og:description', content: description },
-    { property: 'twitter:card', content: 'summary_large_image' },
-    { property: 'twitter:description', content: description },
-    { property: 'twitter:title', content: titleText },
-    { property: 'twitter:site', content: url },
-    { property: 'twitter:creator', content: twitter },
-    { property: 'twitter:image', content: ogImage },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: titleText },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: ogImage },
+    { name: 'twitter:image:alt', content: 'Banner for the site' },
+    { name: 'twitter:site', content: twitterHandle },
+    { name: 'twitter:creator', content: twitterHandle },
+    {
+      name: 'robots',
+      content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+    },
   ];
 
   if (keywords) {
