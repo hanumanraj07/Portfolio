@@ -14,7 +14,7 @@ Personal portfolio website for **Hanuman Rajpurohit** — a full-stack developer
 | Styling | Vanilla CSS with CSS Custom Properties |
 | Content | MDX for blog articles |
 | Component Docs | [Storybook](https://storybook.js.org/) |
-| Deployment | Cloudflare Pages |
+| Deployment | Cloudflare Pages, Vercel |
 | Email | [EmailJS](https://www.emailjs.com/) |
 
 ## Features
@@ -48,6 +48,7 @@ npm run start         # Preview production build
 
 # Deployment
 npm run deploy        # Build and deploy to Cloudflare Pages
+npm run deploy:vercel # Deploy to Vercel (requires Vercel CLI)
 
 # Storybook
 npm run dev:storybook   # Start Storybook dev server
@@ -94,6 +95,15 @@ npm run dev
 ```
 
 The site will be available at `http://localhost:5173`
+
+## Deploy To Vercel
+
+1. Import this repository in Vercel.
+2. Keep default Framework preset as `Remix`.
+3. Build command: `npm run build`.
+4. Deploy.
+
+This project includes `vercel.json` so Vercel can pick the correct Remix setup automatically.
 
 ## License
 
