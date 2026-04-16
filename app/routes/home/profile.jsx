@@ -44,7 +44,7 @@ const ProfileText = ({ visible, titleId }) => (
       <Link className={styles.socialLink} href="https://github.com/hanumanraj07" target="_blank" aria-label="GitHub">
         <Icon className={styles.socialIcon} icon="github" />
       </Link>
-      <Link className={styles.socialLink} href="https://www.youtube.com/@hanumansingh07" target="_blank" aria-label="YouTube">
+      <Link className={styles.socialLink} href="https://www.youtube.com/@hanumanraj07" target="_blank" aria-label="YouTube">
         <Icon className={styles.socialIcon} icon="youtube-brand" />
       </Link>
       <Link className={styles.socialLink} href="https://leetcode.com/u/Hanuman_rajpurohit/" target="_blank" aria-label="LeetCode">
