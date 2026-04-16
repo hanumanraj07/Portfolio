@@ -205,7 +205,7 @@ export function ErrorBoundary() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="nUf8iu9-jq1JJbxTalVwArd_jaN_tS-A78rX4xx_hxA" />
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="theme-color" content="#111" />
         <meta name="color-scheme" content="dark light" />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
