@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hanumanrajpurohit.netlify.app/sitemap.xml
+Sitemap: https://hanumanrajpurohit.vercel.app/sitemap.xml
