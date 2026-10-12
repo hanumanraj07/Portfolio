@@ -47,12 +47,40 @@ export const links = () => {
   ];
 };
 
-export const meta = () => {
-  return baseMeta({
-    title: 'Developer + Designer',
-    description: `Design portfolio of ${config.name} — a full-stack developer working on web & mobile apps with a focus on experience design and accessibility.`,
-    keywords: 'portfolio, web developer, full-stack developer, React, JavaScript, design, accessibility, Hanuman Rajpurohit',
-  });
+// The section routes all render the home page, so each needs its own title
+// and description to avoid being flagged as duplicate content
+const sectionMeta = {
+  '/': {
+    title: 'Full-Stack MERN Developer & Designer',
+    description: `Portfolio of ${config.name}, a Computer Science student and full-stack MERN developer from India building web apps with React, Node.js, Express and MongoDB.`,
+  },
+  '/details': {
+    title: 'About Me',
+    description: `About ${config.name} — a Computer Science student and aspiring full-stack developer from India working with React, JavaScript, Node.js and MongoDB.`,
+  },
+  '/skills': {
+    title: 'Skills',
+    description: `Technical skills of ${config.name}: React, JavaScript, HTML5, CSS3, Node.js, Express.js, MongoDB, Redis, C, C++, Git, Figma and more.`,
+  },
+  '/projects': {
+    title: 'Projects',
+    description: `Projects by ${config.name}, including FuelGuard (AI fuel fraud detection), Knowledge Twin (RAG AI chatbot), a Students Profile Aggregator, and Bugatti and Epic Games clones.`,
+  },
+  '/hackathons': {
+    title: 'Hackathons',
+    description: `Hackathons ${config.name} has competed in, including Dev Heat at IIIT Surat and Robotrix at NITK Surathkal, with the projects built at each.`,
+  },
+  '/certificates': {
+    title: 'Certificates',
+    description: `Certifications earned by ${config.name} including Solutions Architecture, Ethical AI, GitHub Copilot, JavaScript, HTML, CSS, C and problem solving.`,
+  },
+};
+
+export const meta = ({ location }) => {
+  const pathname = location?.pathname?.replace(/\/+$/, '') || '/';
+  const { title, description } = sectionMeta[pathname] || sectionMeta['/'];
+
+  return baseMeta({ title, description });
 };
 
 export const Home = () => {
@@ -161,7 +189,7 @@ export const Home = () => {
         videoLink="https://youtu.be/__XCbRVxfyI?si=Tq2HNrMkrf9NHijL"
         model={{
           type: 'laptop',
-          alt: 'Smart Sparrow lesson builder',
+          alt: 'Bugatti luxury automotive website clone shown on a laptop',
           textures: [
             {
               srcSet: `${bugattiTexture} 1280w, ${bugattiTextureLarge} 2560w`,
@@ -184,7 +212,7 @@ export const Home = () => {
         videoLink="https://www.youtube.com/watch?v=Bae7hhBmTBI"
         model={{
           type: 'phone',
-          alt: 'App login screen',
+          alt: 'Epic Games Store mobile app clone screens',
           textures: [
             {
               srcSet: `${epicTexture1} 375w, ${epicTexture1} 750w`,
@@ -211,7 +239,7 @@ export const Home = () => {
         videoLink="https://www.youtube.com/@hanumanraj07"
         model={{
           type: 'laptop',
-          alt: 'FuelGuard Project',
+          alt: 'FuelGuard AI fuel fraud detection dashboard',
           textures: [
             {
               srcSet: `${fuelGaurdTexture} 800w, ${fuelGaurdTexture} 1920w`,
@@ -234,7 +262,7 @@ export const Home = () => {
         videoLink="https://www.youtube.com/@hanumanraj07"
         model={{
           type: 'phone',
-          alt: 'Project 4 mockup',
+          alt: 'Knowledge Twin AI chatbot mobile interface',
           textures: [
             {
               srcSet: `${mobileKnowleadgeTexture2} 375w, ${mobileKnowleadgeTexture2} 750w`,
@@ -260,7 +288,7 @@ export const Home = () => {
         videoLink="https://youtu.be/zGbbXOJ6Xpw?si=U0AwU9FtCwziTvvD"
         model={{
           type: 'laptop',
-          alt: 'Walmart clone interface',
+          alt: 'Students Profile Aggregator dashboard',
           textures: [
             {
               srcSet: `${studentProfileTexture} 800w, ${studentProfileTexture} 1920w`,
