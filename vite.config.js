@@ -1,5 +1,6 @@
 import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
+import { netlifyPlugin } from "@netlify/remix-adapter/plugin";
 import jsconfigPaths from "vite-jsconfig-paths";
 import mdx from "@mdx-js/rollup";
 import remarkFrontmatter from "remark-frontmatter";
@@ -35,6 +36,7 @@ export default defineConfig({
         });
       },
     }),
+    netlifyPlugin(),
     jsconfigPaths(),
   ],
 });
