@@ -20,6 +20,7 @@ import { Navbar } from '~/layouts/navbar';
 import { Progress } from '~/components/progress';
 import { useSecurity } from '~/hooks';
 import config from '~/config.json';
+import { getCanonicalUrl } from '~/utils/meta';
 import styles from './root.module.css';
 import './reset.module.css';
 import './global.module.css';
@@ -50,9 +51,7 @@ export const links = () => [
 export const loader = async ({ request }) => {
   const { url } = request;
   const { pathname } = new URL(url);
-  const siteUrl = config.url.replace(/\/+$/, '');
-  const normalizedPath = pathname === '/' ? '' : pathname.replace(/\/+$/, '');
-  const canonicalUrl = `${siteUrl}${normalizedPath}`;
+  const canonicalUrl = getCanonicalUrl(pathname);
 
   const { getSession, commitSession } = createCookieSessionStorage({
     cookie: {
@@ -99,8 +98,24 @@ export default function App() {
           'https://x.com/hanumanraj_07',
           'https://leetcode.com/u/Hanuman_rajpurohit/',
         ],
+        givenName: 'Hanuman',
+        familyName: 'Rajpurohit',
+        alternateName: 'Hanuman Singh Rajpurohit',
+        image: `${personUrl}/social-image.png`,
+        description:
+          'Computer Science student and full-stack MERN developer from India building web applications with React, Node.js, Express and MongoDB.',
         jobTitle: 'Full-Stack Developer',
-        knowsAbout: ['React', 'JavaScript', 'Node.js', 'MERN Stack', 'Web Development'],
+        nationality: { '@type': 'Country', name: 'India' },
+        knowsAbout: [
+          'React',
+          'JavaScript',
+          'Node.js',
+          'Express.js',
+          'MongoDB',
+          'MERN Stack',
+          'Web Development',
+          'Data Structures and Algorithms',
+        ],
       },
       {
         '@type': 'WebSite',
@@ -158,9 +173,6 @@ export default function App() {
           name="color-scheme"
           content={theme === 'light' ? 'light dark' : 'dark light'}
         />
-        <meta name="author" content="Hanuman Rajpurohit" />
-        <meta name="keywords" content="portfolio, web developer, React, JavaScript, design, Hanuman Rajpurohit" />
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

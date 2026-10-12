@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /api/
 
 Sitemap: https://hanumanrajpurohit.vercel.app/sitemap.xml
