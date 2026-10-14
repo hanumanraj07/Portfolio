@@ -12,7 +12,8 @@ export const hackathons = [
     teamSize: 4,
     projectName: 'Knowledge Twin AI-Chat Bot',
     description: 'Built an AI-driven platform that analyzes documents, media and conversations in one console.',
-    techStack: ['React', 'Python', 'TensorFlow', 'FastAPI', 'MongoDB'],
+    // Matches the knowledge-twin repository
+    techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'Gemini API'],
     tags: ['AI', 'Web'],
     achievement: 'Top 15 among 200+ teams',
     github: 'https://github.com/hanumanraj07/knowledge-twin',
@@ -37,7 +38,8 @@ export const hackathons = [
     teamSize: 3,
     projectName: 'FuelGuard - AI-Powered Fuel Fraud Detection',
     description: 'FuelGuard is a full-stack web app that uses AI to detect fuel pump fraud from uploaded videos, generate legal PDF reports, and map fraudulent pumps in real time.',
-    techStack: ['React Native', 'Node.js', 'Firebase', 'AR.js'],
+    // Matches the FuelGuard repository
+    techStack: ['React', 'TypeScript', 'Node.js', 'MongoDB', 'FastAPI', 'OpenCV'],
     tags: ['Web', 'Mobile','AI'],
     achievement: 'Participation',
     github: 'https://github.com/hanumanraj07/FuelGuard',
