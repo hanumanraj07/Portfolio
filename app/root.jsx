@@ -11,8 +11,7 @@ import {
 } from '@remix-run/react';
 import { createCookieSessionStorage, json } from '@remix-run/node';
 import { ThemeProvider, themeStyles } from '~/components/theme-provider';
-import GothamBook from '~/assets/fonts/gotham-book.woff2';
-import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
+import SpaceGrotesk from '~/assets/fonts/space-grotesk-variable.woff2';
 import { useEffect } from 'react';
 import { Error } from '~/layouts/error';
 import { VisuallyHidden } from '~/components/visually-hidden';
@@ -28,14 +27,7 @@ import './global.module.css';
 export const links = () => [
   {
     rel: 'preload',
-    href: GothamMedium,
-    as: 'font',
-    type: 'font/woff2',
-    crossOrigin: '',
-  },
-  {
-    rel: 'preload',
-    href: GothamBook,
+    href: SpaceGrotesk,
     as: 'font',
     type: 'font/woff2',
     crossOrigin: '',
@@ -168,7 +160,7 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="nUf8iu9-jq1JJbxTalVwArd_jaN_tS-A78rX4xx_hxA" />
-        <meta name="theme-color" content={theme === 'dark' ? '#111' : '#F2F2F2'} />
+        <meta name="theme-color" content={theme === 'dark' ? '#0a0b16' : '#f4f5f9'} />
         <meta
           name="color-scheme"
           content={theme === 'light' ? 'light dark' : 'dark light'}
@@ -218,7 +210,7 @@ export function ErrorBoundary() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="nUf8iu9-jq1JJbxTalVwArd_jaN_tS-A78rX4xx_hxA" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <meta name="theme-color" content="#111" />
+        <meta name="theme-color" content="#0a0b16" />
         <meta name="color-scheme" content="dark light" />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
         <Meta />

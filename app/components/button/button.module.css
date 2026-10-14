@@ -33,13 +33,7 @@
       position: absolute;
       inset: 0;
       z-index: -1;
-      clip-path: polygon(
-        0 0,
-        100% 0,
-        100% calc(100% - 8px),
-        calc(100% - 8px) 100%,
-        0 100%
-      );
+      border-radius: var(--radiusM) var(--radiusM) var(--radiusM) var(--radiusTight);
     }
 
     @media (--mediaUseMotion) {
@@ -73,7 +67,7 @@
         background-color: color-mix(in lab, var(--primary) 20%, transparent);
         transform: scale3d(0, 1, 1);
         transform-origin: right;
-        clip-path: none;
+        border-radius: var(--radiusS);
       }
 
       &:hover {

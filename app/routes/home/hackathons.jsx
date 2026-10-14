@@ -1,304 +1,321 @@
+import { useRef, useState } from 'react';
+import { Button } from '~/components/button';
+import { Divider } from '~/components/divider';
 import { Heading } from '~/components/heading';
+import { Icon } from '~/components/icon';
+import { Lightbox } from '~/components/lightbox';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { Transition } from '~/components/transition';
-import { Button } from '~/components/button';
-import { Fragment, useState, useRef, useEffect } from 'react';
-import { Link } from '~/components/link';
-import styles from './hackathons.module.css';
-import { hackathons, hackathonStats, filterTags } from './hackathon-data';
+import { usePointerTilt } from '~/hooks';
 import { useInViewport } from '~/hooks/useInViewport';
+import { cssProps } from '~/utils/style';
+import { certificates } from './certificate-data';
+import { FilterChips } from './filter-chips';
+import { filterTags, hackathons } from './hackathon-data';
+import { ShowcaseHeader } from './showcase-header';
+import styles from './hackathons.module.css';
 
-const TechIcon = ({ tech }) => {
-  const iconMap = {
-    'React': '⚛️',
-    'Python': '🐍',
-    'Node.js': '🟢',
-    'MongoDB': '🍃',
-    'Express': '🚀',
-    'JavaScript': '📜',
-    'TypeScript': '📘',
-    'TensorFlow': '🧠',
-    'FastAPI': '⚡',
-    'PostgreSQL': '🐘',
-    'Firebase': '🔥',
-    'Solidity': '💎',
-    'Web3.js': '🌐',
-    'Ethers.js': '🔗',
-    'React Native': '📱',
-    'AR.js': '🥽',
-    'D3.js': '📊',
-    'Flask': '🍶',
-    'Docker': '🐳',
-    'Azure SDK': '☁️',
-    'Cloud Functions': '☁️',
-    'Maps API': '🗺️',
-    'IoT': '📡',
-    'REST APIs': '🔌',
-    'SQL': '🗄️',
-    'OpenAI API': '🤖',
-    'LLaMA': '🦙',
-    'Next.js': '▲',
-    'Tailwind': '🎨'
-  };
-
-  return (
-    <span className={styles.techIcon} title={tech}>
-      {iconMap[tech] || '💻'} {tech}
-    </span>
-  );
+// Only the first two entries are confirmed, finished events
+const featuredHackathons = hackathons.slice(0, 2);
+const techIcons = {
+  React: 'react',
+  'React Native': 'react',
+  Python: 'python',
+  'Node.js': 'nodejs',
+  MongoDB: 'mongodb',
+  'Next.js': 'nextjs',
 };
+
+/**
+ * Turn "Top 15 among 200+ teams" into a rank we can feature
+ */
+function parseRank(achievement = '') {
+  const match = achievement.match(/^top\s+(\d+)\s+(?:among|of|out of)\s+(.+)$/i);
+  return match ? { value: match[1], field: match[2] } : null;
+}
+
+function getCertificate(hackathon) {
+  return certificates.find(cert => cert.id === hackathon.certificateId);
+}
+
+function pad(value) {
+  return String(value).padStart(2, '0');
+}
+
+function urlLabel(url) {
+  try {
+    return new URL(url).host;
+  } catch {
+    return url;
+  }
+}
+
+const bestRank = featuredHackathons
+  .map(hackathon => parseRank(hackathon.achievement))
+  .filter(Boolean)
+  .sort((a, b) => Number(a.value) - Number(b.value))[0];
 
 const AchievementBadge = ({ achievement }) => {
-  const getBadgeConfig = () => {
-    switch (achievement.toLowerCase()) {
-      case 'winner':
-      case '1st place':
-        return { icon: '🏆', class: styles.badgeWinner };
-      case 'top 10 finalist':
-      case 'top 15 finalist':
-        return { icon: '🎯', class: styles.badgeFinalist };
-      case 'special mention':
-        return { icon: '⭐', class: styles.badgeSpecial };
-      default:
-        return { icon: '🎓', class: styles.badgeParticipation };
-    }
-  };
+  const rank = parseRank(achievement);
 
-  const config = getBadgeConfig();
+  if (rank) {
+    return (
+      <span className={styles.badge} data-tone="rank">
+        <svg aria-hidden className={styles.badgeIcon} viewBox="0 0 20 20" width="18" height="18">
+          <path
+            d="M6 2h8v5a4 4 0 0 1-8 0V2Zm-3 1h3v2.5A3 3 0 0 1 3 3Zm14 0h-3v2.5A3 3 0 0 0 17 3ZM8.5 12.5h3V15h2.5v2.5H6V15h2.5v-2.5Z"
+            fill="currentColor"
+          />
+        </svg>
+        {`Top ${rank.value}`}
+        <span className={styles.badgeContext}>{`among ${rank.field}`}</span>
+      </span>
+    );
+  }
 
   return (
-    <span className={`${styles.achievementBadge} ${config.class}`}>
-      {config.icon} {achievement}
+    <span className={styles.badge} data-tone="participant">
+      <span aria-hidden className={styles.badgeDot} />
+      {achievement === 'Participation' ? 'Participant' : achievement}
     </span>
   );
 };
 
-const AnimatedCounter = ({ value, label, delay }) => {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const counterRef = useRef();
-  const visible = useInViewport(counterRef, true);
+const TeamDots = ({ size }) => (
+  <span className={styles.teamDots} aria-hidden>
+    {Array.from({ length: size }, (_, index) => (
+      <span key={index} className={styles.teamDot} data-self={index === 0} />
+    ))}
+  </span>
+);
 
-  useEffect(() => {
-    if (visible && !isVisible) {
-      setIsVisible(true);
-      const duration = 2000;
-      const steps = 60;
-      const increment = value / steps;
-      let current = 0;
-
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= value) {
-          setCount(value);
-          clearInterval(timer);
-        } else {
-          setCount(Math.floor(current));
-        }
-      }, duration / steps);
-
-      return () => clearInterval(timer);
-    }
-  }, [visible, isVisible, value]);
-
-  return (
-    <div ref={counterRef} className={styles.counterItem}>
-      <span className={styles.counterValue}>{count}</span>
-      <span className={styles.counterLabel}>{label}</span>
-    </div>
-  );
-};
-
-const HackathonCard = ({ hackathon, index, onExpand, isExpanded }) => {
-  const cardRef = useRef();
-  const visible = useInViewport(cardRef, true);
+/**
+ * Layered CSS 3D composition: backdrop type, the project build on a screen,
+ * the event pass and (when earned) a rank medal, each at its own depth
+ */
+const ExhibitStage = ({ hackathon, index, visible, alternate }) => {
+  const stageRef = useRef();
+  const rank = parseRank(hackathon.achievement);
+  const { cover } = hackathon;
+  usePointerTilt(stageRef, { maxTilt: 9 });
 
   return (
     <div
-      ref={cardRef}
-      className={`${styles.card} ${isExpanded ? styles.cardExpanded : ''}`}
+      className={styles.stage}
+      ref={stageRef}
       data-visible={visible}
-      style={{ animationDelay: `${index * 100}ms` }}
+      data-alternate={alternate}
+      aria-hidden
     >
-      <div className={styles.cardContent}>
-        <div className={styles.cardHeader}>
-          <div className={styles.cardHeaderLeft}>
-            <Text className={styles.hackathonName} as="h4">
-              {hackathon.name}
-            </Text>
-            <Text className={styles.organizer} size="s">
-              {hackathon.organizer} • {hackathon.platform}
-            </Text>
+      <div className={styles.rig}>
+        <span className={styles.backdrop}>{hackathon.shortName || hackathon.name}</span>
+        <span className={styles.floor} />
+
+        {cover && (
+          <figure className={styles.screen} data-kind={cover.kind}>
+            <span className={styles.screenBar}>
+              <span className={styles.screenDots}>
+                <span />
+                <span />
+                <span />
+              </span>
+              <span className={styles.screenUrl}>{urlLabel(hackathon.demo)}</span>
+            </span>
+            <img
+              className={styles.screenImage}
+              src={cover.src}
+              width={cover.width}
+              height={cover.height}
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        )}
+
+        <div className={styles.passAnchor}>
+          <div className={styles.pass}>
+            <span className={styles.passSlot} />
+            <span className={styles.passLabel}>Hackathon pass · {pad(index + 1)}</span>
+            <span className={styles.passEvent}>{hackathon.name}</span>
+            <span className={styles.passOrg}>{hackathon.organizer}</span>
+            <span className={styles.passGrid}>
+              <span>
+                <small>Date</small>
+                {hackathon.date}
+              </span>
+              <span>
+                <small>Team</small>
+                {pad(hackathon.teamSize)}
+              </span>
+              <span>
+                <small>Via</small>
+                {hackathon.platform}
+              </span>
+            </span>
+            <span className={styles.passCode} />
+            <span className={styles.passSheen} />
           </div>
-          <Text className={styles.date} size="xs">
-            {hackathon.date}
+        </div>
+
+        {rank && (
+          <div className={styles.medalAnchor}>
+            <div className={styles.medal}>
+              <small>Top</small>
+              <strong>{rank.value}</strong>
+              <small>{rank.field}</small>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const Exhibit = ({ hackathon, index, alternate, onViewCertificate }) => {
+  const exhibitRef = useRef();
+  const visible = useInViewport(exhibitRef, true, { rootMargin: '0px 0px -15% 0px' });
+  const titleId = `hackathon-${hackathon.id}-title`;
+  const certificate = getCertificate(hackathon);
+
+  return (
+    <article
+      className={styles.exhibit}
+      ref={exhibitRef}
+      data-visible={visible}
+      data-alternate={alternate}
+      aria-labelledby={titleId}
+    >
+      <ExhibitStage
+        hackathon={hackathon}
+        index={index}
+        visible={visible}
+        alternate={alternate}
+      />
+
+      <div className={styles.info}>
+        <div className={styles.indexRow}>
+          <Divider
+            notchWidth="64px"
+            notchHeight="8px"
+            collapsed={!visible}
+            collapseDelay={600}
+          />
+          <span className={styles.indexNumber}>{pad(index + 1)}</span>
+        </div>
+
+        <span className={styles.meta} style={cssProps({ delay: '120ms' })}>
+          {hackathon.date} · {hackathon.organizer}
+        </span>
+        <Heading
+          className={styles.name}
+          level={3}
+          as="h3"
+          id={titleId}
+          style={cssProps({ delay: '180ms' })}
+        >
+          {hackathon.name}
+        </Heading>
+        <div className={styles.reveal} style={cssProps({ delay: '240ms' })}>
+          <AchievementBadge achievement={hackathon.achievement} />
+        </div>
+
+        <div className={styles.build} style={cssProps({ delay: '300ms' })}>
+          <span className={styles.buildLabel}>What we built</span>
+          <Heading className={styles.projectName} level={5} as="h4">
+            {hackathon.projectName}
+          </Heading>
+          <Text className={styles.description} as="p">
+            {hackathon.description}
           </Text>
         </div>
 
-        <Text className={styles.projectName} as="h5">
-          {hackathon.projectName}
-        </Text>
+        <dl className={styles.facts} style={cssProps({ delay: '360ms' })}>
+          <div className={styles.fact}>
+            <dt>Team</dt>
+            <dd>
+              <TeamDots size={hackathon.teamSize} />
+              {hackathon.teamSize} {hackathon.teamSize === 1 ? 'member' : 'members'}
+            </dd>
+          </div>
+          <div className={styles.fact}>
+            <dt>Platform</dt>
+            <dd>{hackathon.platform}</dd>
+          </div>
+          <div className={styles.fact}>
+            <dt>Focus</dt>
+            <dd>{hackathon.tags.join(' · ')}</dd>
+          </div>
+        </dl>
 
-        <Text className={styles.description} size="s">
-          {hackathon.description}
-        </Text>
-
-        <div className={styles.tags}>
-          {hackathon.tags.map(tag => (
-            <span key={tag} className={styles.tag}>{tag}</span>
+        <ul className={styles.stack} aria-label="Tech stack" style={cssProps({ delay: '420ms' })}>
+          {hackathon.techStack.map(tech => (
+            <li key={tech} className={styles.tech}>
+              {techIcons[tech] && <Icon className={styles.techIcon} icon={techIcons[tech]} />}
+              {tech}
+            </li>
           ))}
-        </div>
+        </ul>
 
-        <div className={styles.techStack}>
-          {hackathon.techStack.slice(0, 4).map(tech => (
-            <TechIcon key={tech} tech={tech} />
-          ))}
-          {hackathon.techStack.length > 4 && (
-            <span className={styles.techMore}>+{hackathon.techStack.length - 4}</span>
+        <div className={styles.actions} style={cssProps({ delay: '480ms' })}>
+          {hackathon.demo && (
+            <Button
+              href={hackathon.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              iconEnd="arrow-right"
+              iconHoverShift
+            >
+              Live demo
+            </Button>
+          )}
+          {hackathon.github && (
+            <Button
+              secondary
+              href={hackathon.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              icon="github"
+            >
+              Source
+            </Button>
+          )}
+          {certificate && (
+            <Button
+              secondary
+              type="button"
+              icon="check"
+              onClick={() => onViewCertificate(certificate)}
+            >
+              Certificate
+            </Button>
           )}
         </div>
-
-        <div className={styles.cardFooter}>
-          <AchievementBadge achievement={hackathon.achievement} />
-          <div className={styles.links}>
-            {hackathon.github && (
-              <a
-                href={hackathon.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.link}
-                onClick={(e) => e.stopPropagation()}
-              >
-                GitHub
-              </a>
-            )}
-            {hackathon.demo && (
-              <a
-                href={hackathon.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.link}
-                onClick={(e) => e.stopPropagation()}
-              >
-                Demo
-              </a>
-            )}
-          </div>
-        </div>
       </div>
-    </div>
-  );
-};
-
-const HackathonModal = ({ hackathon, onClose }) => {
-  if (!hackathon) return null;
-
-  return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.modalClose} onClick={onClose}>×</button>
-        
-        <div className={styles.modalBody}>
-          <div className={styles.modalHeader}>
-            <Text className={styles.modalTitle} as="h3">{hackathon.name}</Text>
-            <Text className={styles.modalMeta}>
-              {hackathon.organizer} • {hackathon.platform} • {hackathon.date}
-            </Text>
-          </div>
-
-          <AchievementBadge achievement={hackathon.achievement} />
-
-          <div className={styles.modalSection}>
-            <Text as="h4" size="s">Project</Text>
-            <Text>{hackathon.projectName}</Text>
-          </div>
-
-          <div className={styles.modalSection}>
-            <Text as="h4" size="s">Description</Text>
-            <Text>{hackathon.description}</Text>
-          </div>
-
-          <div className={styles.modalSection}>
-            <Text as="h4" size="s">Technologies</Text>
-            <div className={styles.modalTechStack}>
-              {hackathon.techStack.map(tech => (
-                <TechIcon key={tech} tech={tech} />
-              ))}
-            </div>
-          </div>
-
-          <div className={styles.modalSection}>
-            <Text as="h4" size="s">Highlights</Text>
-            <ul className={styles.modalHighlights}>
-              {hackathon.highlights.map((highlight, i) => (
-                <li key={i}>{highlight}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className={styles.modalSection}>
-            <Text as="h4" size="s">Team</Text>
-            <Text>{hackathon.type} • {hackathon.teamSize} {hackathon.teamSize === 1 ? 'member' : 'members'}</Text>
-          </div>
-
-          <div className={styles.modalLinks}>
-            {hackathon.github && (
-              <a href={hackathon.github} target="_blank" rel="noopener noreferrer" className={styles.modalLink}>
-                View Code
-              </a>
-            )}
-            {hackathon.demo && (
-              <a href={hackathon.demo} target="_blank" rel="noopener noreferrer" className={styles.modalLink}>
-                Live Demo
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const FilterBar = ({ activeFilter, onFilterChange }) => {
-  return (
-    <div className={styles.filterBar}>
-      {filterTags.map(tag => (
-        <button
-          key={tag}
-          className={`${styles.filterButton} ${activeFilter === tag ? styles.filterActive : ''}`}
-          onClick={() => onFilterChange(tag)}
-        >
-          {tag}
-        </button>
-      ))}
-    </div>
+    </article>
   );
 };
 
 export const Hackathons = ({ id, visible, sectionRef, style }) => {
   const [focused, setFocused] = useState(false);
   const [activeFilter, setActiveFilter] = useState('All');
-  const [expandedCard, setExpandedCard] = useState(null);
+  const [certificate, setCertificate] = useState(null);
   const titleId = `${id}-title`;
-  const visibleHackathons = hackathons.slice(0, 2);
 
-  const filteredHackathons = activeFilter === 'All'
-    ? visibleHackathons
-    : visibleHackathons.filter(h => h.tags.includes(activeFilter));
+  // Filtering only earns its place once there are enough events to sift
+  const showFilters = featuredHackathons.length > 3;
+  const filtered =
+    activeFilter === 'All'
+      ? featuredHackathons
+      : featuredHackathons.filter(hackathon => hackathon.tags.includes(activeFilter));
 
-  const handleExpand = (hackathon) => {
-    setExpandedCard(expandedCard?.id === hackathon.id ? null : hackathon);
-  };
-
-  const handleModalClose = () => {
-    setExpandedCard(null);
-  };
-
-  const handleFilterChange = (tag) => {
-    setActiveFilter(tag);
-    setExpandedCard(null);
-  };
+  const demoCount = featuredHackathons.filter(hackathon => hackathon.demo).length;
+  const stats = [
+    { value: pad(featuredHackathons.length), label: 'Hackathons' },
+    ...(bestRank ? [{ value: `Top ${bestRank.value}`, label: `Of ${bestRank.field}` }] : []),
+    { value: pad(demoCount), label: 'Live demos' },
+  ];
 
   return (
     <Section
@@ -313,36 +330,72 @@ export const Hackathons = ({ id, visible, sectionRef, style }) => {
       style={style}
     >
       <Transition in={visible || focused} timeout={0}>
-        {({ visible: visibleState, nodeRef }) => (
-          <div className={styles.content} ref={nodeRef}>
-            <Heading
-              className={styles.title}
-              data-visible={visibleState}
-              level={3}
-              id={titleId}
-            >
-              Hackathons
-            </Heading>
+        {({ visible: isVisible }) => (
+          <div className={styles.content}>
+            <ShowcaseHeader
+              eyebrow="Competitions"
+              title="Hackathons"
+              titleId={titleId}
+              lead="Weekend builds against the clock, taken from idea to a working, deployed prototype with my team."
+              stats={stats}
+              visible={isVisible}
+            />
 
-            <div className={styles.controls} data-visible={visibleState}>
-              <FilterBar activeFilter={activeFilter} onFilterChange={handleFilterChange} />
-            </div>
+            {showFilters && (
+              <FilterChips
+                className={styles.filters}
+                label="Filter hackathons"
+                value={activeFilter}
+                onChange={setActiveFilter}
+                options={filterTags.map(tag => ({ id: tag, label: tag }))}
+              />
+            )}
 
-            <div className={styles.cardsContainer}>
-              {filteredHackathons.map((hackathon, index) => (
-                <HackathonCard
+            <div className={styles.exhibits}>
+              {filtered.map((hackathon, index) => (
+                <Exhibit
                   key={hackathon.id}
                   hackathon={hackathon}
                   index={index}
-                  onExpand={handleExpand}
-                  isExpanded={expandedCard?.id === hackathon.id}
+                  alternate={index % 2 === 1}
+                  onViewCertificate={setCertificate}
                 />
               ))}
             </div>
 
-            {expandedCard && (
-              <HackathonModal hackathon={expandedCard} onClose={handleModalClose} />
-            )}
+            <Lightbox
+              label="Hackathon certificate"
+              items={
+                certificate
+                  ? [
+                      {
+                        id: certificate.id,
+                        src: certificate.image,
+                        alt: `${certificate.title} certificate issued to Hanuman Singh`,
+                        eyebrow: certificate.credential,
+                        title: certificate.title,
+                        subtitle: [certificate.issuer, certificate.partner]
+                          .filter(Boolean)
+                          .join(' · '),
+                        meta: [{ label: 'Issued', value: certificate.issued }],
+                        actions: certificate.verifyUrl
+                          ? [
+                              {
+                                label: 'Verify credential',
+                                href: certificate.verifyUrl,
+                                icon: 'check',
+                              },
+                            ]
+                          : [],
+                      },
+                    ]
+                  : []
+              }
+              index={0}
+              open={!!certificate}
+              onClose={() => setCertificate(null)}
+              onIndexChange={() => {}}
+            />
           </div>
         )}
       </Transition>

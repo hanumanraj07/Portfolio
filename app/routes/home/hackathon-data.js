@@ -1,3 +1,6 @@
+import fuelGuardScreenshot from '~/assets/FuelGaurd.png';
+import knowledgeTwinScreenshot from '~/assets/Mobile-knowleadge2.png';
+
 export const hackathons = [
   {
     id: 1,
@@ -8,13 +11,21 @@ export const hackathons = [
     type: 'Team',
     teamSize: 4,
     projectName: 'Knowledge Twin AI-Chat Bot',
-    description: 'Built an AI-driven platform that Analyze Documents, Media, and Conversations in One Console',
+    description: 'Built an AI-driven platform that analyzes documents, media and conversations in one console.',
     techStack: ['React', 'Python', 'TensorFlow', 'FastAPI', 'MongoDB'],
     tags: ['AI', 'Web'],
     achievement: 'Top 15 among 200+ teams',
     github: 'https://github.com/hanumanraj07/knowledge-twin',
     demo: 'https://knowledgetwin.netlify.app/',
-    highlights: ['Automated candidate screening', 'Skill extraction accuracy 95%']
+    highlights: ['Automated candidate screening', 'Skill extraction accuracy 95%'],
+    shortName: 'Dev Heat',
+    cover: {
+      src: knowledgeTwinScreenshot,
+      kind: 'mobile',
+      width: 499,
+      height: 734,
+      alt: 'Knowledge Twin AI chat interface on mobile',
+    },
   },
   {
     id: 2,
@@ -31,7 +42,16 @@ export const hackathons = [
     achievement: 'Participation',
     github: 'https://github.com/hanumanraj07/FuelGuard',
     demo: 'https://fuel-guard-dev.vercel.app/',
-    highlights: ['Top 10 among 200+ teams', 'Innovative AR integration']
+    highlights: ['Top 10 among 200+ teams', 'Innovative AR integration'],
+    shortName: 'Robotrix',
+    certificateId: 'robotrix-2026',
+    cover: {
+      src: fuelGuardScreenshot,
+      kind: 'desktop',
+      width: 1437,
+      height: 764,
+      alt: 'FuelGuard fraud detection dashboard',
+    },
   },
   {
     id: 3,

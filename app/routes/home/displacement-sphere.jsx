@@ -94,14 +94,19 @@ export const DisplacementSphere = props => {
   }, []);
 
   useEffect(() => {
-    const dirLight = new DirectionalLight(0xffffff, theme === 'light' ? 1.8 : 2.0);
-    const ambientLight = new AmbientLight(0xffffff, theme === 'light' ? 2.7 : 0.4);
+    // Brand-tinted lighting: violet key light with a lime rim from below
+    const isLight = theme === 'light';
+    const dirLight = new DirectionalLight(isLight ? 0xe4dbff : 0xd2c2ff, isLight ? 1.8 : 2.1);
+    const rimLight = new DirectionalLight(0xc3f344, isLight ? 0.25 : 0.32);
+    const ambientLight = new AmbientLight(isLight ? 0xf3f0ff : 0x7b62ff, isLight ? 2.6 : 0.45);
 
     dirLight.position.z = 200;
     dirLight.position.x = 100;
     dirLight.position.y = 100;
 
-    lights.current = [dirLight, ambientLight];
+    rimLight.position.set(-160, -120, 60);
+
+    lights.current = [dirLight, rimLight, ambientLight];
     lights.current.forEach(light => scene.current.add(light));
 
     return () => {

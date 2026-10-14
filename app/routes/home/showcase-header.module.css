@@ -1,0 +1,128 @@
+.header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--spaceXL) var(--space3XL);
+  width: 100%;
+  margin-bottom: var(--space4XL);
+
+  @media (--mediaTablet) {
+    grid-template-columns: 100%;
+    margin-bottom: var(--space3XL);
+  }
+}
+
+.intro {
+  max-width: 640px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spaceS);
+  font-family: var(--monoFontStack);
+  font-size: var(--fontSizeBodyXS);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: var(--spaceM);
+}
+
+.eyebrowMark {
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transform-origin: left;
+
+  @media (--mediaUseMotion) {
+    transform: scaleX(0);
+    transition: transform var(--durationL) var(--bezierFastoutSlowin) 200ms;
+
+    .header[data-visible='true'] & {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.eyebrow,
+.title,
+.lead {
+  opacity: 0;
+  transition: opacity var(--durationL) ease, transform var(--durationXL) var(--bezierFastoutSlowin);
+
+  @media (--mediaUseMotion) {
+    transform: translate3d(0, 24px, 0);
+  }
+
+  .header[data-visible='true'] & {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.title {
+  letter-spacing: -0.035em;
+  transition-delay: 80ms;
+}
+
+.lead {
+  margin-top: var(--spaceL);
+  color: var(--textLight);
+  transition-delay: 160ms;
+}
+
+.stats {
+  display: flex;
+  gap: var(--spaceS);
+
+  @media (--mediaMobile) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  }
+}
+
+.stat {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: var(--spaceXS);
+  min-width: 128px;
+  padding: var(--spaceM) var(--spaceL);
+  border: 1px solid var(--border);
+  border-radius: var(--radiusL) var(--radiusL) var(--radiusL) var(--radiusTight);
+  background: color-mix(in lab, var(--surface) 70%, transparent);
+  opacity: 0;
+  transition: opacity var(--durationL) ease var(--delay), transform var(--durationL) var(--bezierFastoutSlowin) var(--delay);
+
+  @media (--mediaUseMotion) {
+    transform: translate3d(0, 16px, 0);
+  }
+
+  .header[data-visible='true'] & {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (--mediaMobile) {
+    min-width: 0;
+    padding: var(--spaceM);
+  }
+}
+
+.statValue {
+  font-size: var(--fontSizeH4);
+  font-weight: var(--fontWeightMedium);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--textTitle);
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  font-family: var(--monoFontStack);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--textLight);
+}

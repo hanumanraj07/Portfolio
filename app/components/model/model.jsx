@@ -1,7 +1,6 @@
 import { animate, useReducedMotion, useSpring } from 'framer-motion';
 import { useInViewport } from '~/hooks';
 import {
-  createRef,
   startTransition,
   useCallback,
   useEffect,
@@ -48,6 +47,36 @@ const MeshType = {
   Logo: 'Logo',
   Screen: 'Screen',
 };
+
+async function applyScreenTexture(renderer, texture, node) {
+  texture.colorSpace = SRGBColorSpace;
+  texture.flipY = false;
+  texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  texture.generateMipmaps = false;
+
+  // Decode the texture to prevent jank on first render
+  await renderer.initTexture(texture);
+
+  node.material.color = new Color(0xffffff);
+  node.material.transparent = true;
+  node.material.map = texture;
+  node.material.needsUpdate = true;
+
+  if (texture.fit === 'cover') {
+    const imageAspect = texture.image.width / texture.image.height;
+    const screenAspect = 9 / 16;
+
+    if (imageAspect > screenAspect) {
+      const scale = screenAspect / imageAspect;
+      texture.repeat.set(scale, 1);
+      texture.offset.set((1 - scale) / 2, 0);
+    } else {
+      const scale = imageAspect / screenAspect;
+      texture.repeat.set(1, scale);
+      texture.offset.set(0, (1 - scale) / 2);
+    }
+  }
+}
 
 const rotationSpringConfig = {
   stiffness: 40,
@@ -368,38 +397,73 @@ const Device = ({
 }) => {
   const [loadDevice, setLoadDevice] = useState();
   const reduceMotion = useReducedMotion();
-  const placeholderScreen = createRef();
+  const placeholderScreen = useRef();
+  const screenNode = useRef();
+  const screenReady = useRef(false);
+  const loadedTextureKey = useRef();
+  const latestTexture = useRef(model.texture);
+  const fadeAnimation = useRef();
+  const fadingTexture = useRef();
+
+  latestTexture.current = model.texture;
+
+  // Swap the screen to a new image texture, crossfading from the current one
+  const swapScreenTexture = useCallback(
+    async texture => {
+      const key = texture?.srcSet;
+      if (!key || key === loadedTextureKey.current) return;
+      loadedTextureKey.current = key;
+
+      const image = await resolveSrcFromSrcSet(texture);
+      const nextTexture = await textureLoader.loadAsync(image);
+
+      // A newer swap was requested while this one was loading
+      if (loadedTextureKey.current !== key || !screenNode.current) {
+        nextTexture.dispose();
+        return;
+      }
+
+      const screen = screenNode.current;
+      const overlay = placeholderScreen.current;
+      const previousTexture = screen.material.map;
+
+      fadeAnimation.current?.stop();
+      if (fadingTexture.current && fadingTexture.current !== previousTexture) {
+        fadingTexture.current.dispose();
+      }
+
+      // Show the outgoing image on the overlay mesh, then fade it away
+      fadingTexture.current = previousTexture;
+      overlay.material.map = previousTexture;
+      overlay.material.opacity = 1;
+      overlay.material.needsUpdate = true;
+
+      await applyScreenTexture(renderer.current, nextTexture, screen);
+
+      fadeAnimation.current = animate(1, 0, {
+        duration: reduceMotion ? 0 : 0.6,
+        ease: [0.4, 0, 0.2, 1],
+        onUpdate: value => {
+          overlay.material.opacity = value;
+          renderFrame();
+        },
+        onComplete: () => {
+          if (fadingTexture.current && fadingTexture.current !== screen.material.map) {
+            fadingTexture.current.dispose();
+          }
+          fadingTexture.current = null;
+        },
+      });
+    },
+    [reduceMotion, renderFrame, renderer]
+  );
 
   useEffect(() => {
-    const applyScreenTexture = async (texture, node) => {
-      texture.colorSpace = SRGBColorSpace;
-      texture.flipY = false;
-      texture.anisotropy = renderer.current.capabilities.getMaxAnisotropy();
-      texture.generateMipmaps = false;
+    if (!screenReady.current) return;
+    swapScreenTexture(model.texture);
+  }, [model.texture, swapScreenTexture]);
 
-      // Decode the texture to prevent jank on first render
-      await renderer.current.initTexture(texture);
-
-      node.material.color = new Color(0xffffff);
-      node.material.transparent = true;
-      node.material.map = texture;
-
-      if (texture.fit === 'cover') {
-        const imageAspect = texture.image.width / texture.image.height;
-        const screenAspect = 9 / 16;
-
-        if (imageAspect > screenAspect) {
-          const scale = screenAspect / imageAspect;
-          texture.repeat.set(scale, 1);
-          texture.offset.set((1 - scale) / 2, 0);
-        } else {
-          const scale = imageAspect / screenAspect;
-          texture.repeat.set(1, scale);
-          texture.offset.set(0, (1 - scale) / 2);
-        }
-      }
-    };
-
+  useEffect(() => {
     // Generate promises to await when ready
     const load = async () => {
       const { texture, position, url } = model;
@@ -423,6 +487,8 @@ const Device = ({
         }
 
         if (node.name === MeshType.Screen) {
+          screenNode.current = node;
+
           // Create a copy of the screen mesh so we can fade it out
           // over the full resolution screen texture
           placeholderScreen.current = node.clone();
@@ -431,7 +497,7 @@ const Device = ({
           placeholderScreen.current.material.opacity = 1;
           placeholderScreen.current.position.z += 0.001;
 
-          applyScreenTexture(placeholder, placeholderScreen.current);
+          applyScreenTexture(renderer.current, placeholder, placeholderScreen.current);
 
           loadFullResTexture = async () => {
             const isVideo = texture.srcSet.includes('.mp4');
@@ -478,12 +544,21 @@ const Device = ({
               const image = await resolveSrcFromSrcSet(texture);
               const fullSize = await textureLoader.loadAsync(image);
               if (texture.fit) fullSize.fit = texture.fit;
-              await applyScreenTexture(fullSize, node);
+              await applyScreenTexture(renderer.current, fullSize, node);
+
+              loadedTextureKey.current = texture.srcSet;
+              screenReady.current = true;
 
               animate(1, 0, {
                 onUpdate: value => {
                   placeholderScreen.current.material.opacity = value;
                   renderFrame();
+                },
+                onComplete: () => {
+                  // Catch up if the texture changed while the device was loading
+                  if (latestTexture.current?.srcSet !== texture.srcSet) {
+                    swapScreenTexture(latestTexture.current);
+                  }
                 },
               });
             }
