@@ -1,5 +1,6 @@
 import { Text } from '~/components/text';
 import { useReducedMotion } from 'framer-motion';
+import { useHydrated } from '~/hooks/useHydrated';
 import { classes, cssProps } from '~/utils/style';
 import { forwardRef } from 'react';
 import styles from './loader.module.css';
@@ -10,8 +11,10 @@ export const Loader = forwardRef(
     ref
   ) => {
     const reduceMotion = useReducedMotion();
+    const isHydrated = useHydrated();
 
-    if (reduceMotion) {
+    // The server can't know the motion preference, so match its markup until hydrated
+    if (reduceMotion && isHydrated) {
       return (
         <Text className={classes(styles.text, className)} weight="medium" {...rest}>
           {text}

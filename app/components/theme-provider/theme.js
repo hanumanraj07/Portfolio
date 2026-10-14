@@ -5,6 +5,7 @@ const baseTokens = {
   black: 'oklch(0% 0 0)',
   white: 'oklch(100% 0 0)',
   bezierFastoutSlowin: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+  bezierSpring: 'cubic-bezier(0.22, 1.2, 0.36, 1)',
   durationXS: '200ms',
   durationS: '300ms',
   durationM: '400ms',
@@ -12,9 +13,9 @@ const baseTokens = {
   durationXL: '800ms',
   systemFontStack:
     'system-ui, -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI, Ubuntu, Helvetica Neue, sans-serif',
-  fontStack: `Gotham, var(--systemFontStack)`,
+  fontStack: `Space Grotesk, var(--systemFontStack)`,
   monoFontStack:
-    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace',
+    'JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace',
   japaneseFontStack:
     'IPA Gothic, ヒラギノ角ゴ Pro W3, Hiragino Kaku Gothic Pro, Hiragino Sans, Osaka, メイリオ, Meiryo, Segoe UI, sans-serif',
   fontWeightRegular: 400,
@@ -47,6 +48,11 @@ const baseTokens = {
   space3XL: '64px',
   space4XL: '96px',
   space5XL: '128px',
+  radiusTight: '3px',
+  radiusS: '8px',
+  radiusM: '12px',
+  radiusL: '20px',
+  radiusXL: '28px',
   zIndex0: 0,
   zIndex1: 4,
   zIndex2: 8,
@@ -107,28 +113,39 @@ const tokensMobileSmall = {
 };
 
 // Tokens that change based on theme
+// Palette: ink-indigo surfaces with an acid-lime primary and electric-violet secondary
 const dark = {
-  background: 'oklch(17.76% 0 0)',
-  backgroundLight: 'oklch(21.78% 0 0)',
-  primary: 'oklch(84.42% 0.19 202.24)',
-  accent: 'oklch(84.42% 0.19 202.24)',
+  background: 'oklch(15.5% 0.022 276)',
+  backgroundLight: 'oklch(19.5% 0.028 277)',
+  surface: 'oklch(20.5% 0.03 278)',
+  surfaceRaised: 'oklch(24.5% 0.036 279)',
+  border: 'color-mix(in lab, var(--text) 12%, transparent)',
+  primary: 'oklch(90% 0.2 124)',
+  secondary: 'oklch(68% 0.21 293)',
+  accent: 'oklch(68% 0.21 293)',
+  glow: 'color-mix(in lab, var(--primary) 32%, transparent)',
   error: 'oklch(65.91% 0.249 13.76)',
-  text: 'var(--white)',
+  text: 'oklch(97% 0.008 276)',
   textTitle: 'var(--text)',
   textBody: 'color-mix(in lab, var(--text) 80%, transparent)',
   textLight: 'color-mix(in lab, var(--text) 60%, transparent)',
 };
 
 const light = {
-  background: 'oklch(96.12% 0 0)',
+  background: 'oklch(97% 0.006 276)',
   backgroundLight: 'var(--white)',
-  primary: 'var(--black)',
-  accent: 'oklch(84.42% 0.19 202.24)',
+  surface: 'var(--white)',
+  surfaceRaised: 'oklch(99% 0.003 276)',
+  border: 'color-mix(in lab, var(--text) 12%, transparent)',
+  primary: 'oklch(50% 0.25 287)',
+  secondary: 'oklch(64% 0.19 132)',
+  accent: 'oklch(58% 0.24 290)',
+  glow: 'color-mix(in lab, var(--primary) 22%, transparent)',
   error: 'oklch(63.17% 0.259 25.41)',
-  text: 'var(--black)',
-  textTitle: 'color-mix(in lab, var(--text) 90%, transparent)',
+  text: 'oklch(18% 0.03 278)',
+  textTitle: 'color-mix(in lab, var(--text) 92%, transparent)',
   textBody: 'color-mix(in lab, var(--text) 75%, transparent)',
-  textLight: 'color-mix(in lab, var(--text) 55%, transparent)',
+  textLight: 'color-mix(in lab, var(--text) 58%, transparent)',
 };
 
 export const tokens = {

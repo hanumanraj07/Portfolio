@@ -7,3 +7,4 @@ export * from './usePrevious';
 export * from './useScrollToHash';
 export * from './useWindowSize';
 export * from './useSecurity';
+export * from './usePointerTilt';
