@@ -18,10 +18,13 @@ import { AchievementBadge, ExhibitStage, TeamDots } from '~/routes/home/hackatho
 import { ProjectDevice } from '~/routes/home/project-device';
 import {
   getProject,
+  getProjectMedia,
+  getSourceLink,
   getVideoLink,
   projectPath,
   projects,
 } from '~/routes/home/project-data';
+import { ProjectMedia } from '~/routes/home/project-media';
 import { techIcons } from '~/routes/home/tech-icons';
 import styles from './project-page.module.css';
 
@@ -95,8 +98,11 @@ const SectionHeading = ({ eyebrow, title, id }) => (
 const Hero = ({ project, position }) => {
   const isHydrated = useHydrated();
   const video = getVideoLink(project);
+  const source = getSourceLink(project);
+  const { cover, model } = getProjectMedia(project);
   const hackathon = hackathons.find(item => item.id === project.hackathonId);
   const primaryStack = project.stack[0]?.items.slice(0, 3).join(' · ');
+  const visualKind = model ? model.type : project.placeholder?.frame || 'browser';
 
   return (
     <Section as="header" className={styles.hero}>
@@ -137,16 +143,22 @@ const Hero = ({ project, position }) => {
                 Live demo
               </Button>
             )}
-            {project.sourceCodeLink && (
+            {source && (
               <Button
                 secondary
-                href={project.sourceCodeLink}
+                href={source}
                 target="_blank"
                 rel="noopener noreferrer"
                 icon="github"
               >
                 Source code
               </Button>
+            )}
+            {!source && project.sourcePrivate && (
+              <span className={styles.privateNote}>
+                <Icon className={styles.privateIcon} icon="github" />
+                Private repository
+              </span>
             )}
             {video && (
               <Button
@@ -162,14 +174,24 @@ const Hero = ({ project, position }) => {
           </div>
         </div>
 
-        <div className={styles.heroVisual} data-device={project.model.type}>
+        <div className={styles.heroVisual} data-device={visualKind}>
           <div aria-hidden className={styles.heroGlow} />
-          <ProjectDevice
-            className={styles.device}
-            loaderClassName={styles.loader}
-            model={project.model}
-            visible={isHydrated}
-          />
+          {model ? (
+            <ProjectDevice
+              className={styles.device}
+              loaderClassName={styles.loader}
+              model={model}
+              visible={isHydrated}
+            />
+          ) : (
+            <ProjectMedia
+              className={styles.heroMedia}
+              project={project}
+              cover={cover}
+              sizes="(max-width: 1040px) 90vw, 50vw"
+              eager
+            />
+          )}
         </div>
       </div>
 
@@ -186,6 +208,18 @@ const Hero = ({ project, position }) => {
                 {hackathon.name}
               </a>
             </dd>
+          </div>
+        )}
+        {!hackathon && project.event && (
+          <div className={styles.quickFact}>
+            <dt>Built at</dt>
+            <dd>{project.event}</dd>
+          </div>
+        )}
+        {project.team && (
+          <div className={styles.quickFact}>
+            <dt>Team</dt>
+            <dd>{project.team}</dd>
           </div>
         )}
         {primaryStack && (
@@ -237,7 +271,79 @@ const Overview = ({ project }) => (
   </RevealSection>
 );
 
-const Architecture = ({ project }) => (
+const ProblemSolution = ({ project }) => (
+  <RevealSection labelledBy="problem-title">
+    {() => (
+      <>
+        <SectionHeading eyebrow="Overview" title="Problem and solution" id="problem-title" />
+        <div className={styles.problemGrid}>
+          <div className={classes(styles.problemCard, styles.reveal)}>
+            <h3 className={styles.problemLabel}>The problem</h3>
+            <Text as="p" size="l">
+              {project.problem}
+            </Text>
+          </div>
+          <div
+            className={classes(styles.problemCard, styles.reveal)}
+            data-tone="solution"
+            style={cssProps({ delay: '120ms' })}
+          >
+            <h3 className={styles.problemLabel}>The solution</h3>
+            <Text as="p" size="l">
+              {project.solution}
+            </Text>
+          </div>
+        </div>
+      </>
+    )}
+  </RevealSection>
+);
+
+const Highlights = ({ project }) => (
+  <RevealSection labelledBy="highlights-title">
+    {() => (
+      <>
+        <SectionHeading
+          eyebrow="Technical highlights"
+          title="Under the hood"
+          id="highlights-title"
+        />
+        <ol className={styles.highlights} data-count={project.technicalHighlights.length}>
+          {project.technicalHighlights.map((highlight, index) => (
+            <li
+              key={highlight.title}
+              className={classes(styles.highlight, styles.reveal)}
+              style={cssProps({ delay: `${index * 90}ms` })}
+            >
+              <span aria-hidden className={styles.highlightIndex}>
+                {pad(index + 1)}
+              </span>
+              <h3 className={styles.highlightTitle}>{highlight.title}</h3>
+              <p className={styles.highlightText}>{highlight.text}</p>
+            </li>
+          ))}
+        </ol>
+      </>
+    )}
+  </RevealSection>
+);
+
+const Contribution = ({ project }) => (
+  <RevealSection labelledBy="contribution-title">
+    {() => (
+      <div className={styles.overview}>
+        <SectionHeading eyebrow={project.team} title="My part" id="contribution-title" />
+        <div className={styles.overviewText}>
+          <Text className={styles.reveal} as="p" size="l">
+            {project.contribution}
+          </Text>
+        </div>
+      </div>
+    )}
+  </RevealSection>
+);
+
+const Architecture = ({ project, illustrations = [] }) => (
   <RevealSection labelledBy="architecture-title">
     {() => (
       <>
@@ -255,6 +361,19 @@ const Architecture = ({ project }) => (
             </li>
           ))}
         </ol>
+        {illustrations.map(item => (
+          <figure key={item.src} className={classes(styles.illustration, styles.reveal)}>
+            <img
+              src={item.src}
+              alt={item.alt}
+              width={item.width}
+              height={item.height}
+              loading="lazy"
+              decoding="async"
+            />
+            {item.caption && <figcaption>{item.caption}</figcaption>}
+          </figure>
+        ))}
       </>
     )}
   </RevealSection>
@@ -318,10 +437,24 @@ const Stack = ({ project }) => (
   </RevealSection>
 );
 
-const Gallery = ({ project }) => {
+/**
+ * Screenshots and recordings in display order. Featured projects keep their
+ * hand-ordered gallery; others are built from their assets.
+ */
+function getGalleryItems(project) {
+  if (project.gallery) return project.gallery;
+
+  const { video, screenshots } = getProjectMedia(project);
+  return [
+    ...(video ? [{ ...video, kind: 'video' }] : []),
+    ...screenshots.map(item => ({ ...item, kind: 'image' })),
+  ];
+}
+
+const Gallery = ({ project, items }) => {
   const reduceMotion = useReducedMotion();
   const [openIndex, setOpenIndex] = useState(null);
-  const images = project.gallery.filter(item => item.kind === 'image');
+  const images = items.filter(item => item.kind === 'image');
   const lightboxItems = images.map(item => ({
     id: item.src,
     src: item.src,
@@ -335,8 +468,8 @@ const Gallery = ({ project }) => {
       {() => (
         <>
           <SectionHeading eyebrow="Screens" title="A closer look" id="gallery-title" />
-          <div className={styles.gallery} data-count={project.gallery.length}>
-            {project.gallery.map((item, index) =>
+          <div className={styles.gallery} data-count={items.length}>
+            {items.map((item, index) =>
               item.kind === 'video' ? (
                 <figure
                   key={item.src}
@@ -526,15 +659,23 @@ export function ProjectPage() {
   const position = projects.indexOf(project);
   const nextProject = projects[(position + 1) % projects.length];
   const hackathon = hackathons.find(item => item.id === project.hackathonId);
+  const galleryItems = getGalleryItems(project);
+  const { illustrations } = getProjectMedia(project);
 
   return (
     <article className={styles.page} key={project.slug}>
       <Hero project={project} position={position} />
-      <Overview project={project} />
-      {project.architecture && <Architecture project={project} />}
+      {project.overview && <Overview project={project} />}
+      {project.problem && <ProblemSolution project={project} />}
+      {project.architecture && (
+        <Architecture project={project} illustrations={illustrations} />
+      )}
       <Features project={project} />
+      {project.technicalHighlights && <Highlights project={project} />}
       <Stack project={project} />
-      <Gallery project={project} />
+      {project.contribution && <Contribution project={project} />}
+      {/* Projects without screenshots yet skip the gallery rather than show empty frames */}
+      {galleryItems.length > 0 && <Gallery project={project} items={galleryItems} />}
       {hackathon && <HackathonDetails hackathon={hackathon} />}
       <NextProject project={nextProject} />
       <Footer />

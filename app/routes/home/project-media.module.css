@@ -1,0 +1,196 @@
+.media {
+  --accent: oklch(76% 0.14 var(--hue));
+  --accentInk: oklch(22% 0.05 var(--hue));
+  --frameRadius: var(--radiusM);
+
+  position: relative;
+  width: 100%;
+
+  :global([data-theme='light']) & {
+    --accent: oklch(56% 0.17 var(--hue));
+    --accentInk: oklch(98% 0.01 var(--hue));
+  }
+}
+
+/* Browser window */
+
+.window {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--frameRadius) var(--frameRadius) var(--frameRadius)
+    var(--radiusTight);
+  background: var(--surface);
+  box-shadow: 0 24px 48px -24px color-mix(in lab, var(--black) 45%, transparent);
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 30px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in lab, var(--surfaceRaised) 85%, transparent);
+}
+
+.dots {
+  display: flex;
+  gap: 5px;
+
+  span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: color-mix(in lab, var(--text) 18%, transparent);
+  }
+}
+
+.address {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: color-mix(in lab, var(--text) 6%, transparent);
+  font-family: var(--monoFontStack);
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: var(--textBody);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.screen {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--backgroundLight);
+
+  .phone & {
+    height: 100%;
+    aspect-ratio: auto;
+    border-radius: 20px;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* Phone, sized to the height of its positioned parent. Absolute positioning
+   gives it a definite height, which a percentage height chain doesn't. */
+
+.media[data-frame='phone'] {
+  position: absolute;
+  inset: var(--phoneInset, 0);
+}
+
+.phone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  max-width: 100%;
+  aspect-ratio: 9 / 19;
+  translate: -50% 0;
+  padding: 6px;
+  border: 1px solid color-mix(in lab, var(--text) 16%, transparent);
+  border-radius: 26px;
+  background: linear-gradient(160deg, var(--surfaceRaised), var(--surface));
+  box-shadow: 0 30px 60px -28px color-mix(in lab, var(--black) 55%, transparent);
+}
+
+.notch {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  z-index: 1;
+  width: 26%;
+  height: 8px;
+  border-radius: 999px;
+  translate: -50% 0;
+  background: color-mix(in lab, var(--text) 14%, transparent);
+}
+
+/* Placeholder art */
+
+.art {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6cqi;
+  padding: 8cqi;
+  text-align: center;
+  background: radial-gradient(
+      closest-side at 50% 42%,
+      color-mix(in oklab, var(--accent) 22%, transparent),
+      transparent
+    ),
+    radial-gradient(
+        color-mix(in lab, var(--text) 13%, transparent) 1px,
+        transparent 1.5px
+      )
+      0 0 / 18px 18px;
+
+  .phone & {
+    gap: 9cqi;
+  }
+}
+
+.monogram {
+  display: grid;
+  place-items: center;
+  width: clamp(44px, 16cqi, 96px);
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in oklab, var(--accent) 60%, transparent);
+  border-radius: 28%;
+  background: linear-gradient(
+    145deg,
+    var(--accent),
+    color-mix(in oklab, var(--accent) 62%, var(--background))
+  );
+  box-shadow: 0 14px 30px -12px color-mix(in oklab, var(--accent) 70%, transparent);
+  font-size: clamp(18px, 6.5cqi, 38px);
+  font-weight: var(--fontWeightBold);
+  letter-spacing: -0.04em;
+  color: var(--accentInk);
+
+  .phone & {
+    width: 34cqi;
+    font-size: 13cqi;
+  }
+}
+
+.artTitle {
+  font-size: clamp(17px, 6cqi, 40px);
+  font-weight: var(--fontWeightMedium);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--textTitle);
+
+  .phone & {
+    font-size: 11cqi;
+  }
+}
+
+.artMeta {
+  margin-top: -3cqi;
+  font-family: var(--monoFontStack);
+  font-size: clamp(10px, 2.2cqi, 13px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+
+  .phone & {
+    font-size: 6cqi;
+  }
+}

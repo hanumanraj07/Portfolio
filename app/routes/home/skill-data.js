@@ -107,7 +107,8 @@ export const skillCount = skillCategories.reduce(
 const usesTech = (project, pattern) =>
   project.stack.some(group => group.items.some(item => pattern.test(item)));
 
-const mernPatterns = [/^React\b/, /^Express\b/, /^Node\.js$/, /^MongoDB$/];
+// React Native apps share the backend but not the browser, so they don't count
+const mernPatterns = [/^React\b(?! Native)/, /^Express\b/, /^Node\.js$/, /^MongoDB$/];
 
 // The stack drawn as layers, from the browser down to the data
 export const coreStack = {

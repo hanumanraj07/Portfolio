@@ -3,7 +3,12 @@ import { useRouteError } from '@remix-run/react';
 import { Error } from '~/layouts/error';
 import config from '~/config.json';
 import { baseMeta, getCanonicalUrl, siteUrl } from '~/utils/meta';
-import { getProject, projectPath } from '~/routes/home/project-data';
+import {
+  getProject,
+  getProjectMedia,
+  getSourceLink,
+  projectPath,
+} from '~/routes/home/project-data';
 
 export async function loader({ params }) {
   const project = getProject(params.slug);
@@ -22,8 +27,10 @@ export function meta({ data }) {
     return [{ title: '404 | Page not found' }, { name: 'robots', content: 'noindex, follow' }];
   }
 
-  const cover = project.gallery.find(item => item.kind === 'image') || project.gallery[0];
-  const ogImage = `${siteUrl}${cover.kind === 'video' ? cover.poster : cover.src}`;
+  // Without a cover yet, the page falls back to the site's default share image
+  const { cover } = getProjectMedia(project);
+  const ogImage = cover ? `${siteUrl}${cover.src}` : undefined;
+  const source = getSourceLink(project);
   const pageUrl = getCanonicalUrl(projectPath(project));
   const technologies = project.stack.flatMap(group => group.items);
 
@@ -32,7 +39,7 @@ export function meta({ data }) {
       title: project.shortTitle,
       description: project.description,
       ogImage,
-      ogImageAlt: cover.alt,
+      ogImageAlt: cover?.alt,
       keywords: [project.shortTitle, project.type, ...technologies, config.name].join(', '),
     }),
     {
@@ -44,8 +51,8 @@ export function meta({ data }) {
             name: project.title,
             description: project.description,
             url: pageUrl,
-            codeRepository: project.sourceCodeLink,
-            image: ogImage,
+            ...(source && { codeRepository: source }),
+            ...(ogImage && { image: ogImage }),
             keywords: technologies.join(', '),
             author: { '@id': `${siteUrl}#person` },
             ...(project.liveLink && { targetProduct: { '@type': 'WebApplication', url: project.liveLink } }),

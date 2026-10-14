@@ -1,0 +1,392 @@
+/* Below this width cards stack their media above the text, one per row */
+@custom-media --mediaCardStack (max-width: 860px);
+
+.intro {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space5XL);
+
+  @media (--mediaTablet) {
+    padding-top: var(--space4XL);
+  }
+
+  @media (--mediaMobile) {
+    padding-top: var(--space3XL);
+  }
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space4XL);
+  padding-bottom: var(--space4XL);
+
+  @media (--mediaMobile) {
+    padding-top: var(--space3XL);
+    padding-bottom: var(--space3XL);
+  }
+}
+
+.content {
+  width: 100%;
+  max-width: var(--maxWidthL);
+}
+
+/* The featured project below is full height and centred, so it brings its own space */
+.intro .introHeader {
+  margin-bottom: 0;
+}
+
+.more .moreHeader {
+  margin-bottom: var(--spaceXL);
+
+  @media (--mediaTablet) {
+    margin-bottom: var(--spaceL);
+  }
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spaceM) var(--spaceL);
+  margin-bottom: var(--space2XL);
+}
+
+.resultCount {
+  font-family: var(--monoFontStack);
+  font-size: var(--fontSizeBodyXS);
+  letter-spacing: 0.04em;
+  color: var(--textLight);
+}
+
+/* Grid */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--spaceL);
+  padding: 0;
+  list-style: none;
+
+  @media (--mediaTablet) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spaceM);
+  }
+
+  @media (--mediaCardStack) {
+    grid-template-columns: 100%;
+  }
+}
+
+.cell {
+  display: flex;
+  min-width: 0;
+  grid-column: span 6;
+  opacity: 0;
+
+  .content[data-visible='true'] & {
+    animation: card-in var(--durationL) ease var(--delay) both;
+
+    @media (--mediaUseMotion) {
+      animation-name: card-rise;
+      animation-duration: var(--durationXL);
+      animation-timing-function: var(--bezierFastoutSlowin);
+    }
+  }
+
+  &[data-shape='feature'] {
+    grid-column: span 8;
+  }
+
+  &[data-shape='tall'] {
+    grid-column: span 4;
+  }
+
+  &[data-shape='row'] {
+    grid-column: 1 / -1;
+  }
+
+  @media (--mediaTablet) {
+    & {
+      grid-column: span 1;
+    }
+
+    /* The phone reads better beside its text than above it at this width */
+    &[data-shape='feature'],
+    &[data-shape='row'],
+    &[data-shape='tall'] {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (--mediaCardStack) {
+    &,
+    &[data-shape] {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes card-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Card */
+
+.card {
+  --glow: oklch(70% 0.14 var(--hue));
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radiusXL) var(--radiusXL) var(--radiusXL) var(--radiusTight);
+  background: linear-gradient(
+    160deg,
+    color-mix(in lab, var(--surfaceRaised) 92%, transparent),
+    color-mix(in lab, var(--surface) 86%, transparent)
+  );
+  transition: border-color var(--durationS) ease;
+
+  &:hover,
+  &:focus-within {
+    border-color: color-mix(in oklab, var(--glow) 45%, var(--border));
+  }
+
+  :global([data-theme='light']) & {
+    --glow: oklch(60% 0.16 var(--hue));
+  }
+
+  /* Media beside the text */
+  .cell[data-shape='row'] &,
+  .cell[data-shape='tall'] & {
+    @media (min-width: 861px) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    }
+  }
+
+  .cell[data-shape='tall'] & {
+    @media (min-width: 1041px) {
+      display: flex;
+    }
+  }
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  padding: var(--spaceL) var(--spaceL) 0;
+  background: radial-gradient(
+    closest-side at 50% 100%,
+    color-mix(in oklab, var(--glow) 16%, transparent),
+    transparent
+  );
+  cursor: pointer;
+
+  .cell[data-shape='row'] &,
+  .cell[data-shape='tall'] & {
+    @media (min-width: 861px) {
+      order: 2;
+      align-content: center;
+      padding: var(--spaceXL);
+      background: radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--glow) 16%, transparent),
+        transparent
+      );
+    }
+  }
+
+  /* The phone fills the stage, inset by this much */
+  &[data-frame='phone'] {
+    --phoneInset: var(--spaceL);
+
+    height: 400px;
+
+    .cell[data-shape='tall'] & {
+      @media (min-width: 1041px) {
+        flex: 1;
+        order: 0;
+        height: auto;
+        min-height: 400px;
+      }
+    }
+
+    @media (--mediaMobile) {
+      height: 360px;
+    }
+  }
+}
+
+.media {
+  transition: transform var(--durationM) var(--bezierFastoutSlowin);
+
+  @media (--mediaUseMotion) {
+    .card:hover & {
+      transform: translate3d(0, -6px, 0);
+    }
+  }
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: var(--spaceL);
+
+  .cell[data-shape='row'] &,
+  .cell[data-shape='tall'] & {
+    @media (min-width: 861px) {
+      justify-content: center;
+      padding: var(--spaceXL);
+    }
+  }
+
+  .cell[data-shape='tall'] & {
+    @media (min-width: 1041px) {
+      flex: 0 0 auto;
+      padding: var(--spaceL);
+    }
+  }
+
+  @media (--mediaMobile) {
+    padding: var(--spaceL) var(--spaceM) var(--spaceM);
+  }
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spaceS);
+  margin-bottom: var(--spaceM);
+}
+
+.number {
+  font-family: var(--monoFontStack);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+}
+
+.type {
+  font-family: var(--monoFontStack);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--textLight);
+}
+
+.tag {
+  padding: 2px 8px;
+  border: 1px solid color-mix(in oklab, var(--glow) 40%, var(--border));
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: var(--fontWeightMedium);
+  color: var(--textBody);
+}
+
+.title {
+  font-size: var(--fontSizeH4);
+  font-weight: var(--fontWeightMedium);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--textTitle);
+
+  .cell[data-shape='feature'] &,
+  .cell[data-shape='row'] & {
+    font-size: var(--fontSizeH3);
+  }
+}
+
+.tagline {
+  margin-top: var(--spaceS);
+  font-size: var(--fontSizeBodyM);
+  font-weight: var(--fontWeightMedium);
+  color: var(--glow);
+}
+
+.description {
+  margin-top: var(--spaceM);
+  font-size: var(--fontSizeBodyS);
+  line-height: var(--lineHeightBody);
+  color: var(--textBody);
+
+  .cell[data-shape='feature'] & {
+    max-width: 62ch;
+  }
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--spaceL);
+  padding: 0;
+  list-style: none;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radiusS) var(--radiusS) var(--radiusS) var(--radiusTight);
+  background: color-mix(in lab, var(--text) 3%, transparent);
+  font-size: 0.78rem;
+  color: var(--textBody);
+}
+
+.badgeIcon {
+  flex: 0 0 auto;
+  color: var(--textTitle);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spaceS) var(--spaceL);
+  margin-top: auto;
+  padding-top: var(--spaceL);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--spaceM);
+}
+
+.private {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--monoFontStack);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--textLight);
+}

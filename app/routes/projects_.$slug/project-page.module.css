@@ -251,6 +251,29 @@
   }
 }
 
+/* Cover or placeholder art, for projects without a 3D model */
+.heroMedia {
+  position: absolute;
+  inset: 4% 0;
+  display: grid;
+  align-content: center;
+}
+
+.privateNote {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spaceS);
+  font-family: var(--monoFontStack);
+  font-size: var(--fontSizeBodyXS);
+  letter-spacing: 0.04em;
+  color: var(--textLight);
+}
+
+.privateIcon {
+  width: 18px;
+  height: 18px;
+}
+
 .loader {
   opacity: 0;
   transition: opacity 400ms ease 800ms;
@@ -387,6 +410,127 @@
 .flowDetail {
   font-size: var(--fontSizeBodyS);
   color: var(--textLight);
+}
+
+/* Problem and solution */
+
+.problemGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spaceL);
+
+  @media (--mediaTablet) {
+    grid-template-columns: 100%;
+  }
+}
+
+.problemCard {
+  padding: var(--spaceXL);
+  border: 1px solid var(--border);
+  border-radius: var(--radiusXL) var(--radiusXL) var(--radiusXL) var(--radiusTight);
+  color: var(--textBody);
+  background: linear-gradient(
+    160deg,
+    color-mix(in lab, var(--surfaceRaised) 80%, transparent),
+    color-mix(in lab, var(--surface) 60%, transparent)
+  );
+
+  &[data-tone='solution'] {
+    border-color: color-mix(in lab, var(--primary) 40%, var(--border));
+  }
+
+  @media (--mediaMobile) {
+    padding: var(--spaceL);
+  }
+}
+
+.problemLabel {
+  margin-bottom: var(--spaceM);
+  font-family: var(--monoFontStack);
+  font-size: var(--fontSizeBodyXS);
+  font-weight: var(--fontWeightMedium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--textLight);
+
+  .problemCard[data-tone='solution'] & {
+    color: var(--primary);
+  }
+}
+
+/* Technical highlights */
+
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spaceL);
+  padding: 0;
+  list-style: none;
+
+  /* Four reads better as a square than as three and an orphan */
+  &[data-count='4'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (--mediaMobile) {
+    &,
+    &[data-count='4'] {
+      grid-template-columns: 100%;
+    }
+  }
+}
+
+.highlight {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spaceS);
+  padding: var(--spaceL) var(--spaceL) var(--spaceXL);
+  border-top: 2px solid color-mix(in lab, var(--primary) 70%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in lab, var(--surface) 70%, transparent),
+    transparent
+  );
+}
+
+.highlightIndex {
+  font-family: var(--monoFontStack);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+}
+
+.highlightTitle {
+  font-size: var(--fontSizeBodyL);
+  font-weight: var(--fontWeightMedium);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--textTitle);
+}
+
+.highlightText {
+  font-size: var(--fontSizeBodyS);
+  line-height: var(--lineHeightBody);
+  color: var(--textBody);
+}
+
+/* Supporting illustrations below the architecture flow */
+
+.illustration {
+  margin-top: var(--space2XL);
+
+  img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radiusL) var(--radiusL) var(--radiusL) var(--radiusTight);
+  }
+
+  figcaption {
+    margin-top: var(--spaceS);
+    font-size: var(--fontSizeBodyXS);
+    color: var(--textLight);
+  }
 }
 
 /* Features */

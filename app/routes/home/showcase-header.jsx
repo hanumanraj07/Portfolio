@@ -1,13 +1,21 @@
 import { Heading } from '~/components/heading';
 import { Text } from '~/components/text';
-import { cssProps } from '~/utils/style';
+import { classes, cssProps } from '~/utils/style';
 import styles from './showcase-header.module.css';
 
 /**
  * Shared editorial header for the Hackathons and Certificates showcases
  */
-export const ShowcaseHeader = ({ eyebrow, title, titleId, lead, stats = [], visible }) => (
-  <header className={styles.header} data-visible={visible}>
+export const ShowcaseHeader = ({
+  eyebrow,
+  title,
+  titleId,
+  lead,
+  stats = [],
+  visible,
+  className,
+}) => (
+  <header className={classes(styles.header, className)} data-visible={visible}>
     <div className={styles.intro}>
       <span className={styles.eyebrow}>
         <span aria-hidden className={styles.eyebrowMark} />

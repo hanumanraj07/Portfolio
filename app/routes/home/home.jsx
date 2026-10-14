@@ -3,7 +3,8 @@ import { baseMeta } from '~/utils/meta';
 import { Intro } from './intro';
 import { Profile } from './profile';
 import { ProjectSummary } from './project-summary';
-import { projects } from './project-data';
+import { featuredProjects } from './project-data';
+import { MoreProjects, ProjectsIntro } from './more-projects';
 import { Skills } from './skills';
 import { Certificates } from './certificates';
 import { Hackathons } from './hackathons';
@@ -50,7 +51,7 @@ const sectionMeta = {
   },
   '/projects': {
     title: 'Projects',
-    description: `Projects by ${config.name}, including FuelGuard (AI fuel fraud detection), Knowledge Twin (RAG AI chatbot), a Students Profile Aggregator, and Bugatti and Epic Games clones.`,
+    description: `Projects by ${config.name}, including FuelGuard (AI fuel fraud detection), Knowledge Twin (RAG AI chatbot), Chess Insight (real-time chess analytics), Obsidian (LLM governance), Homecoming (React Native safety app), NexHood and Champions Club.`,
   },
   '/hackathons': {
     title: 'Hackathons',
@@ -74,6 +75,8 @@ export const Home = () => {
   const [visibleSections, setVisibleSections] = useState([]);
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
   const intro = useRef();
+  const projectsIntro = useRef();
+  const moreProjects = useRef();
   const projectOne = useRef();
   const projectTwo = useRef();
   const projectThree = useRef();
@@ -90,7 +93,7 @@ export const Home = () => {
     const sectionPathMap = {
       '/details': 'details',
       '/skills': 'skills',
-      '/projects': 'project-1',
+      '/projects': 'projects',
       '/hackathons': 'hackathons',
       '/certificates': 'certificates',
       '/contact': 'contact',
@@ -110,7 +113,7 @@ export const Home = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    const sections = [intro, details, skills, projectOne, projectTwo, projectThree, projectFour, projectFive, hackathons, certificates, contact];
+    const sections = [intro, details, skills, projectsIntro, projectOne, projectTwo, projectThree, projectFour, projectFive, moreProjects, hackathons, certificates, contact];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -165,7 +168,12 @@ export const Home = () => {
         visible={visibleSections.includes(skills.current)}
         id="skills"
       />
-      {projects.map((project, index) => (
+      <ProjectsIntro
+        id="projects"
+        sectionRef={projectsIntro}
+        visible={visibleSections.includes(projectsIntro.current)}
+      />
+      {featuredProjects.map((project, index) => (
         <ProjectSummary
           key={project.slug}
           id={`project-${index + 1}`}
@@ -176,6 +184,11 @@ export const Home = () => {
           project={project}
         />
       ))}
+      <MoreProjects
+        id="more-projects"
+        sectionRef={moreProjects}
+        visible={visibleSections.includes(moreProjects.current)}
+      />
       <Hackathons
         id="hackathons"
         sectionRef={hackathons}
