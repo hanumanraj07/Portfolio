@@ -1,8 +1,11 @@
 // Composites a certificate into a 16:10 "credential viewer" screen so it can
 // be shown on the laptop model without stretching. Browser only.
 
+// Layout coordinates are in a 1600x1000 space, drawn at 80% so there are fewer
+// pixels to paint and encode; that is still sharp at the laptop's screen size
 const SCREEN_WIDTH = 1600;
 const SCREEN_HEIGHT = 1000;
+const OUTPUT_SCALE = 0.8;
 const screenCache = new Map();
 
 const colors = {
@@ -146,9 +149,10 @@ async function composeScreen(cert) {
 
   const image = await loadImage(cert.image);
   const canvas = document.createElement('canvas');
-  canvas.width = SCREEN_WIDTH;
-  canvas.height = SCREEN_HEIGHT;
+  canvas.width = SCREEN_WIDTH * OUTPUT_SCALE;
+  canvas.height = SCREEN_HEIGHT * OUTPUT_SCALE;
   const context = canvas.getContext('2d');
+  context.scale(OUTPUT_SCALE, OUTPUT_SCALE);
 
   drawChrome(context, cert);
 
@@ -226,4 +230,7 @@ export function getCredentialScreen(cert) {
   return screenCache.get(cert.id);
 }
 
-export const credentialScreenSize = { width: SCREEN_WIDTH, height: SCREEN_HEIGHT };
+export const credentialScreenSize = {
+  width: SCREEN_WIDTH * OUTPUT_SCALE,
+  height: SCREEN_HEIGHT * OUTPUT_SCALE,
+};

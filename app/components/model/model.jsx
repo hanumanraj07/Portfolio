@@ -1,12 +1,6 @@
-import { animate, useReducedMotion, useSpring } from 'framer-motion';
+import { animate, frame, useReducedMotion, useSpring } from 'framer-motion';
 import { useInViewport } from '~/hooks';
-import {
-  startTransition,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   AmbientLight,
   Color,
@@ -34,9 +28,10 @@ import { classes, cssProps, numToMs } from '~/utils/style';
 import {
   cleanRenderer,
   cleanScene,
+  disposeTexture,
+  loadImageTexture,
   modelLoader,
   removeLights,
-  textureLoader,
 } from '~/utils/three';
 import { ModelAnimationType } from './device-models';
 import { throttle } from '~/utils/throttle';
@@ -78,6 +73,8 @@ async function applyScreenTexture(renderer, texture, node) {
   }
 }
 
+const viewportOptions = { threshold: 0.2 };
+
 const rotationSpringConfig = {
   stiffness: 40,
   damping: 20,
@@ -114,23 +111,33 @@ export const Model = ({
   const lights = useRef();
   const blurPlane = useRef();
   const fillPlane = useRef();
-  const isInViewport = useInViewport(container, false, { threshold: 0.2 });
+  const isInViewport = useInViewport(container, false, viewportOptions);
   const reduceMotion = useReducedMotion();
+  const fullRenderPending = useRef(false);
+  const disposed = useRef(false);
   const rotationX = useSpring(0, rotationSpringConfig);
   const rotationY = useSpring(0, rotationSpringConfig);
 
   useEffect(() => {
     const { clientWidth, clientHeight } = container.current;
+    disposed.current = false;
 
     renderer.current = new WebGLRenderer({
       canvas: canvas.current,
       alpha: true,
       antialias: false,
-      powerPreference: 'high-performance',
+      // Don't force the discrete GPU on dual-GPU laptops for a few small scenes
+      powerPreference: 'default',
       failIfMajorPerformanceCaveat: true,
     });
 
-    renderer.current.setPixelRatio(2);
+    // 2x keeps edges smooth without antialiasing; never go past it on dense screens
+    renderer.current.setPixelRatio(
+      Math.min(Math.max(window.devicePixelRatio || 1, 1.5), 2)
+    );
+
+    // Checking shader errors forces a synchronous compile; only do it in development
+    renderer.current.debug.checkShaderErrors = import.meta.env.DEV;
     renderer.current.setSize(clientWidth, clientHeight);
     renderer.current.outputColorSpace = SRGBColorSpace;
 
@@ -238,10 +245,14 @@ export const Model = ({
     verticalBlurMaterial.current = new ShaderMaterial(VerticalBlurShader);
     verticalBlurMaterial.current.depthTest = false;
 
-    const unsubscribeX = rotationX.on('change', renderFrame);
-    const unsubscribeY = rotationY.on('change', renderFrame);
+    // Both springs change on the same frame, so batch them into one render
+    const unsubscribeX = rotationX.on('change', requestRender);
+    const unsubscribeY = rotationY.on('change', requestRender);
 
     return () => {
+      // Fades and video frames can still fire after unmount; drawing then would
+      // re-upload textures whose bitmaps are closed below
+      disposed.current = true;
       renderTarget.current.dispose();
       renderTargetBlur.current.dispose();
       removeLights(lights.current);
@@ -278,6 +289,8 @@ export const Model = ({
   // Handle render passes for a single frame
   const renderFrame = useCallback(() => {
     const blurAmount = 5;
+    fullRenderPending.current = false;
+    if (disposed.current) return;
 
     // Remove the background
     const initialBackground = scene.current.background;
@@ -309,6 +322,22 @@ export const Model = ({
 
     renderer.current.render(scene.current, camera.current);
   }, [blurShadow, rotationX, rotationY]);
+
+  // Schedule a full render (with shadow) for the next frame, at most once per frame
+  const requestRender = useCallback(() => {
+    fullRenderPending.current = true;
+    frame.render(renderFrame);
+  }, [renderFrame]);
+
+  // Cheap render that reuses the last shadow, for video frames on the screen
+  const renderScene = useCallback(() => {
+    if (disposed.current || fullRenderPending.current) return;
+
+    modelGroup.current.rotation.x = rotationX.get();
+    modelGroup.current.rotation.y = rotationY.get();
+    renderer.current.setRenderTarget(null);
+    renderer.current.render(scene.current, camera.current);
+  }, [rotationX, rotationY]);
 
   // Handle mouse move animation
   useEffect(() => {
@@ -373,7 +402,10 @@ export const Model = ({
           modelGroup={modelGroup}
           show={show}
           showDelay={showDelay}
+          inViewport={isInViewport}
           renderFrame={renderFrame}
+          requestRender={requestRender}
+          renderScene={renderScene}
           index={index}
           setLoaded={setLoaded}
           onLoad={onLoad}
@@ -389,13 +421,15 @@ const Device = ({
   model,
   modelGroup,
   renderFrame,
+  requestRender,
+  renderScene,
   index,
   showDelay,
   setLoaded,
   onLoad,
   show,
+  inViewport,
 }) => {
-  const [loadDevice, setLoadDevice] = useState();
   const reduceMotion = useReducedMotion();
   const placeholderScreen = useRef();
   const screenNode = useRef();
@@ -403,9 +437,21 @@ const Device = ({
   const loadedTextureKey = useRef();
   const latestTexture = useRef(model.texture);
   const fadeAnimation = useRef();
-  const fadingTexture = useRef();
+  const loading = useRef();
+  const videoPlayback = useRef();
+  const inViewportRef = useRef(inViewport);
 
   latestTexture.current = model.texture;
+  inViewportRef.current = inViewport;
+
+  // The overlay mesh is only needed while an image fades out. Hide it before
+  // freeing its texture: three.js re-uploads a disposed texture that is drawn
+  // again, and a closed ImageBitmap can't be uploaded.
+  const retireOverlay = useCallback(() => {
+    const overlay = placeholderScreen.current;
+    overlay.visible = false;
+    disposeTexture(overlay.material.map);
+  }, []);
 
   // Swap the screen to a new image texture, crossfading from the current one
   const swapScreenTexture = useCallback(
@@ -415,28 +461,32 @@ const Device = ({
       loadedTextureKey.current = key;
 
       const image = await resolveSrcFromSrcSet(texture);
-      const nextTexture = await textureLoader.loadAsync(image);
+      const nextTexture = await loadImageTexture(image);
 
       // A newer swap was requested while this one was loading
       if (loadedTextureKey.current !== key || !screenNode.current) {
-        nextTexture.dispose();
+        disposeTexture(nextTexture);
         return;
       }
 
       const screen = screenNode.current;
       const overlay = placeholderScreen.current;
       const previousTexture = screen.material.map;
+      const replacedOverlayTexture = overlay.material.map;
 
       fadeAnimation.current?.stop();
-      if (fadingTexture.current && fadingTexture.current !== previousTexture) {
-        fadingTexture.current.dispose();
-      }
 
       // Show the outgoing image on the overlay mesh, then fade it away
-      fadingTexture.current = previousTexture;
       overlay.material.map = previousTexture;
       overlay.material.opacity = 1;
       overlay.material.needsUpdate = true;
+      overlay.visible = true;
+
+      // Free what the overlay held before: the placeholder, or an image that
+      // was still fading out when this swap started
+      if (replacedOverlayTexture !== previousTexture) {
+        disposeTexture(replacedOverlayTexture);
+      }
 
       await applyScreenTexture(renderer.current, nextTexture, screen);
 
@@ -445,17 +495,12 @@ const Device = ({
         ease: [0.4, 0, 0.2, 1],
         onUpdate: value => {
           overlay.material.opacity = value;
-          renderFrame();
+          requestRender();
         },
-        onComplete: () => {
-          if (fadingTexture.current && fadingTexture.current !== screen.material.map) {
-            fadingTexture.current.dispose();
-          }
-          fadingTexture.current = null;
-        },
+        onComplete: retireOverlay,
       });
     },
-    [reduceMotion, renderFrame, renderer]
+    [reduceMotion, requestRender, renderer, retireOverlay]
   );
 
   useEffect(() => {
@@ -463,16 +508,24 @@ const Device = ({
     swapScreenTexture(model.texture);
   }, [model.texture, swapScreenTexture]);
 
+  // Only play and draw the screen video while the device is on screen
   useEffect(() => {
-    // Generate promises to await when ready
+    videoPlayback.current?.setActive(inViewport);
+  }, [inViewport]);
+
+  // Start loading as soon as the device mounts, so it is ready by the time it
+  // is shown. Nothing is visible until `show` fades the model in.
+  useEffect(() => {
+    if (loading.current) return;
+
     const load = async () => {
       const { texture, position, url } = model;
       let loadFullResTexture;
       let playAnimation;
 
       const [placeholder, gltf] = await Promise.all([
-        await textureLoader.loadAsync(texture.placeholder),
-        await modelLoader.loadAsync(url),
+        loadImageTexture(texture.placeholder),
+        modelLoader.loadAsync(url),
       ]);
 
       if (texture.fit) {
@@ -481,7 +534,7 @@ const Device = ({
 
       modelGroup.current.add(gltf.scene);
 
-      gltf.scene.traverse(async node => {
+      gltf.scene.traverse(node => {
         if (node.material) {
           node.material.color = new Color(0x1f2025);
         }
@@ -503,6 +556,9 @@ const Device = ({
             const isVideo = texture.srcSet.includes('.mp4');
 
             if (isVideo) {
+              // With reduced motion the still poster frame stays on screen
+              if (reduceMotion) return undefined;
+
               const videoSrc = texture.srcSet.split(' ')[0];
               const video = document.createElement('video');
               video.src = videoSrc;
@@ -510,7 +566,6 @@ const Device = ({
               video.loop = true;
               video.muted = true;
               video.playsInline = true;
-              video.play();
 
               const videoTexture = new VideoTexture(video);
               videoTexture.minFilter = LinearFilter;
@@ -522,46 +577,91 @@ const Device = ({
               node.material.transparent = true;
               node.material.map = videoTexture;
 
-              animate(1, 0, {
-                onUpdate: value => {
-                  placeholderScreen.current.material.opacity = value;
-                  renderFrame();
-                },
-              });
-
-              let isPlaying = true;
-              const tick = () => {
-                if (!isPlaying) return;
-                renderFrame();
-                requestAnimationFrame(tick);
+              // Keep the poster up until the video has a frame to show
+              const fadeIn = () => {
+                animate(1, 0, {
+                  onUpdate: value => {
+                    placeholderScreen.current.material.opacity = value;
+                    requestRender();
+                  },
+                  onComplete: retireOverlay,
+                });
               };
-              tick();
+              video.addEventListener('loadeddata', fadeIn, { once: true });
+
+              // Draw only when the video presents a new frame, rather than
+              // re-rendering the whole scene on every animation frame
+              const hasFrameCallback = 'requestVideoFrameCallback' in video;
+              let frameHandle = null;
+              let active = false;
+
+              const cancelVideoFrame = () => {
+                if (frameHandle === null) return;
+                if (hasFrameCallback) video.cancelVideoFrameCallback(frameHandle);
+                else cancelAnimationFrame(frameHandle);
+                frameHandle = null;
+              };
+
+              const onVideoFrame = () => {
+                frameHandle = null;
+                if (!active) return;
+                renderScene();
+                frameHandle = hasFrameCallback
+                  ? video.requestVideoFrameCallback(onVideoFrame)
+                  : requestAnimationFrame(onVideoFrame);
+              };
+
+              const setActive = next => {
+                if (next === active) return;
+                active = next;
+
+                if (active) {
+                  video.play().catch(() => {});
+                  onVideoFrame();
+                } else {
+                  video.pause();
+                  cancelVideoFrame();
+                }
+              };
+
+              videoPlayback.current = { setActive };
+              setActive(inViewportRef.current);
 
               return () => {
-                isPlaying = false;
+                setActive(false);
+                videoPlayback.current = null;
+                video.removeEventListener('loadeddata', fadeIn);
+                video.removeAttribute('src');
+                video.load();
+                videoTexture.dispose();
               };
-            } else {
-              const image = await resolveSrcFromSrcSet(texture);
-              const fullSize = await textureLoader.loadAsync(image);
-              if (texture.fit) fullSize.fit = texture.fit;
-              await applyScreenTexture(renderer.current, fullSize, node);
-
-              loadedTextureKey.current = texture.srcSet;
-              screenReady.current = true;
-
-              animate(1, 0, {
-                onUpdate: value => {
-                  placeholderScreen.current.material.opacity = value;
-                  renderFrame();
-                },
-                onComplete: () => {
-                  // Catch up if the texture changed while the device was loading
-                  if (latestTexture.current?.srcSet !== texture.srcSet) {
-                    swapScreenTexture(latestTexture.current);
-                  }
-                },
-              });
             }
+
+            const image = await resolveSrcFromSrcSet(texture);
+            const fullSize = await loadImageTexture(image);
+            if (texture.fit) fullSize.fit = texture.fit;
+            await applyScreenTexture(renderer.current, fullSize, node);
+
+            loadedTextureKey.current = texture.srcSet;
+            screenReady.current = true;
+
+            // Kept in fadeAnimation so a swap that starts mid-fade takes over the overlay
+            fadeAnimation.current = animate(1, 0, {
+              onUpdate: value => {
+                placeholderScreen.current.material.opacity = value;
+                requestRender();
+              },
+              onComplete: () => {
+                retireOverlay();
+
+                // Catch up if the texture changed while the device was loading
+                if (latestTexture.current?.srcSet !== texture.srcSet) {
+                  swapScreenTexture(latestTexture.current);
+                }
+              },
+            });
+
+            return undefined;
           };
         }
       });
@@ -583,7 +683,7 @@ const Device = ({
 
           gltf.scene.position.set(...startPosition.toArray());
 
-          animate(startPosition.y, targetPosition.y, {
+          return animate(startPosition.y, targetPosition.y, {
             type: 'spring',
             delay: (300 * index + showDelay) / 1000,
             stiffness: 60,
@@ -593,7 +693,7 @@ const Device = ({
             restDelta: 0.0001,
             onUpdate: value => {
               gltf.scene.position.y = value;
-              renderFrame();
+              requestRender();
             },
           });
         };
@@ -620,7 +720,7 @@ const Device = ({
             restDelta: 0.0001,
             onUpdate: value => {
               frameNode.rotation.x = value;
-              renderFrame();
+              requestRender();
             },
           });
         };
@@ -629,18 +729,21 @@ const Device = ({
       return { loadFullResTexture, playAnimation };
     };
 
-    setLoadDevice({ start: load });
+    loading.current = load();
+    loading.current.catch(() => {});
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!loadDevice || !show) return;
+    if (!show || !loading.current) return;
+    let cancelled = false;
     let animation;
     let videoCleanup;
 
-    const onModelLoad = async () => {
-      const { loadFullResTexture, playAnimation } = await loadDevice.start();
+    const start = async () => {
+      const { loadFullResTexture, playAnimation } = await loading.current;
+      if (cancelled) return;
 
       setLoaded(true);
       onLoad?.();
@@ -651,21 +754,25 @@ const Device = ({
 
       videoCleanup = await loadFullResTexture();
 
+      if (cancelled) {
+        videoCleanup?.();
+        return;
+      }
+
       if (reduceMotion) {
         renderFrame();
       }
     };
 
-    startTransition(() => {
-      onModelLoad();
-    });
+    start().catch(() => {});
 
     return () => {
+      cancelled = true;
       animation?.stop();
       videoCleanup?.();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadDevice, show]);
+  }, [show]);
 };
 
 export default Model;
