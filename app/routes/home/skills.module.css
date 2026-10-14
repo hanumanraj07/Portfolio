@@ -1,100 +1,739 @@
+@custom-media --mediaBoardStack (max-width: 860px);
+
 .skills {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: var(--space2xl) 0 var(--space5xl);
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space4XL);
+  padding-bottom: var(--space5XL);
+
+  @media (--mediaMobile) {
+    padding-top: var(--space3XL);
+    padding-bottom: var(--space4XL);
+  }
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    max-width: var(--maxWidthL);
-    width: 100%;
+  width: 100%;
+  max-width: var(--maxWidthL);
 }
 
-.title {
-    margin-bottom: var(--spaceXL);
-    text-align: left;
-}
+/* Bento board: the core stack on top, the disciplines below */
 
-.categories {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 0;
-}
+.board {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-areas:
+    'core core core core core core core core core core core core'
+    'frontend frontend frontend frontend frontend frontend frontend frontend mobile mobile mobile mobile'
+    'backend backend backend backend backend backend databases databases databases databases databases databases'
+    'languages languages languages languages languages languages languages languages languages languages languages languages'
+    'tools tools tools tools tools tools tools tools tools tools tools tools';
+  gap: var(--spaceM);
 
-.skillCategory {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-}
+  @media (--mediaTablet) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'core core'
+      'frontend frontend'
+      'mobile backend'
+      'databases languages'
+      'tools tools';
+  }
 
-.skillCategory + .skillCategory {
-    margin-top: clamp(48px, 7vw, 96px);
-    padding-top: clamp(8px, 1.4vw, 16px);
-}
+  @media (--mediaBoardStack) {
+    grid-template-columns: 100%;
+    grid-template-areas:
+      'core'
+      'frontend'
+      'mobile'
+      'backend'
+      'databases'
+      'languages'
+      'tools';
+  }
 
-.categoryHeading {
-    margin-bottom: var(--spaceXL);
-    color: var(--primary);
-    font-weight: var(--fontWeightBold);
-    opacity: 0;
-    transform: translateY(var(--spaceM));
-    transition: opacity var(--durationL) var(--bezierFastoutSlowin),
-        transform var(--durationL) var(--bezierFastoutSlowin);
-}
-
-.categoryHeading[data-visible='true'] {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.skillList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: var(--spaceL);
-    width: 100%;
-    max-width: 800px;
-}
-
-.skillItem {
-    display: flex;
-    align-items: center;
+  @media (--mediaMobile) {
     gap: var(--spaceS);
-    background: var(--surfaceLight);
-    padding: var(--spaceM) var(--spaceL);
-    border-radius: var(--spaceS);
-    opacity: 0;
-    transform: translateY(var(--spaceM));
-    transition: opacity var(--durationL) ease var(--delay),
-        transform var(--durationL) var(--bezierFastoutSlowin) var(--delay);
-    min-width: 160px;
-    justify-content: center;
+  }
 }
 
-.skillIcon {
-    color: var(--textTitle);
-    flex-shrink: 0;
-}
+.core,
+.panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radiusXL) var(--radiusXL) var(--radiusXL) var(--radiusTight);
+  background: linear-gradient(
+    160deg,
+    color-mix(in lab, var(--surfaceRaised) 92%, transparent),
+    color-mix(in lab, var(--surface) 86%, transparent)
+  );
+  opacity: 0;
+  /* Hover changes stay instant: animating paint properties repaints the
+     panel every frame while it scrolls under a resting cursor */
+  transition: opacity var(--durationL) ease var(--revealDelay),
+    translate var(--durationXL) var(--bezierFastoutSlowin) var(--revealDelay);
 
-.skillItem[data-visible='true'] {
+  @media (--mediaUseMotion) {
+    translate: 0 32px;
+  }
+
+  &[data-visible='true'] {
     opacity: 1;
-    transform: translateY(0);
+    translate: 0 0;
+  }
+
+  &:hover {
+    border-color: color-mix(in lab, var(--text) 20%, transparent);
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-    .skillItem {
-        background: var(--surfaceDark);
-    }
+.kicker {
+  font-family: var(--monoFontStack);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
 }
 
-@media (max-width: 768px) {
-    .skillCategory + .skillCategory {
-        margin-top: clamp(36px, 10vw, 56px);
-        padding-top: 8px;
+/* Core stack */
+
+.core {
+  --revealDelay: 120ms;
+
+  grid-area: core;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-areas:
+    'intro stage'
+    'projects stage';
+  grid-template-rows: auto 1fr;
+  gap: var(--spaceL) var(--space2XL);
+  padding: var(--space2XL);
+
+  @media (--mediaTablet) {
+    grid-template-columns: 100%;
+    grid-template-areas:
+      'intro'
+      'stage'
+      'projects';
+    grid-template-rows: auto;
+    gap: var(--spaceL);
+    padding: var(--spaceXL);
+  }
+
+  @media (--mediaMobile) {
+    padding: var(--spaceL) var(--spaceM);
+  }
+}
+
+.coreIntro {
+  grid-area: intro;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spaceM);
+}
+
+.coreTitle {
+  font-size: var(--fontSizeH2);
+  font-weight: var(--fontWeightBold);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  color: var(--textTitle);
+}
+
+.coreSummary {
+  max-width: 420px;
+  font-size: var(--fontSizeBodyM);
+  color: var(--textLight);
+
+  @media (--mediaMobile) {
+    font-size: var(--fontSizeBodyS);
+  }
+}
+
+.stage {
+  --slab: 116px;
+  --slabColumn: 220px;
+  --rowHeight: 78px;
+
+  grid-area: stage;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spaceL) 0 var(--spaceXL);
+
+  /* Blueprint dots behind the exploded view */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -14% -6%;
+    z-index: -2;
+    background-image: radial-gradient(
+      color-mix(in lab, var(--text) 16%, transparent) 1px,
+      transparent 1.5px
+    );
+    background-size: 20px 20px;
+    mask-image: radial-gradient(closest-side, #000 40%, transparent);
+  }
+
+  @media (--mediaMobile) {
+    --slab: 88px;
+    --slabColumn: 148px;
+    --rowHeight: 62px;
+
+    padding-bottom: var(--spaceL);
+  }
+}
+
+.stageGlow {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: -1;
+  width: 360px;
+  height: 130px;
+  translate: -50% 0;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in lab, var(--primary) 16%, transparent),
+    transparent
+  );
+}
+
+.layers {
+  width: min(100%, 500px);
+  padding: 0;
+  list-style: none;
+}
+
+.layer {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--slabColumn) minmax(0, 1fr);
+  align-items: center;
+  height: var(--rowHeight);
+}
+
+/* The mount drops each slab into place; the slab itself lifts on hover */
+.slabMount {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--slabColumn) / 2);
+  opacity: 0;
+  transition: opacity var(--durationL) ease var(--revealDelay),
+    translate var(--durationXL) var(--bezierFastoutSlowin) var(--revealDelay);
+
+  @media (--mediaUseMotion) {
+    translate: 0 -56px;
+  }
+
+  .core[data-visible='true'] & {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.slab {
+  --edge: color-mix(in oklab, var(--brand) 40%, var(--background));
+  --edgeDeep: color-mix(in oklab, var(--brand) 20%, var(--background));
+
+  position: absolute;
+  top: calc(var(--slab) / -2);
+  left: calc(var(--slab) / -2);
+  display: grid;
+  place-items: center;
+  width: var(--slab);
+  height: var(--slab);
+  border: 1px solid color-mix(in oklab, var(--brand) 55%, transparent);
+  border-radius: 24px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--brand) 30%, var(--surfaceRaised)),
+    color-mix(in oklab, var(--brand) 8%, var(--surface)) 72%
+  );
+
+  /* Stepped shadows read as the slab's thickness once it is laid flat */
+  box-shadow: inset 0 0 0 1px color-mix(in lab, var(--white) 6%, transparent),
+    -1px 1px 0 var(--edge), -2px 2px 0 var(--edge), -3px 3px 0 var(--edge),
+    -4px 4px 0 var(--edge), -5px 5px 0 var(--edge), -6px 6px 0 var(--edge),
+    -7px 7px 0 var(--edgeDeep), -8px 8px 0 var(--edgeDeep), -9px 9px 0 var(--edgeDeep),
+    -10px 10px 0 var(--edgeDeep), -11px 11px 0 var(--edgeDeep),
+    -12px 12px 0 var(--edgeDeep),
+    -34px 34px 40px color-mix(in lab, var(--black) 38%, transparent);
+  /* rotateX(55deg) rotateZ(-45deg) seen head on, as a flat 2D transform so
+     the slabs don't each need their own compositor layer */
+  transform: scaleY(0.5736) rotate(-45deg);
+  transition: translate var(--durationM) var(--bezierFastoutSlowin),
+    opacity var(--durationM) ease;
+
+  .layer:hover & {
+    translate: 0 -12px;
+    border-color: color-mix(in oklab, var(--brand) 90%, transparent);
+  }
+
+  .layers:has(.layer:hover) .layer:not(:hover) & {
+    opacity: 0.42;
+  }
+}
+
+.slabLogo {
+  width: 46%;
+  height: 46%;
+  fill: currentColor;
+  color: color-mix(in oklab, var(--brand) 85%, var(--text));
+
+  /* Undo the slab's spin so the logo faces the viewer */
+  rotate: 45deg;
+}
+
+.layerText {
+  grid-column: 2;
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding-left: var(--spaceM);
+  opacity: 0;
+  transition: opacity var(--durationL) ease calc(var(--revealDelay) + 220ms),
+    translate var(--durationXL) var(--bezierFastoutSlowin)
+      calc(var(--revealDelay) + 220ms);
+
+  @media (--mediaUseMotion) {
+    translate: 16px 0;
+  }
+
+  .core[data-visible='true'] & {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  /* Leader line from the slab's corner to the label */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: calc(100% - var(--spaceS));
+    width: calc(var(--slabColumn) / 2 - var(--slab) * 0.7071 + var(--spaceS) * 2);
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--brand) 70%, transparent),
+      transparent
+    );
+  }
+}
+
+.layerRole,
+.layerName,
+.layerNote {
+  transition: opacity var(--durationS) ease;
+
+  .layers:has(.layer:hover) .layer:not(:hover) & {
+    opacity: 0.45;
+  }
+}
+
+.layerRole {
+  font-family: var(--monoFontStack);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--textLight);
+}
+
+.layerName {
+  font-size: var(--fontSizeBodyM);
+  font-weight: var(--fontWeightMedium);
+  line-height: 1.2;
+  color: var(--textTitle);
+}
+
+.layerNote {
+  font-size: 0.8rem;
+  line-height: 1.3;
+  color: var(--textLight);
+
+  @media (--mediaMobile) {
+    display: none;
+  }
+}
+
+.coreProjects {
+  grid-area: projects;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spaceS);
+  padding-top: var(--spaceL);
+  border-top: 1px solid var(--border);
+
+  @media (--mediaTablet) {
+    align-self: auto;
+  }
+}
+
+.projectLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spaceS);
+  list-style: none;
+}
+
+.projectLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radiusM) var(--radiusM) var(--radiusM) var(--radiusTight);
+  color: var(--textBody);
+  font-size: var(--fontSizeBodyXS);
+  font-weight: var(--fontWeightMedium);
+  transition: color var(--durationS) ease, border-color var(--durationS) ease,
+    background var(--durationS) ease;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--textTitle);
+    border-color: color-mix(in lab, var(--primary) 60%, transparent);
+    background: color-mix(in lab, var(--primary) 8%, transparent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
+.projectLinkIcon {
+  transition: translate var(--durationS) var(--bezierFastoutSlowin);
+
+  .projectLink:hover & {
+    translate: 3px 0;
+  }
+}
+
+/* Discipline panels */
+
+.panel {
+  --cols: auto-fill;
+  --chipMin: 180px;
+
+  display: flex;
+  flex-direction: column;
+  padding: var(--spaceL);
+
+  &[data-area='frontend'] {
+    grid-area: frontend;
+  }
+
+  &[data-area='mobile'] {
+    --cols: 1;
+    --chipMin: 0px;
+
+    grid-area: mobile;
+    min-height: 236px;
+  }
+
+  &[data-area='backend'] {
+    grid-area: backend;
+  }
+
+  &[data-area='databases'] {
+    grid-area: databases;
+  }
+
+  &[data-area='languages'] {
+    grid-area: languages;
+  }
+
+  &[data-area='tools'] {
+    grid-area: tools;
+  }
+
+  /* Fixed counts on wide screens keep every row of chips full */
+  @media (min-width: 1041px) {
+    &[data-area='frontend'] {
+      --cols: 3;
+      --chipMin: 0px;
     }
+
+    &[data-area='backend'],
+    &[data-area='databases'] {
+      --cols: 2;
+      --chipMin: 0px;
+    }
+
+    &[data-area='languages'] {
+      --cols: 5;
+      --chipMin: 0px;
+    }
+
+    &[data-area='tools'] {
+      --cols: 4;
+      --chipMin: 0px;
+    }
+  }
+
+  @media (--mediaMobile) {
+    padding: var(--spaceM) var(--spaceM) var(--spaceL);
+
+    &[data-area] {
+      --cols: 2;
+      --chipMin: 0px;
+    }
+
+    &[data-area='mobile'] {
+      --cols: 1;
+
+      min-height: 212px;
+    }
+  }
+}
+
+.panelHeader {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spaceS);
+}
+
+.panelIndex {
+  font-family: var(--monoFontStack);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+}
+
+.panelTitle {
+  font-size: var(--fontSizeBodyL);
+  font-weight: var(--fontWeightMedium);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--textTitle);
+}
+
+.panelCount {
+  margin-left: auto;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-family: var(--monoFontStack);
+  font-size: 0.7rem;
+  color: var(--textLight);
+}
+
+.panelSummary {
+  margin-top: 6px;
+  margin-bottom: var(--spaceL);
+  font-size: var(--fontSizeBodyS);
+  color: var(--textLight);
+
+  @media (--mediaMobile) {
+    margin-bottom: var(--spaceM);
+    font-size: var(--fontSizeBodyXS);
+  }
+}
+
+.chips {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(var(--chipMin), 1fr));
+  gap: 10px;
+  list-style: none;
+
+  /* React Native's chip sits at the foot of its panel, beside the phone */
+  .panel[data-area='mobile'] & {
+    max-width: calc(100% - 96px);
+    margin-top: auto;
+  }
+
+  @media (--mediaMobile) {
+    gap: var(--spaceS);
+  }
+}
+
+.chip {
+  --chipDelay: calc(var(--revealDelay) + 160ms + var(--chipIndex) * 45ms);
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid color-mix(in lab, var(--text) 8%, transparent);
+  border-radius: var(--radiusM) var(--radiusM) var(--radiusM) var(--radiusTight);
+  background: color-mix(in lab, var(--text) 3%, transparent);
+  opacity: 0;
+  transition: opacity var(--durationL) ease var(--chipDelay),
+    translate var(--durationL) var(--bezierFastoutSlowin) var(--chipDelay);
+
+  @media (--mediaUseMotion) {
+    translate: 0 12px;
+  }
+
+  .panel[data-visible='true'] & {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  &:hover {
+    border-color: color-mix(in oklab, var(--brand) 45%, transparent);
+    background: color-mix(in oklab, var(--brand) 8%, transparent);
+  }
+
+  @media (--mediaMobile) {
+    gap: 10px;
+    padding: 8px;
+  }
+}
+
+.chipLogo {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid color-mix(in oklab, var(--brand) 32%, transparent);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--brand) 14%, transparent);
+  color: color-mix(in oklab, var(--brand) 82%, var(--text));
+  transition: translate var(--durationS) var(--bezierFastoutSlowin);
+
+  .chip:hover & {
+    translate: 0 -2px;
+    box-shadow: 0 10px 24px -8px color-mix(in oklab, var(--brand) 65%, transparent);
+  }
+
+  :global([data-theme='light']) & {
+    color: color-mix(in oklab, var(--brand) 70%, var(--text));
+  }
+
+  @media (--mediaMobile) {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+}
+
+.chipIcon {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+
+  @media (--mediaMobile) {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+.chipText {
+  display: grid;
+}
+
+.chipName,
+.chipNote {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chipName {
+  font-size: var(--fontSizeBodyS);
+  font-weight: var(--fontWeightMedium);
+  line-height: 1.3;
+  color: var(--textTitle);
+
+  @media (--mediaMobile) {
+    font-size: var(--fontSizeBodyXS);
+    white-space: normal;
+  }
+}
+
+.chipNote {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--textLight);
+
+  @media (--mediaMobile) {
+    display: none;
+  }
+}
+
+/* React Native's panel holds a phone that rises on hover */
+
+.phone {
+  position: absolute;
+  right: var(--spaceL);
+  bottom: -40px;
+  width: 84px;
+  height: 160px;
+  padding: 7px;
+  border: 1px solid color-mix(in oklab, #61dafb 34%, var(--border));
+  border-radius: 24px;
+  background: linear-gradient(160deg, var(--surfaceRaised), var(--surface));
+  box-shadow: 0 24px 48px color-mix(in lab, var(--black) 32%, transparent);
+  rotate: -8deg;
+  transition: rotate var(--durationL) var(--bezierFastoutSlowin),
+    translate var(--durationL) var(--bezierFastoutSlowin);
+
+  .panel:hover & {
+    rotate: -3deg;
+    translate: 0 -12px;
+  }
+
+  @media (--mediaMobile) {
+    right: var(--spaceM);
+    width: 80px;
+    height: 150px;
+  }
+}
+
+.phoneScreen {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  border-radius: 18px;
+  background: radial-gradient(
+      closest-side,
+      color-mix(in oklab, #61dafb 24%, transparent),
+      transparent
+    ),
+    color-mix(in lab, var(--background) 85%, transparent);
+}
+
+.phoneLogo {
+  width: 42px;
+  height: 42px;
+  fill: currentColor;
+  color: #61dafb;
+
+  :global([data-theme='light']) & {
+    color: color-mix(in oklab, #61dafb 70%, var(--text));
+  }
+
+  @media (--mediaUseMotion) {
+    .panel:hover & {
+      animation: spin 9s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }

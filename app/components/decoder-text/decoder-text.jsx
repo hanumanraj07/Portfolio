@@ -27,7 +27,9 @@ function shuffle(content, output, position) {
       return { type: CharType.Value, value };
     }
 
-    if (position % 1 < 0.5) {
+    // Output starts empty, so a slow first frame past the halfway mark has no
+    // previous glyph to keep
+    if (position % 1 < 0.5 || !output[index]) {
       const rand = Math.floor(Math.random() * glyphs.length);
       return { type: CharType.Glyph, value: glyphs[rand] };
     }
