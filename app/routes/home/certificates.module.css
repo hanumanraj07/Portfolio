@@ -55,19 +55,20 @@
   right: 8%;
   bottom: 4%;
   height: 42%;
-  border-radius: 50%;
+  /* closest-side keeps both gradients fully faded before the box edges, so the
+     glow stays soft without an expensive blur filter */
   background:
     radial-gradient(
-      ellipse at 35% 60%,
-      color-mix(in lab, var(--secondary) 34%, transparent),
-      transparent 62%
+      closest-side at 40% 58%,
+      color-mix(in lab, var(--secondary) 32%, transparent),
+      color-mix(in lab, var(--secondary) 12%, transparent) 55%,
+      transparent
     ),
     radial-gradient(
-      ellipse at 70% 70%,
-      color-mix(in lab, var(--primary) 18%, transparent),
-      transparent 60%
+      closest-side at 66% 64%,
+      color-mix(in lab, var(--primary) 16%, transparent),
+      transparent
     );
-  filter: blur(40px);
   pointer-events: none;
 }
 
@@ -109,10 +110,9 @@
   background:
     linear-gradient(
       160deg,
-      color-mix(in lab, var(--surfaceRaised) 85%, transparent),
-      color-mix(in lab, var(--surface) 70%, transparent)
+      color-mix(in lab, var(--surfaceRaised) 97%, transparent),
+      color-mix(in lab, var(--surface) 94%, transparent)
     );
-  backdrop-filter: blur(16px);
   box-shadow: 0 30px 80px color-mix(in lab, var(--black) 28%, transparent);
   opacity: 0;
   transition: opacity var(--durationL) ease 300ms, transform var(--durationXL) var(--bezierFastoutSlowin) 300ms;
@@ -389,14 +389,15 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transform: perspective(900px) rotateX(var(--tiltY)) rotateY(var(--tiltX));
   transition:
     transform var(--durationL) var(--bezierFastoutSlowin),
     border-color var(--durationS) ease,
     box-shadow var(--durationM) ease,
     background var(--durationS) ease;
 
+  /* Only become a 3D layer while tilting, not all fifteen tiles all the time */
   &[data-tilting='true'] {
+    transform: perspective(900px) rotateX(var(--tiltY)) rotateY(var(--tiltX));
     transition:
       transform 120ms linear,
       border-color var(--durationS) ease,
@@ -461,10 +462,9 @@
   inset: 0;
   background: radial-gradient(
     circle at var(--pointerX) var(--pointerY),
-    color-mix(in lab, var(--white) 30%, transparent),
+    color-mix(in lab, var(--white) 14%, transparent),
     transparent 55%
   );
-  mix-blend-mode: soft-light;
   opacity: 0;
   transition: opacity var(--durationM) ease;
 

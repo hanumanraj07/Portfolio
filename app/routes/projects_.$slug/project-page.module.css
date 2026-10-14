@@ -210,19 +210,20 @@
   right: 6%;
   bottom: 0;
   height: 46%;
-  border-radius: 50%;
+  /* closest-side keeps both gradients fully faded before the box edges, so the
+     glow stays soft without an expensive blur filter */
   background:
     radial-gradient(
-      ellipse at 35% 60%,
-      color-mix(in lab, var(--secondary) 34%, transparent),
-      transparent 62%
+      closest-side at 40% 58%,
+      color-mix(in lab, var(--secondary) 32%, transparent),
+      color-mix(in lab, var(--secondary) 12%, transparent) 55%,
+      transparent
     ),
     radial-gradient(
-      ellipse at 70% 70%,
-      color-mix(in lab, var(--primary) 18%, transparent),
-      transparent 60%
+      closest-side at 66% 64%,
+      color-mix(in lab, var(--primary) 16%, transparent),
+      transparent
     );
-  filter: blur(40px);
   pointer-events: none;
 }
 

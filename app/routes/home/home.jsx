@@ -118,8 +118,9 @@ export const Home = () => {
           if (entry.isIntersecting) {
             const section = entry.target;
             observer.unobserve(section);
-            if (visibleSections.includes(section)) return;
-            setVisibleSections(prevSections => [...prevSections, section]);
+            setVisibleSections(prevSections =>
+              prevSections.includes(section) ? prevSections : [...prevSections, section]
+            );
           }
         });
       },
@@ -143,7 +144,9 @@ export const Home = () => {
       sectionObserver.disconnect();
       indicatorObserver.disconnect();
     };
-  }, [visibleSections]);
+    // Observe once; rebuilding the observers on every reveal re-measured every section
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styles.home}>

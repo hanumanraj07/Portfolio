@@ -13,6 +13,7 @@ import { cssProps, media } from '~/utils/style';
 import { certificateCategories, certificates } from './certificate-data';
 import { credentialScreenSize, getCredentialScreen } from './credential-screen';
 import { FilterChips } from './filter-chips';
+import { usePrewarm } from './project-device';
 import { ShowcaseHeader } from './showcase-header';
 import styles from './certificates.module.css';
 
@@ -46,12 +47,15 @@ function categoryLabel(categoryId) {
  * is composited onto its screen and crossfades when the selection changes
  */
 const CredentialLaptop = ({ cert, visible }) => {
+  const ref = useRef();
   const isHydrated = useHydrated();
+  const prewarmed = usePrewarm(ref, visible);
   const [screen, setScreen] = useState();
   const [modelLoaded, setModelLoaded] = useState(false);
 
+  // Compose the screen only once the section is close, not on page load
   useEffect(() => {
-    if (!isHydrated) return;
+    if (!isHydrated || !prewarmed) return;
     let cancelled = false;
 
     getCredentialScreen(cert).then(url => {
@@ -61,7 +65,7 @@ const CredentialLaptop = ({ cert, visible }) => {
     return () => {
       cancelled = true;
     };
-  }, [cert, isHydrated]);
+  }, [cert, isHydrated, prewarmed]);
 
   const texture = useMemo(
     () =>
@@ -74,10 +78,10 @@ const CredentialLaptop = ({ cert, visible }) => {
   );
 
   return (
-    <div className={styles.laptop} data-visible={visible}>
+    <div className={styles.laptop} data-visible={visible} ref={ref}>
       <div aria-hidden className={styles.laptopGlow} />
       {!modelLoaded && <Loader center className={styles.loader} data-visible={visible} />}
-      {isHydrated && visible && texture && (
+      {isHydrated && prewarmed && texture && (
         <Suspense>
           <Model
             className={styles.model}
@@ -184,7 +188,18 @@ const CredentialDetails = ({ cert, position, total, onStep, onExpand }) => (
 
 const CredentialTile = ({ cert, index, selected, onSelect, onPreload, revealed }) => {
   const tileRef = useRef();
+  const preloadTimer = useRef();
   usePointerTilt(tileRef, { maxTilt: 7 });
+
+  // Only prepare the laptop screen when the pointer rests on a tile; tiles
+  // sliding under a still cursor while scrolling shouldn't trigger any work
+  const schedulePreload = () => {
+    clearTimeout(preloadTimer.current);
+    preloadTimer.current = setTimeout(() => onPreload(cert), 200);
+  };
+  const cancelPreload = () => clearTimeout(preloadTimer.current);
+
+  useEffect(() => cancelPreload, []);
 
   return (
     <li
@@ -198,16 +213,17 @@ const CredentialTile = ({ cert, index, selected, onSelect, onPreload, revealed }
         type="button"
         aria-pressed={selected}
         onClick={() => onSelect(cert.id)}
-        onPointerEnter={() => onPreload(cert)}
+        onPointerEnter={schedulePreload}
+        onPointerLeave={cancelPreload}
         onFocus={() => onPreload(cert)}
       >
         <span className={styles.tileFrame}>
           <img
             className={styles.tileImage}
-            src={cert.image}
+            src={cert.thumb.src}
             alt=""
-            width={cert.width}
-            height={cert.height}
+            width={cert.thumb.width}
+            height={cert.thumb.height}
             loading="lazy"
             decoding="async"
             data-orientation={cert.width >= cert.height ? 'landscape' : 'portrait'}
@@ -310,7 +326,8 @@ const CertificateShowcase = ({ visible }) => {
   };
 
   const preload = useCallback(cert => {
-    getCredentialScreen(cert).catch(() => {});
+    const requestIdle = window.requestIdleCallback || (callback => setTimeout(callback, 0));
+    requestIdle(() => getCredentialScreen(cert).catch(() => {}), { timeout: 500 });
   }, []);
 
   return (

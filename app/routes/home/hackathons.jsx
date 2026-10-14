@@ -21,6 +21,8 @@ import styles from './hackathons.module.css';
 
 // Only the first two entries are confirmed, finished events
 const featuredHackathons = hackathons.slice(0, 2);
+const stageViewport = {};
+const exhibitViewport = { rootMargin: '0px 0px -15% 0px' };
 /**
  * Turn "Top 15 among 200+ teams" into a rank we can feature
  */
@@ -92,6 +94,7 @@ export const ExhibitStage = ({ hackathon, index, visible, alternate }) => {
   const stageRef = useRef();
   const rank = parseRank(hackathon.achievement);
   const { cover } = hackathon;
+  const onScreen = useInViewport(stageRef, false, stageViewport);
   usePointerTilt(stageRef, { maxTilt: 9 });
 
   return (
@@ -99,6 +102,7 @@ export const ExhibitStage = ({ hackathon, index, visible, alternate }) => {
       className={styles.stage}
       ref={stageRef}
       data-visible={visible}
+      data-active={onScreen}
       data-alternate={alternate}
       aria-hidden
     >
@@ -169,7 +173,7 @@ export const ExhibitStage = ({ hackathon, index, visible, alternate }) => {
 
 const Exhibit = ({ hackathon, index, alternate, onViewCertificate }) => {
   const exhibitRef = useRef();
-  const visible = useInViewport(exhibitRef, true, { rootMargin: '0px 0px -15% 0px' });
+  const visible = useInViewport(exhibitRef, true, exhibitViewport);
   const titleId = `hackathon-${hackathon.id}-title`;
   const certificate = getCertificate(hackathon);
   const project = projects.find(item => item.hackathonId === hackathon.id);

@@ -55,11 +55,12 @@ export const DisplacementSphere = props => {
       canvas: canvasRef.current,
       antialias: false,
       alpha: true,
-      powerPreference: 'high-performance',
+      powerPreference: 'default',
       failIfMajorPerformanceCaveat: true,
     });
     renderer.current.setSize(innerWidth, innerHeight);
     renderer.current.setPixelRatio(1);
+    renderer.current.debug.checkShaderErrors = import.meta.env.DEV;
     renderer.current.outputColorSpace = LinearSRGBColorSpace;
 
     camera.current = new PerspectiveCamera(54, innerWidth / innerHeight, 0.1, 100);

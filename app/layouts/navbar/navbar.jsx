@@ -81,8 +81,13 @@ export const Navbar = () => {
       }
     };
 
-    // Currently only the light theme has dark full-width elements
-    if (theme === 'light') {
+    // Currently only the light theme has dark full-width elements. Skip the
+    // scroll listener entirely when the page has none to invert against.
+    const hasInvertedElements = !!document.querySelector(
+      `[data-theme='${inverseTheme}'][data-invert]`
+    );
+
+    if (theme === 'light' && hasInvertedElements) {
       navItemMeasurements = Array.from(navItems).map(item => {
         const rect = item.getBoundingClientRect();
 
@@ -93,7 +98,7 @@ export const Navbar = () => {
         };
       });
 
-      document.addEventListener('scroll', handleInversion);
+      document.addEventListener('scroll', handleInversion, { passive: true });
       handleInversion();
     }
 

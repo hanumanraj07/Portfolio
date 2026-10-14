@@ -13,6 +13,21 @@ import problemSolvingCert from '~/assets/problem-solving-basic-certificate.png';
 import pulseQuestCert from '~/assets/pulse-quest-certificate.jpg';
 import robotrixCert from '~/assets/robotrix-certificate.png';
 import synaptixCert from '~/assets/synaptix-hack-certificate.png';
+import appianAiThumb from '~/assets/certificates/appian-ai-challenge-certificate-thumb.jpg';
+import awsArchThumb from '~/assets/certificates/aws-solutions-arch-certificate-thumb.jpg';
+import codeClashThumb from '~/assets/certificates/code-clash-certificate-thumb.jpg';
+import cssBasicThumb from '~/assets/certificates/css-basic-certificate-thumb.jpg';
+import digitalSkillsThumb from '~/assets/certificates/digital-skills-ai-certificate-thumb.jpg';
+import digitalSkillsUxThumb from '~/assets/certificates/digital-skills-ux-certificate-thumb.jpg';
+import ethicalAiThumb from '~/assets/certificates/ethical-ai-certificate-thumb.jpg';
+import githubCopilotThumb from '~/assets/certificates/github-copilot-certificate-thumb.jpg';
+import htmlThumb from '~/assets/certificates/html-certificate-thumb.jpg';
+import introToCThumb from '~/assets/certificates/intro-to-c-certificate-thumb.jpg';
+import introToJsThumb from '~/assets/certificates/intro-to-javascript-certificate-thumb.jpg';
+import problemSolvingThumb from '~/assets/certificates/problem-solving-basic-certificate-thumb.jpg';
+import pulseQuestThumb from '~/assets/certificates/pulse-quest-certificate-thumb.jpg';
+import robotrixThumb from '~/assets/certificates/robotrix-certificate-thumb.jpg';
+import synaptixThumb from '~/assets/certificates/synaptix-hack-certificate-thumb.jpg';
 
 export const certificateCategories = [
   { id: 'all', label: 'All' },
@@ -37,6 +52,7 @@ export const certificates = [
     topics: ['AWS', 'Scalable hosting architecture'],
     featured: true,
     image: awsArchCert,
+    thumb: { src: awsArchThumb, width: 560, height: 396 },
     width: 1024,
     height: 725,
   },
@@ -52,6 +68,7 @@ export const certificates = [
     topics: ['GitHub Copilot', 'AI pair programming'],
     featured: true,
     image: githubCopilotCert,
+    thumb: { src: githubCopilotThumb, width: 560, height: 396 },
     width: 1024,
     height: 725,
   },
@@ -67,6 +84,7 @@ export const certificates = [
     featured: true,
     verifyUrl: 'https://unstop.com/certificate-preview/b15b61c7-637f-4cf4-a815-df2801a4ea35',
     image: robotrixCert,
+    thumb: { src: robotrixThumb, width: 560, height: 396 },
     width: 1024,
     height: 724,
   },
@@ -82,6 +100,7 @@ export const certificates = [
     featured: true,
     verifyUrl: 'https://unstop.com/certificate-preview/824aa0f9-0403-4157-9954-93b69f97f5b4',
     image: synaptixCert,
+    thumb: { src: synaptixThumb, width: 560, height: 395 },
     width: 1024,
     height: 723,
   },
@@ -96,6 +115,7 @@ export const certificates = [
     topics: ['AI applications'],
     verifyUrl: 'https://unstop.com/certificate-preview/6ce621f3-bfbc-4b09-b23a-cdcae3a362f8',
     image: appianAiCert,
+    thumb: { src: appianAiThumb, width: 560, height: 396 },
     width: 1024,
     height: 724,
   },
@@ -109,6 +129,7 @@ export const certificates = [
     category: 'industry',
     topics: ['Artificial intelligence', 'AI in the workplace'],
     image: digitalSkillsCert,
+    thumb: { src: digitalSkillsThumb, width: 396, height: 560 },
     width: 725,
     height: 1024,
   },
@@ -122,6 +143,7 @@ export const certificates = [
     category: 'industry',
     topics: ['User experience'],
     image: digitalSkillsUxCert,
+    thumb: { src: digitalSkillsUxThumb, width: 397, height: 560 },
     width: 726,
     height: 1024,
   },
@@ -135,6 +157,7 @@ export const certificates = [
     category: 'hackathon',
     verifyUrl: 'https://unstop.com/certificate-preview/91b73372-79ca-48de-ba1f-a91df69ecdfc',
     image: codeClashCert,
+    thumb: { src: codeClashThumb, width: 560, height: 395 },
     width: 1024,
     height: 723,
   },
@@ -148,6 +171,7 @@ export const certificates = [
     category: 'hackathon',
     verifyUrl: 'https://unstop.com/certificate-preview/6274ed2f-0fca-4c87-a90c-c61e7060f329',
     image: pulseQuestCert,
+    thumb: { src: pulseQuestThumb, width: 560, height: 383 },
     width: 1024,
     height: 700,
   },
@@ -162,6 +186,7 @@ export const certificates = [
     topics: ['Algorithms', 'Data structures'],
     verifyUrl: 'https://www.hackerrank.com/certificates/c635462d6617',
     image: problemSolvingCert,
+    thumb: { src: problemSolvingThumb, width: 560, height: 416 },
     width: 784,
     height: 583,
   },
@@ -176,6 +201,7 @@ export const certificates = [
     topics: ['CSS'],
     verifyUrl: 'https://www.hackerrank.com/certificates/294545eab481',
     image: cssBasicCert,
+    thumb: { src: cssBasicThumb, width: 560, height: 416 },
     width: 784,
     height: 582,
   },
@@ -190,6 +216,7 @@ export const certificates = [
     topics: ['JavaScript'],
     verifyUrl: 'https://www.sololearn.com/certificates/CC-R1ZLUKWC',
     image: introToJsCert,
+    thumb: { src: introToJsThumb, width: 560, height: 395 },
     width: 1024,
     height: 722,
   },
@@ -204,6 +231,7 @@ export const certificates = [
     topics: ['Responsible AI'],
     verifyUrl: 'https://www.sololearn.com/certificates/CC-KB3NEPUD',
     image: ethicalAiCert,
+    thumb: { src: ethicalAiThumb, width: 560, height: 395 },
     width: 1024,
     height: 722,
   },
@@ -218,6 +246,7 @@ export const certificates = [
     topics: ['HTML'],
     verifyUrl: 'https://www.sololearn.com/certificates/CC-BU8A1JX8',
     image: htmlCert,
+    thumb: { src: htmlThumb, width: 560, height: 395 },
     width: 1024,
     height: 722,
   },
@@ -232,6 +261,7 @@ export const certificates = [
     topics: ['C programming'],
     verifyUrl: 'https://www.sololearn.com/certificates/CC-QRECNQJ1',
     image: introToCCert,
+    thumb: { src: introToCThumb, width: 560, height: 395 },
     width: 1024,
     height: 722,
   },

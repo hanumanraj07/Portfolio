@@ -162,19 +162,19 @@
   right: 4%;
   bottom: -6%;
   height: 70%;
-  border-radius: 50%;
+  /* closest-side gradients fade out before the edges, replacing a blur filter */
   background:
     radial-gradient(
-      ellipse at 50% 50%,
+      closest-side at 50% 50%,
       color-mix(in lab, var(--secondary) 26%, transparent),
-      transparent 65%
+      color-mix(in lab, var(--secondary) 10%, transparent) 55%,
+      transparent
     ),
     radial-gradient(
-      ellipse at 70% 60%,
+      closest-side at 68% 58%,
       color-mix(in lab, var(--primary) 12%, transparent),
-      transparent 60%
+      transparent
     );
-  filter: blur(30px);
   transform: translateZ(-120px) rotateX(70deg);
   transform-origin: 50% 100%;
 }
@@ -320,8 +320,13 @@
     background: linear-gradient(90deg, var(--primary), var(--secondary));
   }
 
+  /* Float only while the exhibit is on screen */
   @media (--mediaUseMotion) {
-    animation: pass-float 7s ease-in-out infinite;
+    animation: pass-float 7s ease-in-out infinite paused;
+
+    .stage[data-active='true'] & {
+      animation-play-state: running;
+    }
 
     .stage[data-tilting='true'] & {
       animation-play-state: paused;
@@ -423,13 +428,12 @@
   background: linear-gradient(
     115deg,
     transparent 30%,
-    color-mix(in lab, var(--white) 16%, transparent) 46%,
-    color-mix(in lab, var(--secondary) 18%, transparent) 54%,
+    color-mix(in lab, var(--white) 9%, transparent) 46%,
+    color-mix(in lab, var(--secondary) 11%, transparent) 54%,
     transparent 70%
   );
   background-size: 260% 260%;
   background-position: var(--pointerX) var(--pointerY);
-  mix-blend-mode: screen;
   opacity: 0.5;
   pointer-events: none;
   transition: opacity var(--durationM) ease;
@@ -494,7 +498,11 @@
   }
 
   @media (--mediaUseMotion) {
-    animation: pass-float 9s ease-in-out -3s infinite;
+    animation: pass-float 9s ease-in-out -3s infinite paused;
+
+    .stage[data-active='true'] & {
+      animation-play-state: running;
+    }
   }
 
   @media (--mediaMobile) {

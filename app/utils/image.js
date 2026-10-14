@@ -1,81 +1,52 @@
 /**
- * Use the browser's image loading to load an image and
- * grab the `src` it chooses from a `srcSet`
+ * Convert a `sizes` length (e.g. `80vw`, `480px`) to CSS pixels
  */
-export async function loadImageFromSrcSet({ src, srcSet, sizes }) {
-  return new Promise((resolve, reject) => {
-    try {
-      if (!src && !srcSet) {
-        throw new Error('No image src or srcSet provided');
-      }
-
-      let tempImage = new Image();
-
-      if (src) {
-        tempImage.src = src;
-      }
-
-      if (srcSet) {
-        tempImage.srcset = srcSet;
-      }
-
-      if (sizes) {
-        tempImage.sizes = sizes;
-      }
-
-      const onLoad = () => {
-        tempImage.removeEventListener('load', onLoad);
-        const source = tempImage.currentSrc;
-        tempImage = null;
-        resolve(source);
-      };
-
-      tempImage.addEventListener('load', onLoad);
-    } catch (error) {
-      reject(`Error loading ${srcSet}: ${error}`);
-    }
-  });
+function lengthToPx(length) {
+  const value = parseFloat(length);
+  if (Number.isNaN(value)) return window.innerWidth;
+  if (length.endsWith('vw')) return (value / 100) * window.innerWidth;
+  if (length.endsWith('rem') || length.endsWith('em')) return value * 16;
+  return value;
 }
 
 /**
- * Generates a transparent png of a given width and height
+ * The slot width the browser would use for a `sizes` attribute
  */
-export async function generateImage(width = 1, height = 1) {
-  return new Promise(resolve => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+function getSlotWidth(sizes) {
+  if (!sizes) return window.innerWidth;
 
-    canvas.width = width;
-    canvas.height = height;
+  for (const entry of sizes.split(',')) {
+    const trimmed = entry.trim();
+    const match = trimmed.match(/^(\(.*\))\s+(\S+)$/);
 
-    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-    ctx.fillRect(0, 0, width, height);
+    if (!match) return lengthToPx(trimmed);
+    if (window.matchMedia(match[1]).matches) return lengthToPx(match[2]);
+  }
 
-    canvas.toBlob(async blob => {
-      if (!blob) throw new Error('Video thumbnail failed to load');
-      const image = URL.createObjectURL(blob);
-      canvas.remove();
-      resolve(image);
-    });
-  });
+  return window.innerWidth;
 }
 
 /**
- * Use native html image `srcSet` resolution for non-html images
+ * Pick the `srcSet` candidate the browser would load for non-html images
+ * (WebGL textures, videos), without loading anything to find out
  */
 export async function resolveSrcFromSrcSet({ srcSet, sizes }) {
-  const sources = await Promise.all(
-    srcSet.split(', ').map(async srcString => {
-      const [src, width] = srcString.split(' ');
-      const size = Number(width.replace('w', ''));
-      const image = await generateImage(size);
-      return { src, image, width };
+  const candidates = srcSet
+    .split(',')
+    .map(entry => entry.trim())
+    .filter(Boolean)
+    .map(entry => {
+      const [src, descriptor = '1w'] = entry.split(/\s+/);
+      return { src, width: Number(descriptor.replace('w', '')) || 1 };
     })
-  );
+    .sort((a, b) => a.width - b.width);
 
-  const fakeSrcSet = sources.map(({ image, width }) => `${image} ${width}`).join(', ');
-  const fakeSrc = await loadImageFromSrcSet({ srcSet: fakeSrcSet, sizes });
+  if (new Set(candidates.map(candidate => candidate.src)).size === 1) {
+    return candidates[0].src;
+  }
 
-  const output = sources.find(src => src.image === fakeSrc);
-  return output.src;
+  const targetWidth = getSlotWidth(sizes) * (window.devicePixelRatio || 1);
+  const match = candidates.find(candidate => candidate.width >= targetWidth);
+
+  return (match || candidates[candidates.length - 1]).src;
 }
