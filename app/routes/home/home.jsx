@@ -1,23 +1,9 @@
-import bugattiTexture from '~/assets/bugatti-Trim.mp4'; // Video texture
-import bugattiTextureLarge from '~/assets/bugatti-Trim.mp4';
-import bugattiTexturePlaceholder from '~/assets/bugatti.png';
-import epicTexture1 from '~/assets/gta.jpg';
-import epicTexture2 from '~/assets/epic-3.jpeg';
-import sliceTextureLarge from '~/assets/flatline.png';
-import sliceTexturePlaceholder from '~/assets/flatline.png';
-import sliceTexture from '~/assets/flatline.png';
-import sprTextureLarge from '~/assets/flatline.png';
-import sprTexturePlaceholder from '~/assets/flatline.png';
-import sprTexture from '~/assets/flatline.png';
-import fuelGaurdTexture from '~/assets/FuelGaurd.png';
-import mobileKnowleadgeTexture1 from '~/assets/Mobile-knowleadge.png';
-import mobileKnowleadgeTexture2 from '~/assets/Mobile-knowleadge2.png';
-import studentProfileTexture from '~/assets/StudentProfile.png';
 import { Footer } from '~/components/footer';
 import { baseMeta } from '~/utils/meta';
 import { Intro } from './intro';
 import { Profile } from './profile';
 import { ProjectSummary } from './project-summary';
+import { projects } from './project-data';
 import { Skills } from './skills';
 import { Certificates } from './certificates';
 import { Hackathons } from './hackathons';
@@ -98,6 +84,7 @@ export const Home = () => {
   const hackathons = useRef();
   const certificates = useRef();
   const contact = useRef();
+  const projectRefs = [projectOne, projectTwo, projectThree, projectFour, projectFive];
 
   useEffect(() => {
     const sectionPathMap = {
@@ -175,128 +162,17 @@ export const Home = () => {
         visible={visibleSections.includes(skills.current)}
         id="skills"
       />
-      <ProjectSummary
-        id="project-1"
-        sectionRef={projectOne}
-        visible={visibleSections.includes(projectOne.current)}
-        index={1}
-        title="Bugatti – Luxury Automotive Website Clone"
-        description="A premium website clone inspired by Bugatti’s official platform, focusing on luxury branding, smooth transitions, and modern web aesthetics."
-        buttonText="View project"
-        buttonLink="https://hanuman07.netlify.app/bugatti/"
-        liveLink="https://bugatti-clone-dev.vercel.app/"
-        sourceCodeLink="https://github.com/hanumanraj07/Bugatti-Clone"
-        videoLink="https://youtu.be/__XCbRVxfyI?si=Tq2HNrMkrf9NHijL"
-        model={{
-          type: 'laptop',
-          alt: 'Bugatti luxury automotive website clone shown on a laptop',
-          textures: [
-            {
-              srcSet: `${bugattiTexture} 1280w, ${bugattiTextureLarge} 2560w`,
-              placeholder: bugattiTexturePlaceholder,
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-2"
-        alternate
-        sectionRef={projectTwo}
-        visible={visibleSections.includes(projectTwo.current)}
-        index={2}
-        title="Epic Games Digital Storefront – App Clone"
-        description="A modern mobile clone of the Epic Games Store featuring game browsing, genres, and a premium dark UI experience."
-        buttonText="View website" 
-        liveLink="https://epic-games-clone-dev.vercel.app/"
-        sourceCodeLink="https://github.com/hanumanraj07/Epic-Games-Clone"
-        videoLink="https://www.youtube.com/watch?v=Bae7hhBmTBI"
-        model={{
-          type: 'phone',
-          alt: 'Epic Games Store mobile app clone screens',
-          textures: [
-            {
-              srcSet: `${epicTexture1} 375w, ${epicTexture1} 750w`,
-              placeholder: epicTexture1,
-            },
-            {
-              srcSet: `${epicTexture2} 375w, ${epicTexture2} 750w`,
-              placeholder: epicTexture2,
-              fit: 'cover',
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-3"
-        sectionRef={projectThree}
-        visible={visibleSections.includes(projectThree.current)}
-        index={3}
-        title="FuelGuard - AI-Powered Fuel Fraud Detection"
-        description="FuelGuard is a full-stack web app that uses AI to detect fuel pump fraud from uploaded videos, generate legal PDF reports, and map fraudulent pumps in real time."
-        buttonText="View project"
-        liveLink="https://fuel-guard-dev.vercel.app/"
-        sourceCodeLink="https://github.com/hanumanraj07/FuelGuard"
-        videoLink="https://www.youtube.com/@hanumanraj07"
-        model={{
-          type: 'laptop',
-          alt: 'FuelGuard AI fuel fraud detection dashboard',
-          textures: [
-            {
-              srcSet: `${fuelGaurdTexture} 800w, ${fuelGaurdTexture} 1920w`,
-              placeholder: fuelGaurdTexture,
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-4"
-        alternate
-        sectionRef={projectFour}
-        visible={visibleSections.includes(projectFour.current)}
-        index={4}
-        title="Knowledge Twin - AI Powered Chat Bot"
-        description="Knowledge Twin is a powerful RAG-driven AI built to act like a world-class knowledge expert—able to read documents, understand images and videos, and remember conversations with exceptional accuracy."
-        buttonText="View project"
-        liveLink="https://knowledgetwin.netlify.app/"
-        sourceCodeLink="https://github.com/hanumanraj07/knowledge-twin"
-        videoLink="https://www.youtube.com/@hanumanraj07"
-        model={{
-          type: 'phone',
-          alt: 'Knowledge Twin AI chatbot mobile interface',
-          textures: [
-            {
-              srcSet: `${mobileKnowleadgeTexture2} 375w, ${mobileKnowleadgeTexture2} 750w`,
-              placeholder: mobileKnowleadgeTexture2,
-            },
-            {
-              srcSet: `${mobileKnowleadgeTexture1} 375w, ${mobileKnowleadgeTexture1} 750w`,
-              placeholder: mobileKnowleadgeTexture1,
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-5"
-        sectionRef={projectFive}
-        visible={visibleSections.includes(projectFive.current)}
-        index={5}
-        title="Students Profile Aggregator"
-        description="Full-stack platform to aggregate students stats from GitHub, LeetCode, YouTube and Sololearn in one dashboard."
-        buttonText="View project"
-        liveLink="https://profilestack.netlify.app/"
-        sourceCodeLink="https://github.com/hanumanraj07/profile_aggregator"
-        videoLink="https://youtu.be/zGbbXOJ6Xpw?si=U0AwU9FtCwziTvvD"
-        model={{
-          type: 'laptop',
-          alt: 'Students Profile Aggregator dashboard',
-          textures: [
-            {
-              srcSet: `${studentProfileTexture} 800w, ${studentProfileTexture} 1920w`,
-              placeholder: studentProfileTexture,
-            },
-          ],
-          }}
-      />
+      {projects.map((project, index) => (
+        <ProjectSummary
+          key={project.slug}
+          id={`project-${index + 1}`}
+          sectionRef={projectRefs[index]}
+          visible={visibleSections.includes(projectRefs[index].current)}
+          index={index + 1}
+          alternate={index % 2 === 1}
+          project={project}
+        />
+      ))}
       <Hackathons
         id="hackathons"
         sectionRef={hackathons}
