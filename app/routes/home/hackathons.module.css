@@ -619,6 +619,31 @@
   margin-bottom: var(--spaceS);
 }
 
+.projectLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--textTitle);
+  transition: color var(--durationS) ease;
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+.projectLinkIcon {
+  flex: 0 0 auto;
+  transform: scale(0.75);
+
+  @media (--mediaUseMotion) {
+    transition: transform var(--durationS) var(--bezierFastoutSlowin);
+
+    .projectLink:hover & {
+      transform: translateX(4px) scale(0.75);
+    }
+  }
+}
+
 .description {
   color: var(--textBody);
   max-width: 46ch;

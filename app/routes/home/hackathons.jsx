@@ -4,6 +4,7 @@ import { Divider } from '~/components/divider';
 import { Heading } from '~/components/heading';
 import { Icon } from '~/components/icon';
 import { Lightbox } from '~/components/lightbox';
+import { Link } from '~/components/link';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { Transition } from '~/components/transition';
@@ -13,24 +14,17 @@ import { cssProps } from '~/utils/style';
 import { certificates } from './certificate-data';
 import { FilterChips } from './filter-chips';
 import { filterTags, hackathons } from './hackathon-data';
+import { projectPath, projects } from './project-data';
 import { ShowcaseHeader } from './showcase-header';
+import { techIcons } from './tech-icons';
 import styles from './hackathons.module.css';
 
 // Only the first two entries are confirmed, finished events
 const featuredHackathons = hackathons.slice(0, 2);
-const techIcons = {
-  React: 'react',
-  'React Native': 'react',
-  Python: 'python',
-  'Node.js': 'nodejs',
-  MongoDB: 'mongodb',
-  'Next.js': 'nextjs',
-};
-
 /**
  * Turn "Top 15 among 200+ teams" into a rank we can feature
  */
-function parseRank(achievement = '') {
+export function parseRank(achievement = '') {
   const match = achievement.match(/^top\s+(\d+)\s+(?:among|of|out of)\s+(.+)$/i);
   return match ? { value: match[1], field: match[2] } : null;
 }
@@ -56,7 +50,7 @@ const bestRank = featuredHackathons
   .filter(Boolean)
   .sort((a, b) => Number(a.value) - Number(b.value))[0];
 
-const AchievementBadge = ({ achievement }) => {
+export const AchievementBadge = ({ achievement }) => {
   const rank = parseRank(achievement);
 
   if (rank) {
@@ -82,7 +76,7 @@ const AchievementBadge = ({ achievement }) => {
   );
 };
 
-const TeamDots = ({ size }) => (
+export const TeamDots = ({ size }) => (
   <span className={styles.teamDots} aria-hidden>
     {Array.from({ length: size }, (_, index) => (
       <span key={index} className={styles.teamDot} data-self={index === 0} />
@@ -94,7 +88,7 @@ const TeamDots = ({ size }) => (
  * Layered CSS 3D composition: backdrop type, the project build on a screen,
  * the event pass and (when earned) a rank medal, each at its own depth
  */
-const ExhibitStage = ({ hackathon, index, visible, alternate }) => {
+export const ExhibitStage = ({ hackathon, index, visible, alternate }) => {
   const stageRef = useRef();
   const rank = parseRank(hackathon.achievement);
   const { cover } = hackathon;
@@ -178,6 +172,7 @@ const Exhibit = ({ hackathon, index, alternate, onViewCertificate }) => {
   const visible = useInViewport(exhibitRef, true, { rootMargin: '0px 0px -15% 0px' });
   const titleId = `hackathon-${hackathon.id}-title`;
   const certificate = getCertificate(hackathon);
+  const project = projects.find(item => item.hackathonId === hackathon.id);
 
   return (
     <article
@@ -224,7 +219,14 @@ const Exhibit = ({ hackathon, index, alternate, onViewCertificate }) => {
         <div className={styles.build} style={cssProps({ delay: '300ms' })}>
           <span className={styles.buildLabel}>What we built</span>
           <Heading className={styles.projectName} level={5} as="h4">
-            {hackathon.projectName}
+            {project ? (
+              <Link className={styles.projectLink} href={projectPath(project)}>
+                {hackathon.projectName}
+                <Icon className={styles.projectLinkIcon} icon="arrow-right" />
+              </Link>
+            ) : (
+              hackathon.projectName
+            )}
           </Heading>
           <Text className={styles.description} as="p">
             {hackathon.description}
